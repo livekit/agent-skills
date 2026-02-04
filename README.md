@@ -1,0 +1,72 @@
+# LiveKit Agent Skills
+
+Reusable skills for AI coding agents building with [LiveKit](https://livekit.io). These skills provide procedural knowledge that helps agents build voice AI applications more effectively.
+
+## Available Skills
+
+| Skill | Description |
+|-------|-------------|
+| **livekit-agents** | Architectural guidance for building low-latency voice AI agents with LiveKit Agents SDK. Covers workflow design, handoffs, tasks, and mandatory testing practices. |
+
+## Installation
+
+```bash
+npx skills add livekit/agent-skills
+```
+
+Skills activate automatically when agents detect relevant tasks (e.g., "build a voice agent", "create a LiveKit agent").
+
+## Skill Structure
+
+Each skill contains:
+- `SKILL.md` — Agent instructions with behavioral guidance
+- `scripts/` — Optional automation helpers (coming soon)
+- `references/` — Supporting documentation (coming soon)
+
+## Using with MCP
+
+These skills are designed to work alongside the [LiveKit Docs MCP server](https://docs.livekit.io/mcp). The skills provide *behavioral guidance* (how to think about building voice agents) while MCP provides *factual information* (current API signatures, configuration options).
+
+Install the MCP server for best results:
+
+**Cursor:**
+```
+https://cursor.com/install-mcp?name=livekit-docs&config=eyJ1cmwiOiJodHRwczovL2RvY3MubGl2ZWtpdC5pby9tY3AifQ==
+```
+
+**Claude Code:**
+```bash
+claude mcp add --transport http livekit-docs https://docs.livekit.io/mcp
+```
+
+**Codex:**
+```bash
+codex mcp add --url https://docs.livekit.io/mcp livekit-docs
+```
+
+**Gemini:**
+```bash
+gemini mcp add --transport http livekit-docs https://docs.livekit.io/mcp
+```
+
+## Design Philosophy
+
+These skills follow the "freeze forever" principle—they encode behavioral guidance that remains valid regardless of API changes:
+
+- **Behavior over knowledge**: Skills teach *how to approach* problems, not API specifics
+- **MCP for facts**: All factual information (API signatures, config options) comes from live documentation
+- **Testing required**: Every agent implementation must include tests
+- **Latency-first**: Voice AI requires different architectural thinking than text-based agents
+
+## Contributing
+
+Contributions welcome! When adding or modifying skills:
+
+1. Ensure content passes the "freeze forever" test—would it still be correct if never updated?
+2. Direct agents to MCP/docs for all API specifics
+3. Include trigger phrases in the skill description
+4. Keep skills under 500 lines for context efficiency
+
+## License
+
+MIT

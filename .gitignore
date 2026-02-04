@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Local testing
+*.local.md
