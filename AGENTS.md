@@ -9,9 +9,10 @@ agent-skills/
 ├── README.md           # User-facing documentation
 ├── AGENTS.md           # This file (for AI agents)
 ├── CLAUDE.md           # Points to AGENTS.md
-└── livekit-agents/     # LiveKit Agents skill
-    ├── SKILL.md        # The skill content
-    └── references/     # Supporting documentation
+└── skills/
+    └── livekit-agents/     # LiveKit Agents skill
+        ├── SKILL.md        # The skill content
+        └── references/     # Supporting documentation
 ```
 
 ## Contributing Guidelines
