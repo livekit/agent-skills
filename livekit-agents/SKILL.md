@@ -4,7 +4,7 @@ description: Build voice AI agents with LiveKit Cloud and the Agents SDK. Use wh
 license: MIT
 metadata:
   author: livekit
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # LiveKit Agents Development for LiveKit Cloud
@@ -49,19 +49,18 @@ LIVEKIT_API_KEY=your-api-key
 LIVEKIT_API_SECRET=your-api-secret
 ```
 
-The LiveKit CLI can help automate this: `lk cloud auth && lk app env`
+The LiveKit CLI can automate credential setup. Consult the CLI documentation for current commands.
 
 ### Use LiveKit Inference for AI Models
 
-**LiveKit Inference is the recommended way to use AI models with LiveKit Cloud.** It provides access to models from OpenAI, Google, AssemblyAI, Deepgram, Cartesia, ElevenLabs and more—all through your LiveKit credentials with no separate API keys needed.
+**LiveKit Inference is the recommended way to use AI models with LiveKit Cloud.** It provides access to leading AI model providers—all through your LiveKit credentials with no separate API keys needed.
 
 Benefits of LiveKit Inference:
 - No separate API keys to manage for each AI provider
 - Billing consolidated through your LiveKit Cloud account
 - Optimized for voice AI workloads
-- Simple model selection via string identifiers
 
-Consult the documentation for available models, configuration options, and current usage patterns. The documentation always has the most up-to-date API details.
+Consult the documentation for available models, supported providers, and current usage patterns. The documentation always has the most up-to-date information.
 
 ## Critical Rule: Never Trust Model Memory for LiveKit APIs
 
@@ -88,37 +87,20 @@ Look for `livekit-docs` MCP tools. If available, use them for all documentation 
 
 ### If MCP Is Not Available
 
-If the LiveKit MCP server is not configured, inform the user and recommend installation:
+If the LiveKit MCP server is not configured, inform the user and recommend installation. Installation instructions for all supported platforms are available at:
 
-**Cursor:** Open this link to install:
-```
-https://cursor.com/install-mcp?name=livekit-docs&config=eyJ1cmwiOiJodHRwczovL2RvY3MubGl2ZWtpdC5pby9tY3AifQ==
-```
+**https://docs.livekit.io/intro/mcp-server/**
 
-**Claude Code:**
-```bash
-claude mcp add --transport http livekit-docs https://docs.livekit.io/mcp
-```
-
-**Codex:**
-```bash
-codex mcp add --url https://docs.livekit.io/mcp livekit-docs
-```
-
-**Gemini:**
-```bash
-gemini mcp add --transport http livekit-docs https://docs.livekit.io/mcp
-```
-
-**Other platforms:** See https://docs.livekit.io/mcp
+Fetch the installation instructions appropriate for the user's coding agent from that page.
 
 ### Fallback When MCP Unavailable
 
 If MCP cannot be installed in the current session:
-1. Inform the user that documentation cannot be verified in real-time
+1. **Inform the user immediately** that documentation cannot be verified in real-time
 2. Use web search to fetch current documentation from docs.livekit.io
-3. Clearly mark all LiveKit-specific code as "requires manual verification"
-4. Recommend the user verify against https://docs.livekit.io before using the code
+3. **Explicitly mark all LiveKit-specific code** with a comment like `# UNVERIFIED: Please check docs.livekit.io for current API`
+4. **State clearly** when you cannot verify something: "I cannot verify this API signature against current documentation"
+5. Recommend the user verify against https://docs.livekit.io before using the code
 
 ## Voice Agent Architecture Principles
 
