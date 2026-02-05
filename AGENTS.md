@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository contains AI agent skills for building with LiveKit. The skills follow the [Agent Skills](https://skills.sh) format.
+This repository contains AI agent skills for building with LiveKit. The skills follow the [Agent Skills](https://agentskills.io) format.
 
 ## Repository Structure
 
@@ -63,4 +63,4 @@ These skills are designed to work with the LiveKit Docs MCP server. If you're wo
 
 - [LiveKit Documentation](https://docs.livekit.io)
 - [LiveKit Agents SDK](https://github.com/livekit/agents)
-- [Agent Skills Format](https://skills.sh)
+- [Agent Skills Format](https://agentskills.io)

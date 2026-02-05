@@ -20,8 +20,7 @@ Skills activate automatically when agents detect relevant tasks (e.g., "build a 
 
 Each skill contains:
 - `SKILL.md` — Agent instructions with behavioral guidance
-- `scripts/` — Optional automation helpers (coming soon)
-- `references/` — Supporting documentation (coming soon)
+- `references/` — Supporting documentation
 
 ## Using with MCP
 
