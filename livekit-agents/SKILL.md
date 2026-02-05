@@ -18,11 +18,50 @@ This skill provides opinionated guidance for building voice AI agents with LiveK
 Before writing ANY code, complete this checklist:
 
 1. **Read this entire skill document** - Do not skip sections even if MCP is available
-2. **Set up documentation access** - Use MCP if available, otherwise use web search
-3. **Plan to write tests** - Every agent implementation MUST include tests (see testing section below)
-4. **Verify all APIs against live docs** - Never rely on model memory for LiveKit APIs
+2. **Ensure LiveKit Cloud project is connected** - You need `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET` from your Cloud project
+3. **Set up documentation access** - Use MCP if available, otherwise use web search
+4. **Plan to write tests** - Every agent implementation MUST include tests (see testing section below)
+5. **Verify all APIs against live docs** - Never rely on model memory for LiveKit APIs
 
 This checklist applies regardless of whether MCP is available. MCP provides documentation access but does NOT replace the guidance in this skill.
+
+## LiveKit Cloud Setup
+
+LiveKit Cloud is the fastest way to get a voice agent running. It provides:
+- Managed infrastructure (no servers to deploy)
+- **LiveKit Inference** for AI models (no separate API keys needed)
+- Built-in noise cancellation, turn detection, and other voice features
+- Simple credential management
+
+### Connect to Your Cloud Project
+
+1. Sign up at [cloud.livekit.io](https://cloud.livekit.io) if you haven't already
+2. Create a project (or use an existing one)
+3. Get your credentials from the project settings:
+   - `LIVEKIT_URL` - Your project's WebSocket URL (e.g., `wss://your-project.livekit.cloud`)
+   - `LIVEKIT_API_KEY` - API key for authentication
+   - `LIVEKIT_API_SECRET` - API secret for authentication
+
+4. Set these as environment variables (typically in `.env.local`):
+```bash
+LIVEKIT_URL=wss://your-project.livekit.cloud
+LIVEKIT_API_KEY=your-api-key
+LIVEKIT_API_SECRET=your-api-secret
+```
+
+The LiveKit CLI can help automate this: `lk cloud auth && lk app env`
+
+### Use LiveKit Inference for AI Models
+
+**LiveKit Inference is the recommended way to use AI models with LiveKit Cloud.** It provides access to models from OpenAI, Google, AssemblyAI, Deepgram, Cartesia, ElevenLabs and more—all through your LiveKit credentials with no separate API keys needed.
+
+Benefits of LiveKit Inference:
+- No separate API keys to manage for each AI provider
+- Billing consolidated through your LiveKit Cloud account
+- Optimized for voice AI workloads
+- Simple model selection via string identifiers
+
+Consult the documentation for available models, configuration options, and current usage patterns. The documentation always has the most up-to-date API details.
 
 ## Critical Rule: Never Trust Model Memory for LiveKit APIs
 
