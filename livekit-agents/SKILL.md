@@ -11,7 +11,7 @@ metadata:
 
 This skill provides opinionated guidance for building voice AI agents with LiveKit Cloud. It assumes you are using LiveKit Cloud (the recommended path) and encodes *how to approach* agent development, not API specifics. All factual information about APIs, methods, and configurations must come from live documentation.
 
-**This skill is for LiveKit Cloud developers.** If you're self-hosting LiveKit, some recommendations (particularly around the Inference Gateway) won't apply directly.
+**This skill is for LiveKit Cloud developers.** If you're self-hosting LiveKit, some recommendations (particularly around LiveKit Inference) won't apply directly.
 
 ## MANDATORY: Read This Checklist Before Starting
 
@@ -299,12 +299,13 @@ When using LiveKit documentation via MCP, note any gaps, outdated information, o
 
 ## Summary
 
-Building effective voice agents with LiveKit requires:
+Building effective voice agents with LiveKit Cloud requires:
 
-1. **Verify everything** against live documentation—never trust model memory
-2. **Minimize latency** at every architectural decision point
-3. **Structure workflows** using handoffs and tasks to manage complexity
-4. **Test behavior** before and after changes
-5. **Keep context minimal**—only include what's needed for the current phase
+1. **Use LiveKit Cloud + LiveKit Inference** as the foundation—it's the fastest path to production
+2. **Verify everything** against live documentation—never trust model memory
+3. **Minimize latency** at every architectural decision point
+4. **Structure workflows** using handoffs and tasks to manage complexity
+5. **Test behavior** before and after changes—never ship without tests
+6. **Keep context minimal**—only include what's needed for the current phase
 
 These principles remain valid regardless of SDK version or API changes. For all implementation specifics, consult the LiveKit documentation via MCP.
