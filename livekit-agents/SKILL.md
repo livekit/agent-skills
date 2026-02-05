@@ -1,6 +1,6 @@
 ---
 name: livekit-agents
-description: Build voice AI agents with LiveKit Cloud and the Agents SDK. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI", "implement handoffs", "structure agent workflows", or is working with LiveKit Agents SDK. Provides opinionated guidance for the recommended path: LiveKit Cloud + Inference Gateway. REQUIRES writing tests for all implementations.
+description: Build voice AI agents with LiveKit Cloud and the Agents SDK. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI", "implement handoffs", "structure agent workflows", or is working with LiveKit Agents SDK. Provides opinionated guidance for the recommended path: LiveKit Cloud + LiveKit Inference. REQUIRES writing tests for all implementations.
 license: MIT
 metadata:
   author: livekit
