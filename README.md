@@ -26,27 +26,9 @@ Each skill contains:
 
 These skills are designed to work alongside the [LiveKit Docs MCP server](https://docs.livekit.io/mcp). The skills provide *behavioral guidance* (how to think about building voice agents) while MCP provides *factual information* (current API signatures, configuration options).
 
-Install the MCP server for best results:
+Install the MCP server for best results. Installation instructions for all supported coding agents are available at:
 
-**Cursor:**
-```
-https://cursor.com/install-mcp?name=livekit-docs&config=eyJ1cmwiOiJodHRwczovL2RvY3MubGl2ZWtpdC5pby9tY3AifQ==
-```
-
-**Claude Code:**
-```bash
-claude mcp add --transport http livekit-docs https://docs.livekit.io/mcp
-```
-
-**Codex:**
-```bash
-codex mcp add --url https://docs.livekit.io/mcp livekit-docs
-```
-
-**Gemini:**
-```bash
-gemini mcp add --transport http livekit-docs https://docs.livekit.io/mcp
-```
+**https://docs.livekit.io/intro/mcp-server/**
 
 ## Design Philosophy
 

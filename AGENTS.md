@@ -9,8 +9,9 @@ agent-skills/
 ├── README.md           # User-facing documentation
 ├── AGENTS.md           # This file (for AI agents)
 ├── CLAUDE.md           # Points to AGENTS.md
-└── skills/
-    └── SKILL.md        # The skill content
+└── livekit-agents/     # LiveKit Agents skill
+    ├── SKILL.md        # The skill content
+    └── references/     # Supporting documentation
 ```
 
 ## Contributing Guidelines
@@ -39,24 +40,15 @@ metadata:
 ---
 ```
 
-### Testing Changes
-
-Before submitting changes to skills:
-
-1. Test with the eval harness at `github.com/livekit-examples/agent-evals`
-2. Verify the skill triggers correctly for intended prompts
-3. Confirm MCP integration works when available
-4. Check that agents write tests when using the skill
-
 ### File Naming
 
 - Skill directories use `kebab-case`
 - `SKILL.md` is the only uppercase filename
-- Scripts (if any) go in `scripts/` subdirectory
+- Supporting docs go in `references/` subdirectory
 
 ## LiveKit MCP Server
 
-These skills are designed to work with the LiveKit Docs MCP server. If you're working on this repository and need to test MCP integration, make sure it is installed.  Installation commands can be found in @README.md for your agent of choice.
+These skills are designed to work with the LiveKit Docs MCP server. If you're working on this repository and need to test MCP integration, make sure it is installed. Installation instructions are available at https://docs.livekit.io/intro/mcp-server/
 
 
 ## Links
