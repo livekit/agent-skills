@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: LiveKit Documentation
+    url: https://docs.livekit.io
+    about: For questions about LiveKit APIs and SDKs, check the official docs.
+  - name: LiveKit Developer Community
+    url: https://community.livekit.io/
+    about: Ask and answer questions.
