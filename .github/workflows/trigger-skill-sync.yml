@@ -2,9 +2,9 @@ name: Trigger downstream skill sync
 
 on:
   push:
-    branches: [main]
-    paths:
-      - "skills/**"
+    # branches: [main]
+    # paths:
+    #   - "skills/**"
 
 concurrency:
   group: skill-sync-dispatch
@@ -13,21 +13,26 @@ concurrency:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    env:
+      TEST: ${{ secrets.SYNC_DISPATCH_TOKEN }}
     steps:
+      - name: setup tmate
+        uses: mxschmitt/action-tmate@35b54afac29c97fb54faba5b513f8fbd1882f113
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Dispatch to internal actions repo
-        env:
-          GH_TOKEN: ${{ secrets.SYNC_DISPATCH_TOKEN }}
-          TARGET_REPO: ${{ vars.TARGET_REPO }}
-          SOURCE_REPO: ${{ github.repository }}
-          SOURCE_SHA: ${{ github.sha }}
-          SOURCE_REF: ${{ github.ref }}
-        run: |
-          gh api -X POST "repos/${TARGET_REPO}/dispatches" \
-            -f event_type="agent-skills-updated" \
-            -f client_payload[source_repo]="$SOURCE_REPO" \
-            -f client_payload[source_sha]="$SOURCE_SHA" \
-            -f client_payload[source_ref]="$SOURCE_REF" \
+      # - name: Dispatch to internal actions repo
+      #   env:
+      #     GH_TOKEN: ${{ secrets.SYNC_DISPATCH_TOKEN }}
+      #     TARGET_REPO: ${{ vars.TARGET_REPO }}
+      #     SOURCE_REPO: ${{ github.repository }}
+      #     SOURCE_SHA: ${{ github.sha }}
+      #     SOURCE_REF: ${{ github.ref }}
+      #   run: |
+      #     gh api -X POST "repos/${TARGET_REPO}/dispatches" \
+      #       -f event_type="agent-skills-updated" \
+      #       -f client_payload[source_repo]="$SOURCE_REPO" \
+      #       -f client_payload[source_sha]="$SOURCE_SHA" \
+      #       -f client_payload[source_ref]="$SOURCE_REF" \
