@@ -1,0 +1,7 @@
+# Complexity - goal complexity levels
+# Format: description | id
+
+one clear, self-contained request | single_simple_request
+a primary goal with a couple of related follow-ups | one_goal_with_followups
+several distinct goals handled in one call | multiple_separate_goals
+interdependent goals where each step gates the next | interdependent_multi_step

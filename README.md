@@ -7,6 +7,7 @@ Reusable skills for AI coding agents building with [LiveKit](https://livekit.io)
 | Skill | Description |
 |-------|-------------|
 | **livekit-agents** | Architectural guidance for building low-latency voice AI agents with LiveKit Agents SDK. Covers workflow design, handoffs, tasks, and mandatory testing practices. |
+| **livekit-simulations** | Generate targeted test scenarios for a LiveKit agent — locally, from the agent's own code plus what the user wants stress-tested — and run them as simulations. Bundles persona/goal/challenge libraries and a stdlib scenario builder. |
 
 ## Installation
 

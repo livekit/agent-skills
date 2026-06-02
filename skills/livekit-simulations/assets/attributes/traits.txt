@@ -1,0 +1,70 @@
+# Traits - how the caller communicates and sounds
+# Format: description | id
+
+# Tone
+warm and friendly tone | warm_friendly_tone
+cold and clipped tone | cold_clipped_tone
+sarcastic and dry delivery | sarcastic_dry
+overly formal and stiff | overly_formal
+casual and slangy | casual_slangy
+condescending and patronizing | condescending_tone
+deferential and apologetic | deferential_apologetic
+
+# Verbosity
+extremely terse, one-word answers | extremely_terse
+long-winded and over-explains | long_winded
+gives more backstory than needed | excessive_backstory
+answers only exactly what's asked | minimal_just_the_facts
+
+# Confidence
+highly confident and assertive | confident_assertive
+timid and hesitant | timid_hesitant
+second-guesses every statement | self_doubting
+authoritative and commanding | commanding_authoritative
+
+# Pace
+speaks very fast and rushed | rapid_fire_pace
+speaks slowly and deliberately | slow_deliberate
+halting with long pauses | halting_with_pauses
+uneven, speeding up and slowing down | uneven_rhythm
+
+# Volume / clarity
+loud, almost shouting | very_loud
+soft, hard to hear | very_soft
+crisp and clearly articulated | crisp_articulate
+mumbled and slurred | mumbled_slurred
+trails off at the ends of sentences | trails_off
+
+# Verbal patterns / fillers
+heavy use of um and uh | heavy_filler_words
+repeats phrases for emphasis | repetitive_phrasing
+peppers speech with industry jargon | jargon_heavy
+overuses 'like' and 'you know' | discourse_marker_heavy
+ends statements like questions (uptalk) | uptalk_pattern
+frequently says 'sorry' reflexively | reflexive_apologizing
+thinks out loud while talking | thinks_out_loud
+
+# Accent / dialect
+strong regional accent | strong_regional_accent
+non-native speaker with an accent | non_native_accent
+formal textbook-learned phrasing | textbook_second_language
+heavy use of local idioms | idiom_heavy_dialect
+
+# Background noise
+children crying in the background | background_crying_children
+TV or music playing loudly | background_tv_noise
+office chatter and keyboards | background_office_noise
+traffic and street sounds | background_street_noise
+wind buffeting the microphone | background_wind_noise
+echoey speakerphone audio | echoey_speakerphone
+pet barking intermittently | background_dog_barking
+
+# Vocal markers
+raspy or hoarse voice | raspy_hoarse_voice
+nasal-sounding voice | nasal_voice
+audibly out of breath | out_of_breath
+voice shaking with emotion | shaky_emotional_voice
+frequent throat-clearing and coughing | coughing_clearing_throat
+chewing or eating while talking | eating_while_talking
+yawning and sounding tired | tired_yawning
+laughs nervously between sentences | nervous_laughter

@@ -1,0 +1,66 @@
+# Situations - context and circumstances of the call
+# Format: description | id
+
+# Experience with the service
+brand-new customer on their first contact | first_time_customer
+long-tenured customer of many years | long_tenured_customer
+returning after a long lapse | returning_lapsed_customer
+recently switched from a competitor | switched_from_competitor
+power user who knows the product deeply | expert_power_user
+barely familiar with how the service works | unfamiliar_with_service
+
+# Customer status / history
+premium tier account holder | premium_tier_member
+account flagged for past late payments | history_of_late_payments
+previously escalated an unresolved complaint | prior_unresolved_complaint
+already called twice about this issue | third_call_same_issue
+recently received a service apology or credit | recently_compensated
+account currently past due | account_past_due
+on a payment plan or hardship program | on_hardship_plan
+recently churned and considering returning | win_back_candidate
+
+# Time constraints
+only has a couple of minutes to spare | very_short_window
+on a lunch break | calling_on_lunch_break
+calling late at night | late_night_call
+calling first thing in the morning | early_morning_call
+no time pressure at all | all_the_time_in_world
+about to board a flight | about_to_travel
+
+# Environment
+calling from a quiet home office | quiet_home_office
+calling from a noisy public place | noisy_public_space
+driving while on the call | calling_while_driving
+on speakerphone with others nearby | speakerphone_others_present
+poor cell reception with dropouts | poor_signal_dropping
+at work and trying to be discreet | discreet_at_work
+outdoors with wind and traffic | windy_outdoor_setting
+
+# Accessibility needs
+hard of hearing | hard_of_hearing
+prefers slower, simpler explanations | needs_simple_pacing
+non-native speaker of the language | limited_language_proficiency
+using assistive technology | uses_assistive_tech
+has a speech difference | speech_difference
+easily fatigued and needs breaks | low_stamina_needs_breaks
+
+# Life-event triggers
+just moved to a new address | just_moved_address
+recently had a baby | new_baby_at_home
+dealing with a death in the family | bereavement_in_progress
+recently lost a job | recently_lost_job
+just got married | recently_married
+recovering from an illness or surgery | post_medical_recovery
+victim of fraud or identity theft | suspected_fraud_victim
+property damaged in a recent disaster | disaster_affected
+
+# Technical context
+calling because an app or website failed | digital_channel_failed
+already attempted self-service online | tried_self_service_first
+referred to call by another department | transferred_in_referral
+following up on a prior ticket number | following_up_on_ticket
+holding a confirmation or order number | has_reference_number
+device or hardware is malfunctioning | hardware_malfunctioning
+mid-purchase and got stuck | abandoned_cart_mid_purchase
+acting on an alert or notification received | responding_to_alert
+locked out after too many failed attempts | locked_out_after_attempts
