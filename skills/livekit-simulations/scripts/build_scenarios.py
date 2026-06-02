@@ -17,13 +17,17 @@ Two subcommands:
             agent's real capabilities + the user's test focus.
 
   assemble  Validate authored scenarios and emit a scenarios.json in the
-            shape `lk agent simulate --config` expects.
+            shape `lk agent simulate --config` expects. With --risks, enforce
+            that every risk-checklist item is covered by some scenario's
+            `covers` ids (--strict fails the build on any gap).
 
 Typical flow (see SKILL.md):
   python build_scenarios.py sample --count 12 --challenge-ratio 0.3 --out worksheet.json
-  # ...you author one scenario per slot into authored.json...
+  # ...you author one scenario per slot into authored.json, tagging each with
+  #    "covers": ["<risk id>"] so every risks.json item is exercised...
   python build_scenarios.py assemble --in authored.json \
-      --agent-description-file description.md --out scenarios.json
+      --agent-description-file description.md --risks risks.json --strict \
+      --out scenarios.json
 """
 from __future__ import annotations
 
@@ -114,6 +118,21 @@ def cmd_sample(args: argparse.Namespace) -> int:
     return 0
 
 
+def load_risk_ids(path: Path) -> list[tuple[str, str]]:
+    """Read risks.json into a list of (id, must_test) pairs. Accepts a JSON list of
+    strings (ids) or objects with at least an `id` (and optional `must_test`)."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        raise ValueError("risks file must be a JSON list")
+    out: list[tuple[str, str]] = []
+    for item in data:
+        if isinstance(item, str) and item.strip():
+            out.append((item.strip(), ""))
+        elif isinstance(item, dict) and str(item.get("id", "")).strip():
+            out.append((str(item["id"]).strip(), str(item.get("must_test", ""))))
+    return out
+
+
 def cmd_assemble(args: argparse.Namespace) -> int:
     try:
         authored = json.loads(Path(args.infile).read_text(encoding="utf-8"))
@@ -131,8 +150,10 @@ def cmd_assemble(args: argparse.Namespace) -> int:
         agent_description = Path(args.agent_description_file).read_text(encoding="utf-8").strip()
 
     required = ("label", "instructions", "agent_expectations")
-    allowed = {"label", "instructions", "agent_expectations", "metadata"}
+    # `covers` is accepted (it drives the coverage check) but stripped from the emitted config.
+    allowed = {"label", "instructions", "agent_expectations", "metadata", "covers"}
     scenarios = []
+    covered: dict[str, list[str]] = {}  # risk id -> labels of scenarios that cover it
     for idx, sc in enumerate(authored):
         missing = [f for f in required if not str(sc.get(f, "")).strip()]
         if missing:
@@ -146,6 +167,8 @@ def cmd_assemble(args: argparse.Namespace) -> int:
                 f"(e.g. 'agent_expectations', not 'expectations').",
                 file=sys.stderr,
             )
+        for rid in sc.get("covers") or []:
+            covered.setdefault(str(rid), []).append(sc["label"])
         scenarios.append(
             {
                 "label": sc["label"],
@@ -154,6 +177,27 @@ def cmd_assemble(args: argparse.Namespace) -> int:
                 "metadata": sc.get("metadata") or {},
             }
         )
+
+    # Coverage enforcement against the risk checklist (optional).
+    if args.risks:
+        try:
+            risks = load_risk_ids(Path(args.risks))
+        except (OSError, json.JSONDecodeError, ValueError) as e:
+            print(f"error: could not read risks file {args.risks}: {e}", file=sys.stderr)
+            return 1
+        risk_ids = [rid for rid, _ in risks]
+        uncovered = [(rid, mt) for rid, mt in risks if rid not in covered]
+        unknown_ids = sorted(c for c in covered if c not in set(risk_ids))
+        print(f"coverage: {len(risk_ids) - len(uncovered)}/{len(risk_ids)} risk-checklist items covered")
+        if unknown_ids:
+            print(f"warning: 'covers' referenced unknown risk id(s): {', '.join(unknown_ids)}", file=sys.stderr)
+        if uncovered:
+            print("UNCOVERED risks (write a dedicated scenario for each):", file=sys.stderr)
+            for rid, mt in uncovered:
+                print(f"  - {rid}{(': ' + mt) if mt else ''}", file=sys.stderr)
+            if args.strict:
+                print("error: --strict set and not every risk is covered; no config written.", file=sys.stderr)
+                return 1
 
     config = {"agent_description": agent_description, "scenarios": scenarios}
     Path(args.out).write_text(json.dumps(config, indent=2), encoding="utf-8")
@@ -184,6 +228,8 @@ def main() -> int:
     a = sub.add_parser("assemble", help="validate authored scenarios -> lk --config json")
     a.add_argument("--in", dest="infile", required=True, help="authored scenarios JSON (list)")
     a.add_argument("--agent-description-file", default="", help="markdown file with the agent description")
+    a.add_argument("--risks", default="", help="risks.json checklist to enforce coverage against (via scenario 'covers' ids)")
+    a.add_argument("--strict", action="store_true", help="fail (no config written) if any --risks item is uncovered")
     a.add_argument("--out", default="scenarios.json", help="output config path")
     a.set_defaults(func=cmd_assemble)
 
