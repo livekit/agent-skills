@@ -41,14 +41,12 @@ A naive "just generate some tests" misses the point. Three things make this skil
 ## The flow
 
 1. **Describe the agent + build the risk checklist** — read its code locally and write a test-oriented description (Identity / Capabilities / **Constraints**) to `description.md`, and an explicit **risk checklist** to `risks.json` (one entry per must-test constraint/guardrail, each with an `id` and `category`). Follow `references/analyzing-the-agent.md`. Never upload the code.
-2. **Get the user's test focus** — if they didn't say what to probe, ask. Apply it per `references/user-guidance.md` (append a `# Test Focus` to `description.md`, pass `--focus`, and bias authoring). Focus is **additive** — it deepens chosen risks but never drops the per-risk coverage floor. If they truly have no preference, generate broad and say so.
-3. **Sample attribute slots** — diversity comes from bundled libraries (~170 personas, emotions, situations, goals, challenges, traits). Run:
-   `python scripts/build_scenarios.py sample --count <N> --challenge-ratio <R> --focus "<focus>" --out worksheet.json`
-4. **Author scenarios — one per slot, and at least one per risk** — turn each slot (a character seed + goal direction) into a real scenario, grounded in `description.md` and the focus. Then **guarantee coverage**: every `risks.json` item gets ≥1 dedicated scenario, written with the shape that actually exercises it, and tagged with `"covers": ["<risk id>", …]`. Follow `references/writing-scenarios.md` (schema, the "Party A talks to the agent" rules, no prior state, no real PII, outcome-based expectations, the adversarial-shape taxonomy, the coverage check, don't write bad tests). Write them to `authored.json`. Add any user-pinned must-tests here too.
-5. **Assemble the config (coverage-enforced)** —
+2. **Get the user's test focus** — if they didn't say what to probe, ask. Apply it per `references/user-guidance.md` (append a `# Test Focus` to `description.md`, and bias authoring). Focus is **additive** — it deepens chosen risks but never drops the per-risk coverage floor. If they truly have no preference, generate broad and say so.
+3. **Author the scenarios — at least one per risk** — write a diverse set of ~10 scenarios grounded in `description.md` and the focus, generating the persona / mood / situation variety **from your own judgment** (this version ships no attribute libraries). **Guarantee coverage**: every `risks.json` item gets ≥1 dedicated scenario, written with the shape that actually exercises it, and tagged with `"covers": ["<risk id>", …]`. Follow `references/writing-scenarios.md` (schema, the "Party A talks to the agent" rules, no prior state, no real PII, outcome-based expectations, the adversarial-shape taxonomy, the coverage check, don't write bad tests). Write them to `authored.json`. Add any user-pinned must-tests here too.
+4. **Assemble the config (coverage-enforced)** —
    `python scripts/build_scenarios.py assemble --in authored.json --agent-description-file description.md --risks risks.json --strict --out scenarios.json`
    (validates the schema, **fails if any risk is uncovered**, and emits the exact `lk agent simulate --config` shape). Fix gaps and re-run until it passes.
-6. **Run it** — `lk agent simulate --config scenarios.json` (confirm exact flags with `--help`; needs the SDK/auth noted in the beta block). Show the user the results and offer to re-roll, re-focus, or add scenarios.
+5. **Run it** — `lk agent simulate --config scenarios.json` (confirm exact flags with `--help`; needs the SDK/auth noted in the beta block). Show the user the results and offer to re-roll, re-focus, or add scenarios.
 
 Reuse saved `scenarios.json` files as a regression suite — re-run them after prompt/model/tool changes.
 
@@ -56,10 +54,10 @@ Reuse saved `scenarios.json` files as a regression suite — re-run them after p
 - **Never upload the user's code.** Reading it locally is the point; it's their IP.
 - **The user's intent is the differentiator** — incorporate it every time; don't silently autopilot.
 - **Ground every scenario in the description**, especially Constraints — a scenario the agent can't possibly satisfy (or a guardrail it *should* refuse) must have expectations that reflect that.
-- **The script is deterministic glue; you are the generator.** Let `build_scenarios.py` do the sampling/assembly; you do the reading, the judgement, and the authoring.
+- **The script is deterministic glue; you are the generator.** Let `build_scenarios.py` handle assembly + the coverage check; you do the reading, the judgement, the diversity, and the authoring.
 
 ## Verify, don't invent (freeze-forever)
-This skill is the method and the bundled libraries. The exact `lk agent simulate` flags, the CI wait/fail flag, the minimum SDK version, and the dashboard come from live sources because they change — use `lk agent simulate --help` and (post-beta) `lk docs` / the LiveKit MCP server. A wrong flag wastes a run; look it up rather than guessing.
+This skill is the method (no bundled libraries — you supply diversity yourself). The exact `lk agent simulate` flags, the CI wait/fail flag, the minimum SDK version, and the dashboard come from live sources because they change — use `lk agent simulate --help` and (post-beta) `lk docs` / the LiveKit MCP server. A wrong flag wastes a run; look it up rather than guessing.
 
 ## After running: acting on results (secondary)
 Once a run completes, read the per-scenario pass/fail, the run summary, and the transcripts of failures. Fix the agent where a failure is real (and re-run); recognize when a failure is actually a bad scenario and fix the scenario instead. Keep this lightweight — modern models are already good at the fix step; the durable value of this skill is the scenarios you generate and keep.

@@ -7,21 +7,19 @@ This is the whole point of doing scenario generation as a skill instead of an au
 ## Three levels of steering
 
 ### 1. Free-text focus (primary)
-A sentence about what matters: *"test the cancellation flow and what happens when someone skips identity verification,"* or *"stress refusals and out-of-scope requests,"* or *"focus on multi-issue callers who change their mind."* Apply it in three places:
+A sentence about what matters: *"test the cancellation flow and what happens when someone skips identity verification,"* or *"stress refusals and out-of-scope requests,"* or *"focus on multi-issue callers who change their mind."* Apply it in two places:
 - **Add a `# Test Focus` section to the agent description** (`description.md`). Since the description grounds every scenario, the focus reaches all of them.
-- **Pass it to the sampler:** `build_scenarios.py sample --focus "<the focus>"` (it's echoed into the worksheet).
 - **When authoring,** bias goal/challenge choices toward the focus, and make several scenarios target it head-on — while still keeping a few broad ones so you don't miss unrelated regressions.
 
-### 2. Knobs
-- `--count N` — suite size.
-- `--challenge-ratio R` — adversarial intensity (0 = all cooperative, 0.3 = default, higher = more stress cases).
-- `--seed N` — reproducible sampling. Note: the seed is applied before the focus, so running a focused suite and a broad suite at the *same* seed gives identical attribute slots (only the focus and authoring differ). To compare them with *different* persona spreads, give each run a different `--seed`.
-- Include/exclude: the user can ask to cover only certain flows or skip personas that don't apply — just drop or re-roll the matching worksheet slots before authoring.
+### 2. Levers (you set these while authoring)
+- **Suite size** — how many scenarios you write (≈10 is typical; more for broader coverage).
+- **Adversarial intensity** — how many are stress cases vs cooperative happy paths.
+- **Include / exclude** — cover only certain flows, or skip persona types that don't apply, just by choosing what you author.
 
 ### 3. Pinned must-tests
 If the user has specific cases they insist on ("always test ordering then immediately canceling"), write those scenarios verbatim into `authored.json` alongside the generated ones. Hand-pinned scenarios are how a known bug becomes permanent coverage.
 
 ## What a focus does — and doesn't — change
-A focus steers *which goals and challenges dominate* and *what the expectations emphasize*. It should **not** flatten the suite: the attribute libraries still supply persona/mood/situation variety, and you still keep a few routine scenarios as controls so a real agent failure is distinguishable from an over-hard suite. After generating, show the user the resulting `scenarios.json` and offer to re-roll or re-focus.
+A focus steers *which goals and challenges dominate* and *what the expectations emphasize*. It should **not** flatten the suite: you still vary persona/mood/situation widely, and still keep a few routine scenarios as controls so a real agent failure is distinguishable from an over-hard suite. After generating, show the user the resulting `scenarios.json` and offer to re-roll or re-focus.
 
 **Focus is additive, not subtractive.** It decides what gets *extra* scenarios and emphasis — it never removes the per-risk coverage floor from `risks.json` (see `writing-scenarios.md`): even a tightly-focused suite still includes ≥1 scenario for every risk item. In testing, a narrowly-focused suite that quietly dropped an unrelated constraint missed a real bug there — focus should *deepen* coverage, not shrink it.

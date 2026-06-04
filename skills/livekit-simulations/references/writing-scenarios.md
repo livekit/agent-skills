@@ -1,6 +1,6 @@
 # Writing scenarios
 
-A scenario tells the simulated user who to be and what to accomplish, and tells the judge what counts as success. You author one scenario per attribute slot the sampler produced, grounded in the agent **description** and the user's **test focus**.
+A scenario tells the simulated user who to be and what to accomplish, and tells the judge what counts as success. You author a diverse set of scenarios, grounded in the agent **description** and the user's **test focus**.
 
 ## Schema (one object per scenario)
 
@@ -28,21 +28,18 @@ A scenario tells the simulated user who to be and what to accomplish, and tells 
 - **No real personal info in goals.** The simulator injects a fake identity (name, DOB, card, etc.) at runtime — don't bake in names/emails/phone numbers. It IS fine to say the caller *lacks* a credential (no PIN, no order number, can't verify) — that's often the whole point of a scenario; just don't supply a real or invented specific value for it.
 - **Mix difficulty.** Mostly straightforward, some with a mid-interaction change of mind.
 
-## Using each worksheet slot
+## Vary the characters yourself
 
-Each slot is a **character seed + a goal direction**, not a literal script:
-- `persona` / `trait` / `emotion` / `situation` / `complexity` → the caller's personality, mood, and context. Make their physical location consistent with how they'd reach this agent.
-- `goal_seed` → a direction. If it's a concrete goal type, ground it in the agent's domain with specifics. If it's a *behavior pattern* (changes mind, gives wrong info, pivots), the caller must exhibit that behavior during the interaction. The attribute libraries are general, so for a specialized agent many goal_seeds will be off-domain — that's expected; replace them freely. The character seed (persona/trait/emotion/situation) is the real signal; the goal_seed is only a nudge. If a seed is inapplicable, invent a different realistic goal instead — never force it.
-- `challenge` (when present) → a difficulty in **how** the caller communicates (hostile, evasive, refuses to verify, tries to befriend), not an unrelated request. The underlying ask stays realistic.
-
-If a slot can't map to a real interaction with this agent, drop it or re-roll (`build_scenarios.py sample --seed <n>`).
+This version ships no attribute libraries — you invent the cast. For each scenario choose a distinct **persona + trait + emotion + situation** (who they are, their mood, their context; keep their location consistent with how they'd reach this agent) and a **goal** grounded in the agent's real capabilities. Spread these widely so no two scenarios feel alike — vary age, tone, tech-savviness, urgency, and how cooperative the caller is.
+- For stress cases, give the caller a **communication challenge** (hostile, evasive, refuses to verify, tries to befriend) — a difficulty in *how* they talk, not an unrelated request; the underlying ask stays realistic.
+- Keep every goal real for this agent; if an idea doesn't map to something the agent actually does, drop it and invent a different realistic one — never force it.
 
 ## Vary the framing across the suite
 Spread scenarios across these lenses so the suite isn't monotone:
 - **Routine** — an everyday request handled all the time.
 - **Common-but-characterful** — a normal request made interesting by the persona.
 - **Uncommon-but-plausible** — realistic but not the typical case.
-- **Stress test** (slots with a `challenge`) — difficult-but-realistic behavior for this domain.
+- **Stress test** — difficult-but-realistic behavior for this domain (give the caller a communication challenge).
 
 Also spread across the agent's domain: don't test only the first/most-popular item — cover the range of services from the description.
 
