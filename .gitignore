@@ -7,3 +7,6 @@
 
 # Local testing
 *.local.md
+
+# Script artifacts
+__pycache__/

@@ -17,9 +17,9 @@ A sentence about what matters: *"test the cancellation flow and what happens whe
 - **Include / exclude** — cover only certain flows, or skip persona types that don't apply, just by choosing what you author.
 
 ### 3. Pinned must-tests
-If the user has specific cases they insist on ("always test ordering then immediately canceling"), write those scenarios verbatim into `authored.json` alongside the generated ones. Hand-pinned scenarios are how a known bug becomes permanent coverage.
+If the user has specific cases they insist on ("always test ordering then immediately canceling"), write those scenarios verbatim into `authored.yaml` alongside the generated ones. Hand-pinned scenarios are how a known bug becomes permanent coverage.
 
 ## What a focus does — and doesn't — change
-A focus steers *which goals and challenges dominate* and *what the expectations emphasize*. It should **not** flatten the suite: you still vary persona/mood/situation widely, and still keep a few routine scenarios as controls so a real agent failure is distinguishable from an over-hard suite. After generating, show the user the resulting `scenarios.json` and offer to re-roll or re-focus.
+A focus steers *which goals and challenges dominate* and *what the expectations emphasize*. It should **not** flatten the suite: you still vary persona/mood/situation widely, and still keep a few routine scenarios as controls so a real agent failure is distinguishable from an over-hard suite. After generating, show the user the resulting `scenarios.yaml` and offer to re-roll or re-focus.
 
-**Focus is additive, not subtractive.** It decides what gets *extra* scenarios and emphasis — it never removes the per-risk coverage floor from `risks.json` (see `writing-scenarios.md`): even a tightly-focused suite still includes ≥1 scenario for every risk item. In testing, a narrowly-focused suite that quietly dropped an unrelated constraint missed a real bug there — focus should *deepen* coverage, not shrink it.
+**Focus is additive, not subtractive.** It decides what gets *extra* scenarios and emphasis — it never removes the per-risk coverage floor from `risks.yaml` (see `writing-scenarios.md`): even a tightly-focused suite still includes ≥1 scenario for every risk item. In testing, a narrowly-focused suite that quietly dropped an unrelated constraint missed a real bug there — focus should *deepen* coverage, not shrink it.

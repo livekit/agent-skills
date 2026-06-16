@@ -30,7 +30,7 @@ metadata:
 
 The most valuable thing you can do with simulations is **generate good test scenarios for the user's agent** — grounded in the agent's actual code and in what *the user* wants stress-tested — then run them. You do this **locally**: you read the code with your normal tools (nothing is uploaded), and you (the coding agent) are the model that does the generation, so no extra API keys or services are needed.
 
-A **scenario** = a simulated user's persona + goals (`instructions`) and the pass criteria (`agent_expectations`). A simulation plays each scenario against the agent over text and an LLM judge scores it. Your job is to produce a high-quality, diverse, *on-target* set of scenarios and write them to a config the CLI can run.
+A **scenario** = a simulated user's persona + goals (`instructions`) and the pass criteria (`agent_expectations`). A simulation plays each scenario against the agent over text and an LLM judge scores it. Your job is to produce a high-quality, diverse, *on-target* set of scenarios and write them to a YAML scenarios file the CLI can run.
 
 ## What makes this better than autopilot
 A naive "just generate some tests" misses the point. Three things make this skill worth using:
@@ -40,15 +40,15 @@ A naive "just generate some tests" misses the point. Three things make this skil
 
 ## The flow
 
-1. **Describe the agent + build the risk checklist** — read its code locally and write a test-oriented description (Identity / Capabilities / **Constraints**) to `description.md`, and an explicit **risk checklist** to `risks.json` (one entry per must-test constraint/guardrail, each with an `id` and `category`). Follow `references/analyzing-the-agent.md`. Never upload the code.
+1. **Describe the agent + build the risk checklist** — read its code locally and write a test-oriented description (Identity / Capabilities / **Constraints**) to `description.md`, and an explicit **risk checklist** to `risks.yaml` (one entry per must-test constraint/guardrail, each with an `id` and `category`). Follow `references/analyzing-the-agent.md`. Never upload the code.
 2. **Get the user's test focus** — if they didn't say what to probe, ask. Apply it per `references/user-guidance.md` (append a `# Test Focus` to `description.md`, and bias authoring). Focus is **additive** — it deepens chosen risks but never drops the per-risk coverage floor. If they truly have no preference, generate broad and say so.
-3. **Author the scenarios — at least one per risk** — write a diverse set of ~10 scenarios grounded in `description.md` and the focus, generating the persona / mood / situation variety **from your own judgment** (this version ships no attribute libraries). **Guarantee coverage**: every `risks.json` item gets ≥1 dedicated scenario, written with the shape that actually exercises it, and tagged with `"covers": ["<risk id>", …]`. Follow `references/writing-scenarios.md` (schema, the "Party A talks to the agent" rules, no prior state, no real PII, outcome-based expectations, the adversarial-shape taxonomy, the coverage check, don't write bad tests). Write them to `authored.json`. Add any user-pinned must-tests here too.
+3. **Author the scenarios — at least one per risk** — write a diverse set of ~10 scenarios grounded in `description.md` and the focus, generating the persona / mood / situation variety **from your own judgment** (this version ships no attribute libraries). **Guarantee coverage**: every `risks.yaml` item gets ≥1 dedicated scenario, written with the shape that actually exercises it, and tagged with `covers: [<risk id>, …]`. Follow `references/writing-scenarios.md` (schema, the "Party A talks to the agent" rules, no prior state, no real PII, outcome-based expectations, the adversarial-shape taxonomy, the coverage check, don't write bad tests). Write them to `authored.yaml`. Add any user-pinned must-tests here too.
 4. **Assemble the config (coverage-enforced)** —
-   `python scripts/build_scenarios.py assemble --in authored.json --agent-description-file description.md --risks risks.json --strict --out scenarios.json`
-   (validates the schema, **fails if any risk is uncovered**, and emits the exact `lk agent simulate --config` shape). Fix gaps and re-run until it passes.
-5. **Run it** — `lk agent simulate --config scenarios.json` (confirm exact flags with `--help`; needs the SDK/auth noted in the beta block). Show the user the results and offer to re-roll, re-focus, or add scenarios.
+   `python scripts/build_scenarios.py assemble --in authored.yaml --agent-description-file description.md --risks risks.yaml --strict --out scenarios.yaml`
+   (validates the schema, **fails if any risk is uncovered**, and emits the YAML scenarios file `lk agent simulate --scenarios` loads). Fix gaps and re-run until it passes.
+5. **Run it** — `lk agent simulate --scenarios scenarios.yaml` (confirm exact flags with `--help`; needs the SDK/auth noted in the beta block). Show the user the results and offer to re-roll, re-focus, or add scenarios.
 
-Reuse saved `scenarios.json` files as a regression suite — re-run them after prompt/model/tool changes.
+Reuse saved `scenarios.yaml` files as a regression suite — re-run them after prompt/model/tool changes.
 
 ## Principles
 - **Never upload the user's code.** Reading it locally is the point; it's their IP.

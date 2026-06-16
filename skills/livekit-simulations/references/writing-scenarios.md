@@ -2,22 +2,27 @@
 
 A scenario tells the simulated user who to be and what to accomplish, and tells the judge what counts as success. You author a diverse set of scenarios, grounded in the agent **description** and the user's **test focus**.
 
-## Schema (one object per scenario)
+## Schema (one list item per scenario in `authored.yaml`)
 
-```json
-{
-  "label": "Short descriptive name, e.g. 'Combo order with unclear sauce choice'",
-  "instructions": "<persona paragraph>\n\nGoals:\n- <goal 1>\n- <goal 2>",
-  "agent_expectations": "1-2 sentences: the key steps + the final result, judged by OUTCOME.",
-  "metadata": {},
-  "covers": ["rp1"]
-}
+```yaml
+- label: Short descriptive name, e.g. 'Combo order with unclear sauce choice'
+  instructions: |
+    <persona paragraph>
+
+    Goals:
+    - <goal 1>
+    - <goal 2>
+  agent_expectations: "1-2 sentences: the key steps + the final result, judged by OUTCOME."
+  metadata: {}
+  covers: [rp1]
 ```
 
 - **instructions** = a 1–2 sentence persona (third person, no name) describing communication style and mood, then a `Goals:` list of 1–4 specific, atomic requests.
 - **agent_expectations** = what the agent must accomplish for a pass. Describe the *outcome from the user's perspective*, never the exact words to say. Ignore implementation details.
 - **metadata** = optional `{key: value}` forwarded as the simulated session's job metadata (and participant attributes). If the agent's instructions template on metadata fields — e.g. it reads `metadata.Company` from job metadata — put those fields here so the agent renders correctly; otherwise `{}`.
-- **covers** = optional list of `risks.json` ids this scenario is meant to exercise (e.g. `["rp1"]`). Drives the coverage check; `assemble` strips it from the emitted config.
+- **covers** = optional list of `risks.yaml` ids this scenario is meant to exercise (e.g. `[rp1]`). Drives the coverage check; `assemble` strips it from the emitted scenarios file.
+
+**YAML authoring notes** — `authored.yaml` and `risks.yaml` are YAML lists. Keep them unambiguous: use a `|` block scalar for any multi-line value (like `instructions`), and **double-quote** any scalar that contains a colon-space (`": "`), a leading `#`/`@`/quote, or other YAML-special punctuation — e.g. `agent_expectations` above. Plain unquoted text is fine when it has none of those. Avoid inline `#` comments.
 
 ## Core rules (these make scenarios valid)
 
@@ -46,8 +51,8 @@ Also spread across the agent's domain: don't test only the first/most-popular it
 ## Guarantee coverage of every risk (do this before assembling)
 Persona diversity does NOT guarantee you test each constraint. The single most common failure
 is a suite full of plausible happy-path calls that never probes the agent's hard limits — so
-**every item in `risks.json` gets at least one dedicated scenario**, written with the shape
-that actually exercises it, and tagged with `"covers": ["<risk id>"]`.
+**every item in `risks.yaml` gets at least one dedicated scenario**, written with the shape
+that actually exercises it, and tagged with `covers: [<risk id>]`.
 
 A risk is only genuinely tested if the **simulated user actually does** the thing — not merely
 mentions the topic. Map each category to its shape:
@@ -68,9 +73,9 @@ mentions the topic. Map each category to its shape:
 For every one of these the **pass is the agent refusing / declining to fabricate / conveying
 the limit honestly** — write `agent_expectations` that way (see "Don't write bad tests").
 
-**Coverage check (mandatory):** before assembling, list each `risks.json` id and the scenario
+**Coverage check (mandatory):** before assembling, list each `risks.yaml` id and the scenario
 label(s) that cover it. Any id with zero scenarios → add one (replace a redundant happy-path
-slot if you're at your count). Running `assemble --risks risks.json --strict` enforces this and
+slot if you're at your count). Running `assemble --risks risks.yaml --strict` enforces this and
 fails on any gap — fix and re-run until it passes.
 
 ## Don't write bad tests
