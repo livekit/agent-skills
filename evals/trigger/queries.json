@@ -226,5 +226,17 @@
  {
   "q": "run the existing {test_runner} suite and tell me if anything is red",
   "expect": []
+ },
+ {
+  "q": "we deploy friday. regression test my agent before then so i know the last two weeks of prompt changes didn't break the booking flow",
+  "expect": [
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "add a regression test for the bug where the agent said it set a reminder it can't set — put it in {tests} so it runs with the rest",
+  "expect": [
+   "testing-livekit-agents"
+  ]
  }
 ]

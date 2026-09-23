@@ -87,8 +87,18 @@ def structural(files, aux):
     ev["labels_unique"] = f"duplicates: {[l for l, c in Counter(labels).items() if c > 1] or 'none'}"
     return res, ev, len(scen)
 
+def to_verdict(raw) -> bool | None:
+    """Coerce a judge's `passed` field. Only a real boolean or an unambiguous word counts;
+    anything else is None (unparseable) rather than truthy. bool("false") is True."""
+    if isinstance(raw, bool): return raw
+    if isinstance(raw, str):
+        w = raw.strip().lower()
+        if w in ("true", "pass", "passed", "yes"): return True
+        if w in ("false", "fail", "failed", "no"): return False
+    return None
+
 def judge_once(agent_src: str, scenario_text: str, model: str | None, timeout: int) -> dict:
-    schema = {k: {"passed": "true|false", "evidence": "1-3 short quotes or scenario labels that justify the verdict"} for k in JUDGE_ASSERTIONS}
+    schema = {k: {"passed": True, "evidence": "1-3 short quotes or scenario labels that justify the verdict"} for k in JUDGE_ASSERTIONS}
     prompt = f"""You are grading a set of simulation scenarios written to test a LiveKit voice agent. A scenario is a simulated user's `instructions` (persona and goals) plus `agent_expectations` (what the judge grades the transcript against). Your job is to decide, for each assertion below, whether the scenario set satisfies it, with evidence.
 
 Read the agent's source first and derive from it: what the agent CAN do (its tools, if any — note whether any function tools are actually registered or only present as comments), and every constraint, guardrail, or refusal rule in its instructions.
@@ -104,7 +114,7 @@ Read the agent's source first and derive from it: what the agent CAN do (its too
 ## Scenario files
 {scenario_text}
 
-Respond with ONLY a JSON object, no prose before or after, exactly this shape (booleans, not strings):
+Respond with ONLY a JSON object, no prose before or after, exactly this shape. `passed` is a JSON boolean (true/false), never a string; the example values are placeholders:
 {json.dumps(schema, indent=2)}"""
     cmd = ["claude", "-p", prompt, "--output-format", "json", "--tools", "", "--no-session-persistence", "--setting-sources", "project"]
     if model: cmd += ["--model", model]
@@ -119,8 +129,12 @@ Respond with ONLY a JSON object, no prose before or after, exactly this shape (b
     m = re.search(r"\{.*\}", text, re.S)
     if not m: raise RuntimeError(f"judge returned no JSON (rc={out.returncode}): {text[:300]!r}")
     verdicts = json.loads(m.group(0))
-    return {k: {"passed": bool(v.get("passed")) if isinstance(v, dict) else bool(v),
-                "evidence": (v.get("evidence") if isinstance(v, dict) else "")} for k, v in verdicts.items() if k in JUDGE_ASSERTIONS}
+    out = {}
+    for k, v in verdicts.items():
+        if k not in JUDGE_ASSERTIONS: continue
+        raw = v.get("passed") if isinstance(v, dict) else v
+        out[k] = {"passed": to_verdict(raw), "evidence": (v.get("evidence") if isinstance(v, dict) else "")}
+    return out
 
 def judged(agent_path: pathlib.Path, files, model, runs, timeout):
     agent_src = agent_path.read_text()
@@ -129,7 +143,10 @@ def judged(agent_path: pathlib.Path, files, model, runs, timeout):
     for _ in range(runs):
         v = judge_once(agent_src, scenario_text, model, timeout)
         for k in JUDGE_ASSERTIONS:
-            if k in v: votes[k].append(v[k]["passed"]); evidence[k].append(v[k]["evidence"])
+            if k not in v: continue
+            if v[k]["passed"] is None:
+                evidence[k].append(f"UNPARSEABLE verdict; {v[k]['evidence']}"); continue
+            votes[k].append(v[k]["passed"]); evidence[k].append(v[k]["evidence"])
     res = {k: (sum(votes[k]) * 2 > len(votes[k])) if votes[k] else None for k in JUDGE_ASSERTIONS}
     ev = {k: (f"votes {sum(votes[k])}/{len(votes[k])} pass; " + str(evidence[k][-1] if evidence[k] else "")) for k in JUDGE_ASSERTIONS}
     return res, ev
