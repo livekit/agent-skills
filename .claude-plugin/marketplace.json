@@ -6,15 +6,25 @@
     "url": "https://livekit.io"
   },
   "metadata": {
-    "description": "LiveKit skills and the LiveKit Docs MCP server for building, testing, and shipping voice AI agents."
+    "description": "LiveKit skills and the LiveKit Docs MCP server for building, testing, and shipping voice agents and voice AI apps."
   },
   "plugins": [
     {
       "name": "livekit",
       "source": "./",
-      "description": "Skills for building, testing, and shipping voice AI agents with LiveKit, plus the LiveKit Docs MCP server for current docs, SDK code search, and changelogs.",
+      "description": "Build, test, and ship voice agents with LiveKit. Skills for the LiveKit Agents SDK (Python and Node.js) covering voice AI architecture, live debugging, turn-level tests, and simulations, plus the LiveKit Docs MCP server for current docs, SDK code search, and changelogs.",
       "category": "development",
-      "homepage": "https://docs.livekit.io/intro/coding-agents/"
+      "homepage": "https://docs.livekit.io/intro/coding-agents/",
+      "tags": [
+        "voice-agents",
+        "voice-ai",
+        "ai-agents",
+        "conversational-ai",
+        "realtime",
+        "webrtc",
+        "agent-testing",
+        "mcp"
+      ]
     }
   ]
 }

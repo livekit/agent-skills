@@ -1,8 +1,9 @@
 # LiveKit Agent Skills
 
-Skills that teach AI coding agents (Claude Code, Cursor, Codex, and anything else that reads the
-[Agent Skills](https://agentskills.io) format) how to build, test, and ship voice AI agents with
-[LiveKit](https://livekit.io).
+Skills that teach AI coding agents (Claude Code, Cursor, Codex, Gemini CLI, and anything else that
+reads the [Agent Skills](https://agentskills.io) format) how to build, test, and ship voice agents
+with [LiveKit](https://livekit.io) and the LiveKit Agents SDK for Python and Node.js. Includes a
+Claude Code plugin that bundles the skills with the LiveKit Docs MCP server.
 
 Without these skills, a coding agent working on a LiveKit project guesses at APIs from stale
 training data, ships prompt changes it never tried, and doesn't know the LiveKit tooling exists.
