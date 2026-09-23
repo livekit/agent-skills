@@ -1,0 +1,26 @@
+{
+  "name": "livekit",
+  "description": "Skills for building, testing, and shipping voice AI agents with LiveKit, plus the LiveKit Docs MCP server for current docs, SDK code search, and changelogs.",
+  "author": {
+    "name": "LiveKit",
+    "url": "https://livekit.io"
+  },
+  "homepage": "https://docs.livekit.io/intro/coding-agents/",
+  "repository": "https://github.com/livekit/agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "livekit",
+    "voice-ai",
+    "agents",
+    "webrtc",
+    "realtime",
+    "simulations",
+    "mcp"
+  ],
+  "mcpServers": {
+    "livekit-docs": {
+      "type": "http",
+      "url": "https://docs.livekit.io/mcp"
+    }
+  }
+}

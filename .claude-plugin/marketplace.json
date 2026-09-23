@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "livekit",
+  "owner": {
+    "name": "LiveKit",
+    "url": "https://livekit.io"
+  },
+  "metadata": {
+    "description": "LiveKit skills and the LiveKit Docs MCP server for building, testing, and shipping voice AI agents."
+  },
+  "plugins": [
+    {
+      "name": "livekit",
+      "source": "./",
+      "description": "Skills for building, testing, and shipping voice AI agents with LiveKit, plus the LiveKit Docs MCP server for current docs, SDK code search, and changelogs.",
+      "category": "development",
+      "homepage": "https://docs.livekit.io/intro/coding-agents/"
+    }
+  ]
+}

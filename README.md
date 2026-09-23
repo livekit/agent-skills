@@ -36,22 +36,43 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 
 ## Install
 
+### Claude Code
+
+Install the LiveKit plugin. It bundles all seven skills and the LiveKit Docs MCP server, and Claude
+Code keeps it up to date in the background.
+
+```
+/plugin marketplace add livekit/agent-skills
+/plugin install livekit@livekit
+```
+
+Plugin skills are namespaced, so if you invoke one by hand it's `/livekit:building-livekit-agents`
+rather than `/building-livekit-agents`. You rarely need to: Claude picks them up from what you say.
+
+### Other coding agents
+
 ```bash
 npx skills add livekit/agent-skills
 ```
 
-That installs all seven for whichever coding agents you use. You can also copy the folders you want
-from `skills/` into your agent's skills directory (for Claude Code, `.claude/skills/` in your
-project).
+That installs all seven for whichever coding agents you use (Cursor, Codex, Gemini CLI, and others).
+The same skills are published at a [well-known index](https://docs.livekit.io/.well-known/agent-skills/index.json)
+on the docs site, with a SHA-256 digest for each, so this also works:
 
-You'll also want:
+```bash
+npx skills add https://docs.livekit.io
+```
+
+You can also copy the folders you want from `skills/` into your agent's skills directory.
+
+### You'll also want
 
 - **The LiveKit CLI (`lk`).** Four skills drive it: `lk docs`, `lk agent debugger`,
   `lk agent simulate`, and the `lk agent` deploy commands. Install or update it from the [CLI docs](https://docs.livekit.io/intro/basics/cli).
   The skills check for the commands they need and will tell you to update if one is missing.
 - **A LiveKit Cloud project**, with `lk` authenticated to it, for simulations and deployment.
-- **The LiveKit Docs MCP server** (optional). It's the same source `lk docs` uses, with less
-  friction. Setup for each coding agent is at
+- **The LiveKit Docs MCP server** (optional, and already included in the Claude Code plugin). It's
+  the same source `lk docs` uses, with less friction. Setup for each coding agent is at
   [docs.livekit.io/intro/mcp-server](https://docs.livekit.io/intro/mcp-server/).
 
 ## How the skills are built
@@ -69,11 +90,8 @@ the right requests are in [AGENTS.md](AGENTS.md).
 ## Upgrading from the old skills
 
 `livekit-agents` and `livekit-simulations` were split into the seven skills above and removed. If
-your agent still has either installed, delete it and reinstall:
-
-```bash
-npx skills add livekit/agent-skills
-```
+your agent still has either installed, delete it and reinstall with one of the methods under
+[Install](#install).
 
 A stale copy of `livekit-simulations` in particular will steer an agent wrong — it described a CLI
 surface that no longer exists.
