@@ -64,11 +64,17 @@ So expect your agent to look things up while using them. That's intended.
 The design rules, authoring conventions, and the eval harness that checks each skill triggers on
 the right requests are in [AGENTS.md](AGENTS.md).
 
-## Deprecated skills
+## Upgrading from the old skills
 
-`livekit-agents` and `livekit-simulations` were split into the six skills above. Their directories
-remain as stubs whose descriptions point at the replacements. If your agent still has them
-installed, reinstall to pick up the new set.
+`livekit-agents` and `livekit-simulations` were split into the six skills above and removed. If
+your agent still has either installed, delete it and reinstall:
+
+```bash
+npx skills add livekit/agent-skills
+```
+
+A stale copy of `livekit-simulations` in particular will steer an agent wrong — it described a CLI
+surface that no longer exists.
 
 ## Contributing
 

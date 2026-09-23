@@ -19,9 +19,7 @@ agent-skills/
 │   ├── testing-livekit-agents/
 │   ├── writing-livekit-scenarios/
 │   │   └── references/             # scenario craft, risk coverage, connecting the agent
-│   ├── running-livekit-simulations/
-│   ├── livekit-agents/             # DEPRECATED stub (see "Deprecating a skill")
-│   └── livekit-simulations/        # DEPRECATED stub
+│   └── running-livekit-simulations/
 └── evals/                          # tooling for checking the skills — never under skills/
     ├── validate.py                 # structural checks on every SKILL.md
     ├── trigger/                    # does the right skill fire for a request?
@@ -202,16 +200,17 @@ Two lessons from past runs:
 - New or rewritten skill → an output eval with at least three prompts, results summarized in the PR.
 - Nothing in the body would be wrong if the CLI added a flag or renamed a helper tomorrow.
 
-## Deprecating a skill
+## Removing or renaming a skill
 
-Don't delete a skill directory. Replace its `SKILL.md` with a stub whose description begins
-`DEPRECATED — do not use.` and names the replacements, with a table in the body mapping old jobs to
-new skills. Remove its `references/` and `scripts/`, because stale supporting files mislead agents.
-The stub is there for two reasons. Agents that installed the old name still resolve it. And pushes
-to `skills/**` trigger a downstream sync (`.github/workflows/trigger-skill-sync.yml`) that isn't
-guaranteed to handle a removed directory.
+Delete the directory. To rename, create the new directory and delete the old one. Don't leave a
+stub behind: a stub's description is loaded into every user's context on every request, forever,
+to say "don't use me" — the opposite of what the set is trying to do for context.
 
-To rename a skill, do the same: create the new directory and turn the old one into a stub.
+Removal propagates. Pushes to `skills/**` on `main` dispatch a sync that mirrors this directory
+into LiveKit's starter templates and fixtures: it copies every directory here that has a
+`SKILL.md`, and removes downstream copies of skills it previously synced that no longer exist
+here. After removing a skill, check the sync's downstream PRs show the removal. Nothing in this
+repo touches a user's local install; the README tells them to reinstall.
 
 ## Things not to do here
 

@@ -14,7 +14,7 @@ the timeout when nothing does. The skills cover both languages, so run both befo
 ## The fixture and why it's safe
 
 The harness shallow-clones a public [livekit-examples](https://github.com/livekit-examples) starter
-into a temp directory, installs the repo's non-deprecated skills into its `.claude/skills/`, and
+into a temp directory, installs the repo's skills into its `.claude/skills/`, and
 deletes it afterwards. It doesn't use `lk agent init` or `lk app create`, because both resolve a
 LiveKit Cloud project first and write that project's credentials into the new directory. An eval
 fixture must never contain credentials. `--testbed <path>` copies a local project instead, with the

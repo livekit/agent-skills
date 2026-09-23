@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Trigger-collision harness.
 
-Builds a throwaway fixture project, installs every non-deprecated skill from skills/ into it, runs
+Builds a throwaway fixture project, installs every skill from skills/ into it, runs
 each query in queries.json through `claude -p`, and records which skill fired first. Each query
 lists its acceptable skill(s) under "expect". An empty list means nothing should fire.
 
@@ -62,7 +62,7 @@ def build_fixture(template: str | None, testbed: str | None) -> tuple[str, list[
     skills = []
     for name in sorted(os.listdir(SKILLS_DIR)):
         md = os.path.join(SKILLS_DIR, name, "SKILL.md")
-        if not os.path.isfile(md) or "DEPRECATED" in open(md).read(600): continue
+        if not os.path.isfile(md): continue
         shutil.copytree(os.path.join(SKILLS_DIR, name), os.path.join(dst, name)); skills.append(name)
     subprocess.run(["git", "init", "-q"], cwd=proj, check=False)
     return proj, skills, vars_

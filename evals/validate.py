@@ -30,7 +30,7 @@ def main() -> int:
         else:
             d = desc.strip("'\"")
             if len(d) > 1024: probs.append(f"description {len(d)} chars > 1024")
-            if not re.match(r"^(DEPRECATED|[A-Z][a-z]+s\b)", d): probs.append("description not third person (should open like 'Runs …')")
+            if not re.match(r"^[A-Z][a-z]+s\b", d): probs.append("description not third person (should open like 'Runs …')")
         if not get("license"): probs.append("missing license")
         if not re.search(r"^  author: ", fm, re.M) or not re.search(r'^  version: "', fm, re.M): probs.append("missing metadata.author/version")
         if len(body.splitlines()) > 500: probs.append(f"body {len(body.splitlines())} lines > 500")
