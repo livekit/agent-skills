@@ -18,19 +18,11 @@ paid run, and this skill doesn't restate them. `reading-livekit-docs` has the re
 
 ## When to reach for a simulation
 
-Simulations are the most thorough check you have and the most expensive. Every scenario spends
-tokens on the simulated user, the agent, and the judge, and that cost decides where they fit.
-
-| Question | Use |
-|---|---|
-| Does this behave the way I meant, right now? | `debugging-livekit-agents` |
-| Is this exact turn still correct? | `testing-livekit-agents`, on every commit |
-| Does the whole conversation reach the right outcome? | Simulations, before you ship |
-
-Run them before a release, on a release branch, or when a change touches conversation flow. Don't
-run them on every commit. Some things only simulations catch: multi-turn flow when the caller
-backtracks, details gathered early surviving to the end, whether the agent holds to its
-instructions under pressure, and whether the conversation ended in the right *state*.
+Use simulations to regression-test long-horizon behavior before deploying to production: whether a
+multi-turn conversation reaches the right outcome when the caller backtracks, whether details
+gathered early survive to the end, whether the agent holds to its instructions under pressure, and
+whether it ended in the right *state*. For a single turn, use `testing-livekit-agents`; to poke at
+behavior while editing, use `debugging-livekit-agents`.
 
 ## Running
 
@@ -80,29 +72,17 @@ for a repeat instead of guessing. Combine them for a worst-case caller.
 
 All you need is a committed scenario file and a scheduled or release-branch job. The CLI prints
 plain output when it isn't attached to a terminal and exits non-zero when any scenario fails, so the
-job fails without extra wiring. The docs have a worked CI example to start from.
-
-What goes wrong in automation:
-
-- **The CLI starts the real agent**, so the job has to install the agent's dependencies and provide
-  every API key the agent reads, not only the LiveKit credentials.
-- **Keep credentials in secrets.** A key written into a committed workflow is a leaked key.
-- **Keep automated runs in text mode.** Text simulations are scheduled so they don't compete with
-  live sessions for inference capacity. Audio runs aren't, and they cost far more.
-- **Pin scenarios to absolute dates**, or the suite starts failing months later for no visible
-  reason.
-- **Every scenario in the committed file must pass.** A scenario the agent has never passed blocks
-  every release. Fix the agent, sharpen the expectation, or move aspirational scenarios to a
-  separate file you run on demand.
+job fails without extra wiring; the docs have a worked CI example to start from. Keep automated runs
+in text mode. Every scenario in the committed file has to pass or the job fails, so keep aspirational
+scenarios the agent doesn't pass yet in a separate file you run on demand.
 
 ## Reading the results
 
-A run prints a verdict per scenario and a dashboard link. Work from the transcript. The verdict
-tells you what happened, and the transcript tells you why.
-
-The CLI has subcommands to list recent runs, reopen one, and export a finished run with its
-per-scenario chat contexts as JSON (`--help` names them). Use export to compare behavior between
-runs or to archive a run as a build artifact.
+A run prints a verdict per scenario and a dashboard link. The verdict tells you what happened; the
+transcript tells you why, so work from the transcript. The dashboard link is for the human. Your
+path is `export`: it prints a finished run, with each scenario's full chat context, as JSON — read a
+failing transcript from there, diff two runs, or archive a run as a build artifact. `list` finds the
+run id and also has machine-readable output; `--help` names the flags.
 
 **To triage a failure, decide which of these it is:**
 
