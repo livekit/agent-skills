@@ -10,3 +10,10 @@
 
 # Script artifacts
 __pycache__/
+
+# Eval artifacts (results and scratch projects are regenerated)
+evals/**/results*/
+evals/**/results*.json
+evals/**/*.log
+evals/**/workspace/
+evals/**/project/

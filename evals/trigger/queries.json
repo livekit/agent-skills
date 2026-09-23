@@ -1,0 +1,230 @@
+[
+ {
+  "q": "what changed in livekit agents between 1.6 and 1.8? we're on 1.6.6 and i want to know if upgrading breaks anything",
+  "expect": [
+   "reading-livekit-docs"
+  ]
+ },
+ {
+  "q": "does livekit inference support gemini realtime models or only the pipeline ones",
+  "expect": [
+   "reading-livekit-docs"
+  ]
+ },
+ {
+  "q": "what does --agent-name actually do on lk agent simulate, and what happens if i pass an empty string",
+  "expect": [
+   "reading-livekit-docs",
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "roughly what does a minute of tts cost through livekit inference vs bringing my own elevenlabs key",
+  "expect": [
+   "reading-livekit-docs"
+  ]
+ },
+ {
+  "q": "find me an example in the livekit repos of an agent that hands off to a second agent mid-call",
+  "expect": [
+   "building-livekit-agents",
+   "reading-livekit-docs"
+  ]
+ },
+ {
+  "q": "add a tool to {agent} that looks up an order by its number and reads the status back to the caller",
+  "expect": [
+   "building-livekit-agents"
+  ]
+ },
+ {
+  "q": "my livekit agent has like 40 tools and a huge system prompt and it feels sluggish on calls. how should i restructure it",
+  "expect": [
+   "building-livekit-agents"
+  ]
+ },
+ {
+  "q": "i want to split this assistant into an intake agent and a billing specialist that it hands off to. how do i structure that in livekit agents",
+  "expect": [
+   "building-livekit-agents"
+  ]
+ },
+ {
+  "q": "build me a voice agent for a dental office that can book, reschedule and cancel appointments",
+  "expect": [
+   "building-livekit-agents"
+  ]
+ },
+ {
+  "q": "i just changed the system prompt in {agent}, can you try talking to the agent and check it still greets people properly and doesn't ramble",
+  "expect": [
+   "debugging-livekit-agents"
+  ]
+ },
+ {
+  "q": "when i ask my agent what time it is it calls lookup_weather for some reason. can you reproduce that and figure out why",
+  "expect": [
+   "debugging-livekit-agents"
+  ]
+ },
+ {
+  "q": "have a quick conversation with my agent as a confused first time caller and tell me where it gets awkward",
+  "expect": [
+   "debugging-livekit-agents"
+  ]
+ },
+ {
+  "q": "does this thing even work? run it and ask it a few questions",
+  "expect": [
+   "debugging-livekit-agents"
+  ]
+ },
+ {
+  "q": "write {test_runner} tests for {agent} covering the greeting and that it refuses to give medical dosages",
+  "expect": [
+   "testing-livekit-agents"
+  ]
+ },
+ {
+  "q": "we had a bug where the agent said 'I've set that reminder' even though it has no reminder tool. pin that down as a test so it can't come back",
+  "expect": [
+   "testing-livekit-agents"
+  ]
+ },
+ {
+  "q": "in my agent tests i need to mock the weather tool so we don't hit the real api, and also test what the agent says when the tool errors out",
+  "expect": [
+   "testing-livekit-agents"
+  ]
+ },
+ {
+  "q": "{tests} is failing on the judge assertion intermittently, can you look at why",
+  "expect": [
+   "testing-livekit-agents"
+  ]
+ },
+ {
+  "q": "we ship this assistant friday. what should i actually be testing before then? put together some simulation scenarios",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "generate simulation scenarios for the agent in {agent}",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "add a scenario to scenarios.yaml where the caller changes their appointment date halfway through booking",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "our scenarios.yaml has 60 scenarios now and it's a mess. split it into a quick set for PRs and the full thing for releases",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "legal is worried about the assistant giving medical advice. write scenarios that really try to get it to slip",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "my simulations pass or fail randomly because the scenario hits our real booking database and the availability keeps changing. how do i make them deterministic",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "how do i read the scenario's userdata from inside my agent's entrypoint so i can seed a fake calendar",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "the simulation judge passed a run where the agent booked a queen room but the scenario asked for a king. i want the run to fail on the actual db state",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "wire up {sim_end_hook} in {agent} to compare the final booking against expected_state",
+  "expect": [
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "run the simulations in scenarios.yaml against my agent and tell me what failed",
+  "expect": [
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "scenario 'Refuses a harmful request' failed in last night's run. pull up the transcript and tell me if it's the agent or the scenario",
+  "expect": [
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "set up a github actions job that runs our simulation scenarios before each release, text mode only",
+  "expect": [
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "i want to test how the agent handles barge-in and callers talking over it. run the scenarios in audio mode with some background noise",
+  "expect": [
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "lk agent simulate text just prints help and exits, is my command wrong",
+  "expect": [
+   "reading-livekit-docs",
+   "running-livekit-simulations"
+  ]
+ },
+ {
+  "q": "test my agent",
+  "expect": [
+   "debugging-livekit-agents",
+   "testing-livekit-agents",
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "test my agent end to end with simulations",
+  "expect": [
+   "running-livekit-simulations",
+   "writing-livekit-scenarios"
+  ]
+ },
+ {
+  "q": "write pytest tests for the flask app in api/ — the /health and /orders endpoints",
+  "expect": []
+ },
+ {
+  "q": "simulate 3g network latency in my react app so i can see the loading states",
+  "expect": []
+ },
+ {
+  "q": "debug this traceback from our celery worker: KeyError: 'customer_id' in tasks.py line 88",
+  "expect": []
+ },
+ {
+  "q": "read the stripe docs and tell me if payment intents support partial captures",
+  "expect": []
+ },
+ {
+  "q": "what's a good open source tts model i can run locally, nothing to do with our livekit stuff",
+  "expect": []
+ },
+ {
+  "q": "run the existing {test_runner} suite and tell me if anything is red",
+  "expect": []
+ }
+]
