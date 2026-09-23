@@ -88,6 +88,25 @@ Roughly in order of value:
 5. **Handoffs**: the transition fires when it should, and the next agent has what it needs.
 6. **Every bug you've fixed.** Without a test, a fixed bug can come back unnoticed.
 
+## Three kinds of evidence, kept distinct
+
+A test suite for an agent that does things — books, edits, confirms — needs three kinds of test,
+and confusing them is how a green suite ships a broken agent:
+
+- **Deterministic application tests** prove guards, no-ops, empty-vs-unknown values, corrections,
+  storage failure, and retries, against the application core directly. Fast, exact, no model.
+- **Real-SDK tests with a scripted provider** prove event wiring and tool plumbing: that the
+  listener fires, that the tool receives what the session sends. A scripted provider proves
+  *mechanics*, never language understanding — its exact sentences are fixtures, not requirements.
+- **Ordinary-language tests with the real model** prove the model can complete the task from how
+  callers actually talk: paraphrases absent from the prompt, corrections mixed with agreement,
+  the same short reply answering different questions.
+
+Shortcuts that look like tests and aren't: calling a helper or filling private state instead of
+driving the interaction; telling the test caller which tool to name; mocking the very mutation
+whose correctness is under test; comparing output only with the application's own exporter;
+retrying a failed turn until it passes; deleting the assertion that failed.
+
 ## Don't write tests that punish correct behavior
 
 The most common bad agent test asserts that the agent does something it shouldn't: states data it

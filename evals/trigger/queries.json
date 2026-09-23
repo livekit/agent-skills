@@ -238,5 +238,17 @@
   "expect": [
    "testing-livekit-agents"
   ]
+ },
+ {
+  "q": "my agent tells the caller their appointment is booked but maybe a third of the time nothing actually lands in the db. the tool returns fine every time. how should this be structured so it can't lie about it",
+  "expect": [
+   "building-livekit-agents"
+  ]
+ },
+ {
+  "q": "the agent should read the order back and only place it after the customer actually says yes. right now it places it in the same turn as the readback. fix the flow in {agent}",
+  "expect": [
+   "building-livekit-agents"
+  ]
  }
 ]

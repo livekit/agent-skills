@@ -1,6 +1,6 @@
 ---
 name: building-livekit-agents
-description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cloud. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI to my app", "implement handoffs", "structure an agent workflow", "my agent is slow / too chatty", or is writing code against the LiveKit Agents SDK. Covers architecture: designing for latency, keeping context small, splitting a monolithic agent into handoffs and tasks, and designing for voice. For API specifics use reading-livekit-docs. To check behavior use debugging-livekit-agents and testing-livekit-agents.'
+description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cloud. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI to my app", "implement handoffs", "structure an agent workflow", "my agent is slow / too chatty", "it says it booked but nothing was saved", "make it confirm before committing", "it keeps re-asking things the caller already said", or is writing code against the LiveKit Agents SDK. Covers architecture: designing for latency, keeping context small, splitting a monolithic agent into handoffs and tasks, and designing for voice. Also covers keeping the model in charge of meaning while code owns state, approvals, and effects. For API specifics use reading-livekit-docs. To check behavior use debugging-livekit-agents and testing-livekit-agents.'
 license: MIT
 metadata:
   author: livekit
@@ -76,6 +76,50 @@ If you can't say in one sentence what an agent is responsible for, split it.
 - **Plan for tool failure.** Decide what the agent says when a backend is down or returns nothing.
   An agent that makes up an answer when a tool fails is very hard to catch later.
 
+## The model interprets; your code owns the state
+
+The model reads the conversation and proposes actions. Application code owns the records, the
+permission checks, the state transitions, and every external effect. Most agents that "work in
+the demo and fail in production" have that line blurred somewhere.
+
+- **Never classify intent with code.** Approval, refusal, correction, cancellation, "next
+  Tuesday" — the runtime model interprets those. A regex, a keyword list, or a phrase whitelist
+  will be wrong in ways you never test, and adding one as a "conservative" second gate has the same
+  defect. Validate *structure* in code (typed dates, enums, required fields); leave *meaning* to
+  the model.
+- **A tool call is the model's interpretation, not proof it was right.** Keep message provenance,
+  version checks, ordering, and business rules in code, where they can be checked.
+- **Tools return facts, not sentences.** Compact data, outcomes, and actionable errors; the model
+  chooses the wording. Script exact text only when the task mandates a verbatim disclosure.
+- **Follow the user, not a form.** Accept facts the caller volunteers together, ask only for what's
+  missing or ambiguous, and never demand ritual wording ("say yes to confirm") after a clear answer.
+- **One authoritative state object per session**, and keep model-supplied facts separate from
+  trusted identity, the clock, ids, and receipts.
+
+## Make every change mean exactly one thing
+
+The costliest agent bugs are mutations that did more or less than the caller meant: "no note for
+him" clearing the whole list, a correction that also reset a confirmed field, a re-stated value
+that invalidated an approval. Before writing a mutating tool, state its target, what changes, and
+what must stay the same — then pair it with the nearest request that must do something *different*.
+
+The rules in short: omission preserves; missing, empty, unknown, and cleared are four different
+things; collections get application-issued ids; validate before applying; a scoped negative never
+clears a collection; unchanged values are no-ops. When a task requires review before an effect,
+approval is a *later real user message* for *that version*, delivery is tracked at the speech
+boundary, and success is published only after the write commits. The full treatment — including
+closing, output ownership, and how text and audio input take different hook paths — is in
+`references/state-and-effects.md`. Read it before building anything that books, edits, confirms, or
+ends calls.
+
+## Start with a failing complete-path test
+
+Before expanding the tool surface or polishing the persona, pick one ordinary user goal and drive
+it through the real agent to its required effect — the booking exists, the record changed, the
+call ended. Write the expected result from the user's request, not from the application's own
+export. Then pair it with the first guard that must refuse, because a test that rejects everything
+proves nothing about the guard. Keep that pair green while you add everything else.
+
 ## Verify before you call it done
 
 Prompt changes break agent behavior as easily as code changes do, and trying it once by hand
@@ -109,3 +153,4 @@ production, and move on.
 - Drive a live conversation while building: `debugging-livekit-agents`
 - Turn-level tests: `testing-livekit-agents`
 - Whole-conversation testing: `writing-livekit-scenarios`, `running-livekit-simulations`
+- State, approvals, commits, delivery, closing: `references/state-and-effects.md`
