@@ -13,15 +13,21 @@ This skill covers how to structure a voice agent. It has no API specifics, becau
 get them from `reading-livekit-docs`.
 
 It assumes LiveKit Cloud, the recommended path: managed infrastructure, plus **LiveKit Inference**
-for models so you don't manage per-provider API keys. If the user is self-hosting, the
-architecture advice still applies but the Inference guidance doesn't.
+for models so you don't manage per-provider API keys.
+
+Where the agent runs and which LiveKit the project uses are separate questions. An agent the user
+self-hosts (on their own servers instead of LiveKit Cloud's agent hosting) still connects to LiveKit
+Cloud and can still use LiveKit Inference. Inference is a LiveKit Cloud feature, so it's only off
+the table when the project runs on LiveKit OSS. The architecture advice applies either way; on
+LiveKit OSS, models come from each provider's own plugin and API keys.
 
 ## Before you write code
 
 1. **Load `reading-livekit-docs`** and look up the APIs you're about to use. Don't write LiveKit
    code from memory.
-2. **Confirm the project is connected to a LiveKit Cloud project**: `LIVEKIT_URL`,
-   `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, usually in `.env`. The CLI can set these up.
+2. **Confirm the project is connected to a LiveKit Cloud project** (or a LiveKit OSS server):
+   `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, usually in `.env`. The CLI can set these
+   up.
 3. **Decide the workflow shape before writing the first agent class** (see "Structure" below).
    Splitting a monolith into handoffs later is much more work than starting with two agents.
 4. **Plan how you'll verify it.** Decide now whether you'll use `debugging-livekit-agents` (drive a

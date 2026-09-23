@@ -12,7 +12,7 @@ agent-skills/
 ├── README.md                       # for users: what the skills do, how to install
 ├── AGENTS.md                       # for agents maintaining the repo (this file)
 ├── CONTRIBUTING.md                 # for human contributors: process
-├── skills/                         # the published skills — pushes here sync downstream
+├── skills/                         # the published skills; this layout is the install contract
 │   ├── reading-livekit-docs/
 │   ├── building-livekit-agents/
 │   ├── debugging-livekit-agents/
@@ -98,6 +98,12 @@ metadata:
   version: "1.0.0"
 ---
 ```
+
+**Say "self-hosted" only about the agent.** A self-hosted agent runs on the user's own servers
+instead of LiveKit Cloud's agent hosting, and it can still use LiveKit Cloud features such as
+LiveKit Inference. When the user runs the LiveKit server themselves, call it LiveKit OSS, as
+opposed to LiveKit Cloud. Using "self-hosted" for both leads agents to wrongly rule out Cloud
+features for anyone who hosts their own agent.
 
 **Explain why.** Capable models read these skills, and they respond better to a reason than to a
 bare command. "Restart after every edit — a running session holds the old code" works better than
@@ -206,16 +212,14 @@ Delete the directory. To rename, create the new directory and delete the old one
 stub behind: a stub's description is loaded into every user's context on every request, forever,
 to say "don't use me" — the opposite of what the set is trying to do for context.
 
-Removal propagates. Pushes to `skills/**` on `main` dispatch a sync that mirrors this directory
-into LiveKit's starter templates and fixtures: it copies every directory here that has a
-`SKILL.md`, and removes downstream copies of skills it previously synced that no longer exist
-here. After removing a skill, check the sync's downstream PRs show the removal. Nothing in this
-repo touches a user's local install; the README tells them to reinstall.
+Skills are installed from this repository — `npx skills add livekit/agent-skills` today, and the
+LiveKit CLI. Installers take `skills/<name>/SKILL.md` plus that skill's `references/`, so keep that
+layout stable: a renamed directory is a removed skill and a new one, and nothing here can reach a
+user's existing local copy. The README tells users of a removed skill to reinstall.
 
 ## Things not to do here
 
-- Don't put evals, tooling, or scratch files under `skills/`. Everything there is published and
-  synced.
+- Don't put evals, tooling, or scratch files under `skills/`. Everything there is published; installers take the whole directory.
 - Don't add a skill because a topic exists. Add one when agents do that job badly without it
   and you can say what the skill changes.
 - Don't tune a description to fix one failing query. Figure out what class of request it represents.
