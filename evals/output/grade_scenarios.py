@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """Grade the scenario files an eval run produced for an agent.
 
-Two layers, deliberately different tools for different questions:
+Two layers:
 
-  structural  — deterministic checks: YAML parses, keys match the CLI's scenario-file struct,
-                required fields present, group name set, output supports a quick/full split.
-                A malformed file shouldn't reach the judge.
-  judged      — one `claude -p` call that reads the agent's source and the scenario files and
-                answers the questions that need judgment: is every constraint in the agent's
-                instructions exercised, do refusal scenarios treat the refusal as the pass, does
-                any scenario require a capability the agent lacks, will any date rot, is any
-                expectation too vague to grade consistently. Returns per-assertion verdicts with
-                quoted evidence so a human can spot-check.
+  structural  Deterministic checks: YAML parses, keys match the CLI's scenario-file struct,
+              required fields present, group name set, output supports a quick/full split.
+              A malformed file shouldn't reach the judge.
+  judged      One `claude -p` call that reads the agent's source and the scenario files and
+              answers the questions that need judgment: is every constraint in the agent's
+              instructions exercised, do refusal scenarios treat the refusal as the pass, does
+              any scenario require a capability the agent lacks, will any date rot, is any
+              expectation too vague to grade consistently. Returns per-assertion verdicts with
+              quoted evidence for spot-checking.
 
     python3 evals/output/grade_scenarios.py <outputs-dir> --agent <path/to/src/agent.py>
     python3 evals/output/grade_scenarios.py <outputs-dir> --agent src/agent.ts --judge-runs 2
 
 The judge is the user's Claude (whatever `claude -p` is configured with, or --model), run with no
-tools, so it can't execute anything. It reads only what's passed in. Verdicts vary a little
-between runs; --judge-runs N takes a majority per assertion. Structural results are exact."""
+tools so it can't execute anything. It only sees what's passed in. Verdicts vary a little between
+runs; --judge-runs N takes a majority per assertion. Structural results are exact."""
 import argparse, json, os, pathlib, re, subprocess, sys
 from collections import Counter
 

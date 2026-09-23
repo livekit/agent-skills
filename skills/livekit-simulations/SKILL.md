@@ -1,6 +1,6 @@
 ---
 name: livekit-simulations
-description: 'DEPRECATED — do not use. This skill has been split into focused replacements. Superseded: use writing-livekit-scenarios to create and organize simulation scenarios and wire the agent to consume them, and running-livekit-simulations to run them and act on results.'
+description: 'DEPRECATED — do not use. Split into focused skills: writing-livekit-scenarios to create and organize simulation scenarios and wire the agent to consume them, and running-livekit-simulations to run them and act on the results.'
 license: MIT
 metadata:
   author: livekit
@@ -16,7 +16,7 @@ This skill has been replaced by focused skills. Load the one that matches the ta
 | Creating, refining and organizing scenarios; seeding state and grading final state | `writing-livekit-scenarios` |
 | Running simulations, CI, triaging failures | `running-livekit-simulations` |
 
-Do not follow this file's previous guidance. It described a pre-June-2026 command surface and
-scenario schema: `lk agent simulate` now requires a `text` or `audio` subcommand, and scenario files
-use `name` / `tags` / `userdata` rather than `agent_description` / `metadata`. Its bundled
-`build_scenarios.py` emitted the superseded schema and has been removed.
+Don't follow this file's previous guidance. It described a superseded command surface and
+scenario schema: `lk agent simulate` requires a `text` or `audio` subcommand, and scenario files use
+`name` / `tags` / `userdata` rather than `agent_description` / `metadata`. Its bundled
+`build_scenarios.py` emitted the old schema and has been removed.

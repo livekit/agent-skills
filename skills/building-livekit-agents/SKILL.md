@@ -1,6 +1,6 @@
 ---
 name: building-livekit-agents
-description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cloud. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI to my app", "implement handoffs", "structure an agent workflow", "my agent is slow / too chatty", or is writing code against the LiveKit Agents SDK. Covers architecture: latency-first design, keeping context small, splitting monolithic agents into handoffs and tasks, and voice-specific interaction design. For API specifics use reading-livekit-docs; for verifying behavior use debugging-livekit-agents and testing-livekit-agents.'
+description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cloud. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI to my app", "implement handoffs", "structure an agent workflow", "my agent is slow / too chatty", or is writing code against the LiveKit Agents SDK. Covers architecture: designing for latency, keeping context small, splitting a monolithic agent into handoffs and tasks, and designing for voice. For API specifics use reading-livekit-docs. To check behavior use debugging-livekit-agents and testing-livekit-agents.'
 license: MIT
 metadata:
   author: livekit
@@ -9,98 +9,93 @@ metadata:
 
 # Building LiveKit agents
 
-This skill is about *how to think* about a voice agent's structure. It deliberately contains
-no API specifics — those change, and they come from `reading-livekit-docs`.
+This skill covers how to structure a voice agent. It has no API specifics, because those change;
+get them from `reading-livekit-docs`.
 
-It assumes LiveKit Cloud, which is the recommended path: managed infrastructure, and
-**LiveKit Inference** for models so there are no per-provider API keys to manage. If the user
-is self-hosting, the architecture below still holds; the Inference guidance does not.
+It assumes LiveKit Cloud, the recommended path: managed infrastructure, plus **LiveKit Inference**
+for models so you don't manage per-provider API keys. If the user is self-hosting, the
+architecture advice still applies but the Inference guidance doesn't.
 
 ## Before you write code
 
-1. **Load `reading-livekit-docs`** and look up the APIs you're about to use. Never write LiveKit
+1. **Load `reading-livekit-docs`** and look up the APIs you're about to use. Don't write LiveKit
    code from memory.
-2. **Confirm the project is connected to a LiveKit Cloud project** — `LIVEKIT_URL`,
+2. **Confirm the project is connected to a LiveKit Cloud project**: `LIVEKIT_URL`,
    `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, usually in `.env`. The CLI can set these up.
-3. **Decide the workflow shape before the first agent class**, per "Structure" below. Retrofitting
-   a monolith into handoffs is much more work than starting with two agents.
-4. **Plan how you will verify it.** Not "I'll test at the end" — decide now which of
-   `debugging-livekit-agents` (drive a real conversation) and `testing-livekit-agents` (assert on turns)
-   you'll use, because it changes how you factor the code.
+3. **Decide the workflow shape before writing the first agent class** (see "Structure" below).
+   Splitting a monolith into handoffs later is much more work than starting with two agents.
+4. **Plan how you'll verify it.** Decide now whether you'll use `debugging-livekit-agents` (drive a
+   real conversation), `testing-livekit-agents` (assert on turns), or both, because it affects how
+   you factor the code.
 
-## Voice changes the requirements
+## How voice changes the requirements
 
-A voice agent is not a chat agent with a speaker attached. Three constraints drive nearly every
-design decision:
+A voice agent is more than a chat agent with a speaker attached. These constraints drive most
+design decisions:
 
-**Latency is a feature.** Users expect a reply in hundreds of milliseconds. Every architectural
-choice either spends or saves that budget: context size, tool count, whether a tool call sits on
-the critical path, whether responses stream. Design for the unhappy path too — network stalls and
-provider timeouts are normal, not exceptional.
+**Latency.** Users expect a reply within a few hundred milliseconds. Context size, tool count,
+whether a tool call sits on the critical path, and whether responses stream all add to or save from
+that budget. Plan for network stalls and provider timeouts too; they happen routinely.
 
-**Context bloat is latency.** A 10,000-token system prompt with 50 tool definitions feels sluggish
-no matter which model is behind it, because the model re-reads all of it every turn. Carry the
-minimum: only the tools reachable from the current phase, only the instructions that phase needs.
+**Context size.** A 10,000-token system prompt with 50 tool definitions feels sluggish on any
+model, because the model re-reads all of it every turn. Give each phase only the tools it can reach
+and the instructions it needs.
 
-**Users listen, they don't read.** They can't skim, can't scroll back, and will talk over the
-agent. Long replies are a bug. Silence reads as broken. Interruption is the normal case, not the
-edge case.
+**Listening.** Users can't skim or scroll back, and they'll talk over the agent. Long replies are a
+bug, silence sounds broken, and interruptions are normal.
 
 ## Structure: handoffs and tasks
 
-The default failure mode is one agent that does everything. It accumulates every tool, every
-instruction, and every piece of state until it is both slow and unreliable — and by then splitting
-it is a rewrite.
+The usual failure is one agent that does everything. It collects every tool, instruction, and piece
+of state until it's slow and unreliable, and by that point splitting it is a rewrite.
 
-**Handoffs** transfer control from one agent to another. Use them at natural conversation
-boundaries — greeting → intake → resolution, or general support → billing specialist. The win is
-that each agent carries only its own tools and instructions. Design the boundary where the context
-can be *summarized* rather than handed over wholesale; if the next agent needs everything the
-previous one had, the boundary is in the wrong place.
+**Handoffs** transfer control from one agent to another. Put them at natural conversation
+boundaries, like greeting → intake → resolution, or general support → billing specialist. Each
+agent then carries only its own tools and instructions. Choose a boundary where the context can be
+summarized for the next agent. If the next agent needs everything the previous one had, the
+boundary is in the wrong place.
 
 **Tasks** are tightly scoped prompts aimed at one outcome. Use them for discrete operations that
-don't need a full agent, or where a focused prompt beats a general-purpose one.
+don't need a full agent, or where a focused prompt works better than a general one.
 
-A useful check: if you can't state in one sentence what an agent is responsible for, it should be
-more than one agent.
+If you can't say in one sentence what an agent is responsible for, split it.
 
 ## Tools
 
-- **Tool descriptions are behavior.** When an agent calls the wrong tool, or calls one at the wrong
-  time, suspect the description before the model. A description that doesn't say *when* to use the
-  tool is the single most common cause.
-- **Keep tools off the critical path where you can.** A tool call the user waits through is latency
-  they hear.
-- **Design for failure at the tool boundary.** Decide what the agent says when a backend is down or
-  returns nothing — an agent that invents an answer under tool failure is the hardest bug to catch
-  later.
+- **Tool descriptions drive behavior.** When an agent calls the wrong tool or calls one at the
+  wrong time, check the description before blaming the model. The most common cause is a
+  description that doesn't say when to use the tool.
+- **Keep tools off the critical path where you can.** Users hear every tool call they wait on as
+  latency.
+- **Plan for tool failure.** Decide what the agent says when a backend is down or returns nothing.
+  An agent that makes up an answer when a tool fails is very hard to catch later.
 
 ## Verify before you call it done
 
-Agent behavior is code, and prompt changes break it as thoroughly as code changes do. "It seemed
-fine when I tried it" is not verification.
+Prompt changes break agent behavior as easily as code changes do, and trying it once by hand
+doesn't count as verification.
 
-- **While building**, drive real conversations with `debugging-livekit-agents` — it runs your agent
-  locally in text mode and lets you send turns and read the tool calls behind each reply.
-- **Before you call it done**, write tests with `testing-livekit-agents`. At minimum: the core
-  behavior the user asked for, tool invocation with correct arguments if tools exist, and one
-  unhappy path.
-- **Before shipping a change to a live agent**, run simulations — `writing-livekit-scenarios` and
-  `running-livekit-simulations`.
+- **While building**, drive conversations with `debugging-livekit-agents`. It runs your agent
+  locally in text mode, lets you send turns, and shows the tool calls behind each reply.
+- **Before you call it done**, write tests with `testing-livekit-agents`. At minimum, cover the core
+  behavior the user asked for, tool invocation with correct arguments if there are tools, and one
+  failure path.
+- **Before shipping a change to a live agent**, run simulations with `writing-livekit-scenarios`
+  and `running-livekit-simulations`.
 
-If the user explicitly asks for no tests, build without them, say once that you'd recommend them
-before production, and move on.
+If the user asks for no tests, build without them, mention once that you'd recommend them before
+production, and move on.
 
 ## Common mistakes
 
-- **Starting monolithic "just for now."** The structure is what you're deciding; the implementation
-  can be simple.
-- **Treating latency as a later problem.** It compounds, and it never gets cheaper to fix.
-- **Copying an example without understanding it.** Examples demonstrate one pattern; pasted whole
-  they bring context bloat and components you can't explain.
+- **Starting with one agent "just for now."** You're deciding the structure up front; the
+  implementation can still be simple.
+- **Putting off latency.** It compounds, and it only gets more expensive to fix.
+- **Copying an example you don't understand.** An example shows one pattern. Pasted whole, it brings
+  extra context and components you can't explain.
 - **Assuming your model knowledge is current.** It isn't. See `reading-livekit-docs`.
-- **Shipping on manual testing alone.** Prompt edits silently change behavior; tests are how you
-  find out before users do.
+- **Shipping on manual testing alone.** Prompt edits change behavior without any visible error, and
+  tests let you find out before users do.
 
 ## Related skills
 

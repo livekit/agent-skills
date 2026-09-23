@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Structural checks on every skills/*/SKILL.md. Exit 1 on any failure.
+"""Structural checks on every skills/*/SKILL.md. Exits 1 on any failure.
 
-Enforces the rules in AGENTS.md that can be checked mechanically: frontmatter fields, name matches
-directory, description length and third person, body length, references exist and carry a TOC when
+Covers the AGENTS.md rules that can be checked mechanically: frontmatter fields, name matches the
+directory, description length and third person, body length, references exist and have a TOC when
 long, cross-references resolve, no time-relative phrasing."""
 import pathlib, re, sys
 

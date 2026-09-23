@@ -1,6 +1,6 @@
 ---
 name: livekit-agents
-description: 'DEPRECATED — do not use. This skill has been split into focused replacements. Superseded: use building-livekit-agents for agent architecture, reading-livekit-docs for API facts and documentation lookup, testing-livekit-agents for turn-level tests, and debugging-livekit-agents to live-test an agent during development.'
+description: 'DEPRECATED — do not use. Split into focused skills: building-livekit-agents for agent architecture, reading-livekit-docs for API facts and documentation lookup, testing-livekit-agents for turn-level tests, and debugging-livekit-agents to live-test an agent during development.'
 license: MIT
 metadata:
   author: livekit
@@ -18,4 +18,4 @@ This skill has been replaced by focused skills. Load the one that matches the ta
 | Live-testing an agent while developing it | `debugging-livekit-agents` |
 | Turn-level tests in pytest or Vitest | `testing-livekit-agents` |
 
-Do not follow this file's previous guidance; it is retained only so existing references resolve.
+Don't follow this file's previous guidance. The file is kept only so existing references still resolve.

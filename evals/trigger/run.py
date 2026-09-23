@@ -2,24 +2,23 @@
 """Trigger-collision harness.
 
 Builds a throwaway fixture project, installs every non-deprecated skill from skills/ into it, runs
-each query in queries.json through `claude -p`, and records which skill fired first. Queries carry
-the acceptable skill(s) under "expect" — an empty list means nothing should fire.
+each query in queries.json through `claude -p`, and records which skill fired first. Each query
+lists its acceptable skill(s) under "expect". An empty list means nothing should fire.
 
     python3 evals/trigger/run.py                       # fixture: agent-starter-python, cloned
     python3 evals/trigger/run.py --template node       # fixture: agent-starter-node
     python3 evals/trigger/run.py --testbed ../some-agent-project
     python3 evals/trigger/run.py --only 17,18,19 --runs 3
 
-The fixture is a shallow `git clone` of a public livekit-examples template — deliberately not
-`lk agent init` or `lk app create`, both of which resolve a LiveKit Cloud project first and write
-its credentials into the new directory. Any `.env*` files are removed from the fixture, and every
+The fixture is a shallow `git clone` of a public livekit-examples template. It doesn't use
+`lk agent init` or `lk app create`, since both resolve a LiveKit Cloud project first and write its
+credentials into the new directory. Any `.env*` files are removed from the fixture, and every
 `claude -p` subprocess gets dummy LIVEKIT_URL / LIVEKIT_API_KEY / LIVEKIT_API_SECRET pointing at an
-unroutable address. `lk` honours those over the user's configured default project, so even an
-agent that ignored instructions and ran a cloud command would fail rather than spend anything.
+unroutable address. `lk` prefers those over the user's configured default project, so an agent
+that ignored instructions and ran a cloud command would fail without spending anything.
 
-The model doing the deciding is the user's Claude (whatever `claude -p` is configured with, or
---model). LiveKit Inference is never involved: tools are read-only, so the agent under test is
-never executed.
+The deciding model is the user's Claude (whatever `claude -p` is configured with, or --model).
+LiveKit Inference isn't involved: tools are read-only, so the agent under test never runs.
 """
 import argparse, json, os, re, select, shutil, subprocess, sys, tempfile, time
 from collections import Counter, defaultdict
@@ -37,7 +36,7 @@ TEMPLATES = {
                "agent": "src/agent.ts", "tests": "src/agent.test.ts", "test_runner": "vitest",
                "sim_end_hook": "onSimulationEnd"},
 }
-# Credentials that cannot reach any LiveKit project. Overrides the user's default `lk` project.
+# Credentials that can't reach any LiveKit project. They override the user's default `lk` project.
 SAFE_ENV = {"LIVEKIT_URL": "http://127.0.0.1:1", "LIVEKIT_API_KEY": "eval-dummy-key",
             "LIVEKIT_API_SECRET": "eval-dummy-secret-eval-dummy-secret-eval"}
 
@@ -57,7 +56,7 @@ def build_fixture(template: str | None, testbed: str | None) -> tuple[str, list[
         for f in files:
             if f.startswith(".env"): os.remove(os.path.join(root, f))
     shutil.rmtree(os.path.join(proj, ".git"), ignore_errors=True)
-    # the template ships its own .claude/ (skills, settings); replace with ours only
+    # the template ships its own .claude/ (skills, settings); replace it with just ours
     shutil.rmtree(os.path.join(proj, ".claude"), ignore_errors=True)
     dst = os.path.join(proj, ".claude", "skills"); os.makedirs(dst)
     skills = []

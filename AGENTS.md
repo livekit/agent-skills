@@ -1,8 +1,8 @@
 # AGENTS.md
 
 This repository publishes [Agent Skills](https://agentskills.io) that teach coding agents to build,
-test, and ship voice agents with LiveKit. If you are an agent working *in this repo*, your job is
-to write and evaluate skills, not to build a LiveKit agent — this file is for you.
+test, and ship voice agents with LiveKit. This file is for agents working *in this repo*, where the
+job is writing and evaluating skills rather than building a LiveKit agent.
 [README.md](README.md) is for the people who install the skills.
 
 ## Repository map
@@ -31,8 +31,8 @@ agent-skills/
 ## How the skill set is meant to work
 
 Each skill owns one job and names its siblings for adjacent jobs. Routing happens in the
-`description` fields, which are the only part of a skill loaded before it fires — so a request
-should land on exactly one skill, and that skill's body should be everything needed for its job.
+`description` fields, which are the only part of a skill loaded before it fires. A request should
+land on exactly one skill, and that skill's body should cover everything needed for its job.
 
 | Skill | Owns | Hands off to |
 |---|---|---|
@@ -43,43 +43,49 @@ should land on exactly one skill, and that skill's body should be everything nee
 | writing-livekit-scenarios | Authoring scenarios, and the agent-side code that consumes them | running |
 | running-livekit-simulations | Running simulations, CI, triage | writing (bad scenario), testing (repeat failure) |
 
-A bare "test my agent" goes to **debugging** by design — it's the cheap, local path; running
-simulations spends cloud resources.
+A bare "test my agent" goes to **debugging**. That's the cheap, local path; running simulations
+spends cloud resources.
 
 ## Authoring rules
 
-These exist because the skills must stay correct without maintenance. Every rule below has been
-violated in this repo once already; that's how it got written down.
+The skills need to stay correct without maintenance, and each rule below exists because this repo
+broke it at least once.
 
-**Encode behavior, not knowledge.** A skill teaches how to approach a job — what to check, what
-goes wrong, which tool fits — never the API surface. Allowed: one simple example command with a
-`# see --help` comment. Not allowed: a flag roster, a schema field list, a list of built-in helpers,
-a JSON output shape, version numbers, minimum versions, or "as of writing". Those go stale within
-months; the skill should say it *deliberately doesn't restate them* and point at `--help` and
-`reading-livekit-docs`. When you catch yourself typing a backticked identifier, ask whether the
-sentence still works as a concept.
+**Encode behavior, not knowledge.** A skill teaches how to approach a job (what to check, what goes
+wrong, which tool fits), not the API surface. You can include one simple example command with a
+`# see --help` comment. Don't include a flag roster, a schema field list, a list of built-in
+helpers, a JSON output shape, version numbers, minimum versions, or "as of writing". Those go stale
+within months. Instead, the skill should say it doesn't restate them and point at `--help` and
+`reading-livekit-docs`. When you're about to type a backticked identifier, check whether the
+sentence would still work as a concept.
 
-**No time-relative phrasing.** "Newer CLIs", "is landing", "still moving", "recently" all become
-false. Write capability checks instead: "where the CLI supports X, …", "if the command offers to Y,
-accept."
+**No time-relative phrasing.** Phrases like "newer CLIs", "is landing", "still moving", and
+"recently" stop being true. Write capability checks instead: "where the CLI supports X, …", "if the
+command offers to Y, accept."
 
-**Stay atomic.** One job per skill. Cross-link by name instead of restating; two skills that both
-explain simulations compete for the same triggers and dilute both.
+**Stay atomic.** One job per skill. Cross-link by name instead of restating. Two skills that both
+explain simulations compete for the same triggers, and both get weaker.
 
-**Descriptions are written as a set.** The description is the whole trigger mechanism. For each one:
-third person ("Runs simulations…", never "Run simulations…" or "I can run…" — the platform docs
-warn this breaks discovery); the phrases a user actually types for *that* job; the sibling to use
-for adjacent jobs; a negative clause where two skills genuinely border ("Not the default for a bare
-'test my agent' — that is debugging-livekit-agents"); at most 1,024 characters. Be a little pushy —
-models under-trigger skills. When you change one description, re-read the others; then run the
-trigger eval.
+**Descriptions are written as a set.** The description is the entire trigger mechanism. Each one
+needs:
 
-**Names are gerunds** — `building-livekit-agents`, `running-livekit-simulations` — lowercase,
-hyphens, under 64 characters, no "claude" or "anthropic". The platform docs recommend this form;
-what matters more is that the set is consistent.
+- third person ("Runs simulations…", never "Run simulations…" or "I can run…"; the platform docs
+  warn that other forms break discovery)
+- the phrases a user types for *that* job
+- the sibling to use for adjacent jobs
+- a negative clause where two skills border each other ("Not the default for a bare 'test my
+  agent', which goes to debugging-livekit-agents")
+- at most 1,024 characters
 
-**Bodies stay under 500 lines; references are one level deep.** Anything long or conditional goes
-in `references/`, linked directly from SKILL.md with a sentence saying when to read it. A reference
+Lean toward pushy, since models tend to under-trigger skills. When you change one description,
+re-read the others, then run the trigger eval.
+
+**Names are gerunds**: `building-livekit-agents`, `running-livekit-simulations`. Lowercase, hyphens,
+under 64 characters, no "claude" or "anthropic". The platform docs recommend this form, but
+consistency across the set matters more.
+
+**Bodies stay under 500 lines; references are one level deep.** Put anything long or conditional in
+`references/`, linked directly from SKILL.md with a sentence saying when to read it. A reference
 over 100 lines starts with a `## Contents` list so a partial read still shows its scope.
 
 **Frontmatter:**
@@ -95,95 +101,99 @@ metadata:
 ---
 ```
 
-**Explain why, not just what.** The skills are read by capable models. "Restart after every edit —
-a running session holds the old code" lands; "ALWAYS restart" doesn't. If you're writing a
-capitalized MUST, reframe it as the reason.
+**Explain why.** Capable models read these skills, and they respond better to a reason than to a
+bare command. "Restart after every edit — a running session holds the old code" works better than
+"ALWAYS restart". If you find yourself writing a capitalized MUST, replace it with the reason.
 
 ## Verifying facts while you write
 
-Even a conceptual skill rests on facts: that a subcommand exists, that a callback can only fail a
-run, that generation uploads source. Verify each one in the session, in this order:
+Even a conceptual skill depends on facts: that a subcommand exists, that a callback can only fail a
+run, that generation uploads source. Verify each one during the session, in this order:
 
-1. **`--help` on the installed CLI.** Outranks every document.
+1. **`--help` on the installed CLI.** This outranks every document.
 2. **`lk docs` or the Docs MCP server** for the published behavior.
-3. **The public repos for what's in flight** — [livekit/livekit-cli](https://github.com/livekit/livekit-cli)
-   and [livekit/agents](https://github.com/livekit/agents), including open PRs. The surface
-   regularly ships ahead of the docs and behind the source; a skill written from live docs alone
-   has been wrong on arrival here before.
-4. **The examples in livekit/agents** for how things are actually used (the front-desk and hotel
+3. **The public repos for unreleased work**: [livekit/livekit-cli](https://github.com/livekit/livekit-cli)
+   and [livekit/agents](https://github.com/livekit/agents), including open PRs. The CLI and SDK
+   often ship ahead of the docs and behind the source. Skills written from the live docs alone have
+   been wrong on arrival here before.
+4. **The examples in livekit/agents** for how things are used in practice (the front-desk and hotel
    receptionist examples are the canonical scenario files).
 
-Then write the *shape* you verified, not the surface. If a fact only holds for one version, it
-doesn't belong in a skill.
+Then write down the *shape* of what you verified, not the specific surface. If a fact only holds
+for one version, it doesn't belong in a skill.
 
 ## Evaluating skills
 
-Run these before opening a PR. The first is mandatory; the second is mandatory when any
-`description` changed; the third is for new or substantially rewritten skills.
+Run these before opening a PR. The first is always required. The second is required when any
+`description` changed. The third is for new or substantially rewritten skills.
 
 ### 1. Structure — `python3 evals/validate.py`
 
-Checks every `skills/*/SKILL.md`: frontmatter fields, name matches directory, description length
-and third person, body length, references exist and have a TOC when long, no dangling
-cross-references to skills that don't exist, no time-relative phrasing. Exit code is non-zero on
-any failure. Cheap; run it constantly.
+Checks every `skills/*/SKILL.md` for: frontmatter fields, name matching the directory, description
+length and third person, body length, references that exist and have a TOC when long, no dangling
+cross-references to skills that don't exist, and no time-relative phrasing. Exits non-zero on any
+failure. It's cheap, so run it often.
 
 ### 2. Triggering — `evals/trigger/`
 
-The question atomic skills most often get wrong: *does the right one fire?* The harness installs
-the whole set into a scratch copy of a testbed project, runs each query in `queries.json` through
-`claude -p`, and records which skill was invoked first. Queries are labeled with the acceptable
-skill(s), or none for near-misses that must not trigger anything. Output is a per-group confusion
-table and a list of misses.
+This checks whether the right skill fires, which is what atomic skills most often get wrong. The
+harness installs the whole set into a scratch copy of a testbed project, runs each query in
+`queries.json` through `claude -p`, and records which skill was invoked first. Each query is
+labeled with the acceptable skill(s), or with none for near-misses that shouldn't trigger anything.
+Output is a per-group confusion table and a list of misses.
 
 ```bash
 python3 evals/trigger/run.py                    # fixture: agent-starter-python, cloned fresh
 python3 evals/trigger/run.py --template node    # the skills serve both languages; run both
 ```
 
-Read `evals/trigger/README.md` for options (subset by index, runs per query, model). Add a query
-whenever you find a request that routed wrong; the near-miss cases are the valuable ones.
+See `evals/trigger/README.md` for options (subset by index, runs per query, model). When you find a
+request that routed wrong, add it as a query. Near-miss cases are the most valuable ones.
 
 **Fixtures and the user's LiveKit project.** Evals build their fixture by shallow-cloning a public
-`livekit-examples` starter — not with `lk agent init` or `lk app create`, which resolve a LiveKit
-Cloud project first and write its credentials into the directory. The harness strips `.env*` files
-and injects dummy `LIVEKIT_*` variables into every subprocess, which `lk` and the SDKs honour over
-the user's configured default project, so an eval can't spend inference or upload source against
-whichever project the user last selected. The model doing the deciding in every eval is the user's
-Claude; LiveKit Inference is never involved unless an agent executes the agent under test, which the
-guards prevent.
+`livekit-examples` starter. They don't use `lk agent init` or `lk app create`, because those resolve
+a LiveKit Cloud project first and write its credentials into the directory. The harness strips
+`.env*` files and injects dummy `LIVEKIT_*` variables into every subprocess. `lk` and the SDKs
+honour those over the user's configured default project, so an eval can't spend inference or upload
+source against whichever project the user last selected. The model making the decisions in every
+eval is the user's Claude. LiveKit Inference is only involved if an agent executes the agent under
+test, and the guards prevent that.
 
-Only the repo's skills are visible to trigger runs, which is what you want for measuring collisions
-within the set — but your users will have other skills installed, so a real-setup run is worth doing
-occasionally.
+Trigger runs only see the repo's skills. That's what you want for measuring collisions within the
+set, but users will have other skills installed, so it's worth occasionally doing a run with a
+normal setup.
 
 ### 3. Output — `evals/output/`
 
-Does following the skill produce better work than not following it? Run the same realistic prompt
-twice — once with the skill path given to a fresh agent, once without — against a fixture built the
-same way the trigger harness builds one (a credential-stripped clone of a starter template), and
-grade the outputs.
+This checks whether following the skill produces better work than not following it. Run the same
+realistic prompt twice, once with the skill path given to a fresh agent and once without, against a
+fixture built the same way as the trigger harness's (a credential-stripped clone of a starter
+template). Then grade the outputs.
 
 `evals/output/grade_scenarios.py <outputs> --agent <src/agent.py|src/agent.ts>` grades scenario
-files in two layers. **Structural** checks are exact — YAML parses, keys match the CLI's scenario
-struct, required fields, group names, quick/full split. **Judged** checks are one `claude -p` call
-with no tools that reads the agent's source and the scenarios and returns per-assertion verdicts
-with quoted evidence: every constraint in the agent's instructions is exercised, refusals are the
-pass, no invented capabilities, no rotting dates, expectations are decidable, the simulated user
-never plays the agent. Judgment questions get a judge; an earlier regex version false-negatived on
-good work and was replaced. Verdicts vary a little — use `--judge-runs 2` or `3` and read the
-evidence rather than counting passes. `evals/output/README.md` has the details and the safety rules
-for output-eval agents, which need write tools.
+files in two layers.
 
-Two things learned the hard way:
+- **Structural** checks are exact: YAML parses, keys match the CLI's scenario struct, required
+  fields, group names, quick/full split.
+- **Judged** checks are one `claude -p` call with no tools. It reads the agent's source and the
+  scenarios and returns per-assertion verdicts with quoted evidence. The assertions: every
+  constraint in the agent's instructions is exercised, refusals count as the pass, no invented
+  capabilities, no dates that will go stale, expectations are decidable, and the simulated user
+  never plays the agent.
+
+These questions need judgment, so they get a judge. An earlier regex version gave false negatives
+on good work and was replaced. Verdicts vary a little between runs, so use `--judge-runs 2` or `3`
+and read the evidence instead of counting passes. `evals/output/README.md` has the details and the
+safety rules for output-eval agents, which need write tools.
+
+Two lessons from past runs:
 
 - **Testbeds confound.** Both starter templates ship a `scenarios.yaml` that already uses the
   instructions template the skill teaches. A baseline run copies it and looks nearly as good as the
-  skill run. Check what the fixture already contains before reading a null result as "the skill adds
-  nothing."
+  skill run. Check what the fixture already contains before concluding the skill adds nothing.
 - **Never let an eval agent run `lk agent simulate`** without a scenario file. It uploads the
-  fixture's source to LiveKit Cloud and spends real inference. Eval prompts must say so, and the
-  dummy `LIVEKIT_*` environment must be set for any agent with shell access.
+  fixture's source to LiveKit Cloud and spends inference. Eval prompts must say so, and the dummy
+  `LIVEKIT_*` environment must be set for any agent with shell access.
 
 ### Definition of done for a skill change
 
@@ -196,20 +206,20 @@ Two things learned the hard way:
 
 Don't delete a skill directory. Replace its `SKILL.md` with a stub whose description begins
 `DEPRECATED — do not use.` and names the replacements, with a table in the body mapping old jobs to
-new skills. Remove its `references/` and `scripts/` — stale supporting files are actively harmful.
-Two reasons for the stub: agents that installed the old name still resolve it, and pushes to
-`skills/**` dispatch a downstream sync (`.github/workflows/trigger-skill-sync.yml`) whose handling
-of a removed directory isn't guaranteed.
+new skills. Remove its `references/` and `scripts/`, because stale supporting files mislead agents.
+The stub is there for two reasons. Agents that installed the old name still resolve it. And pushes
+to `skills/**` trigger a downstream sync (`.github/workflows/trigger-skill-sync.yml`) that isn't
+guaranteed to handle a removed directory.
 
-Rename by the same route: new directory, old one becomes a stub.
+To rename a skill, do the same: create the new directory and turn the old one into a stub.
 
 ## Things not to do here
 
 - Don't put evals, tooling, or scratch files under `skills/`. Everything there is published and
   synced.
-- Don't add a skill because a topic exists. Add one because agents demonstrably do that job badly
-  without it, and you can say what the skill changes.
-- Don't tune a description to one failing query. Ask what class of request it represents.
+- Don't add a skill because a topic exists. Add one when agents do that job badly without it
+  and you can say what the skill changes.
+- Don't tune a description to fix one failing query. Figure out what class of request it represents.
 
 ## Links
 
