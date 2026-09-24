@@ -67,13 +67,8 @@ rather than `/building-livekit-agents`. You rarely need to: Claude picks them up
 npx skills add livekit/agent-skills
 ```
 
-That installs all seven for whichever coding agents you use (Cursor, Codex, Gemini CLI, and others).
-The same skills are published at a [well-known index](https://docs.livekit.io/.well-known/agent-skills/index.json)
-on the docs site, with a SHA-256 digest for each, so this also works:
-
-```bash
-npx skills add https://docs.livekit.io
-```
+That installs all seven for whichever coding agents you use. `npx skills add https://livekit.com`
+works too.
 
 You can also copy the folders you want from `skills/` into your agent's skills directory.
 
