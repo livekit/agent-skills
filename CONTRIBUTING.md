@@ -84,7 +84,7 @@ Skills are loaded into agent context windows. Keep them under 500 lines so they 
 Install the LiveKit CLI (`lk`) and, ideally, the Docs MCP server
 (https://docs.livekit.io/intro/mcp-server/), since several skills drive them.
 
-To check your change, run `python3 evals/validate.py`. If you touched a `description`, also run the
+To check your change, run `uv run evals/validate.py`. If you touched a `description`, also run the
 trigger eval in `evals/trigger/`. Both are described in [AGENTS.md](AGENTS.md#evaluating-skills).
 
 ## Code of Conduct

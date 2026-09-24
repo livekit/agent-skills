@@ -22,8 +22,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
       - name: Structural checks on every SKILL.md
-        run: python3 evals/validate.py
+        run: uv run evals/validate.py
       - name: Eval tooling compiles and the query set parses
         run: |
           python3 -m py_compile evals/validate.py evals/trigger/run.py evals/output/grade_scenarios.py
