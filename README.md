@@ -63,8 +63,7 @@ rather than `/building-livekit-agents`. You rarely need to: Claude picks them up
 npx skills add livekit/agent-skills
 ```
 
-That installs all seven for whichever coding agents you use. `npx skills add https://livekit.com`
-works too.
+That installs all seven for whichever coding agents you use.
 
 You can also copy the folders you want from `skills/` into your agent's skills directory.
 
