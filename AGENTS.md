@@ -98,7 +98,6 @@ description: 'Runs LiveKit agent simulations and acts on the results. Use when t
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 ```
 
@@ -107,6 +106,11 @@ instead of LiveKit Cloud's agent hosting, and it can still use LiveKit Cloud fea
 LiveKit Inference. When the user runs the LiveKit server themselves, call it LiveKit OSS, as
 opposed to LiveKit Cloud. Using "self-hosted" for both leads agents to wrongly rule out Cloud
 features for anyone who hosts their own agent.
+
+**No version numbers in frontmatter.** Every install path tracks a skill by its content: the
+plugin by commit, the docs index by SHA-256 digest, `lk skills` and `npx skills` by the hash in
+their lock file. A hand-maintained `metadata.version` never got bumped and showed the same number
+for different content, so `validate.py` rejects it.
 
 **Explain why.** Capable models read these skills, and they respond better to a reason than to a
 bare command. "Restart after every edit — a running session holds the old code" works better than

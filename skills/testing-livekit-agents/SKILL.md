@@ -4,7 +4,6 @@ description: 'Writes turn-level tests for a LiveKit agent in the user''s normal 
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Testing LiveKit agents

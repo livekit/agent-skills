@@ -40,7 +40,8 @@ def main() -> int:
             if not re.match(r"^[A-Z][a-z]+s\b", desc): probs.append("description not third person (should open like 'Runs …')")
         if not fm.get("license"): probs.append("missing license")
         meta = fm.get("metadata") or {}
-        if not meta.get("author") or not isinstance(meta.get("version"), str): probs.append("missing metadata.author/version")
+        if not meta.get("author"): probs.append("missing metadata.author")
+        if "version" in meta: probs.append("metadata.version is set; skills are versioned by content hash, not a number")
         if len(body.splitlines()) > 500: probs.append(f"body {len(body.splitlines())} lines > 500")
         for ref in set(re.findall(r"references/([A-Za-z0-9_-]+\.md)", body)):
             rp = skill_md.parent / "references" / ref

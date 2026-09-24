@@ -4,7 +4,6 @@ description: 'Runs LiveKit agent simulations and acts on the results. Use when t
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Running LiveKit simulations
