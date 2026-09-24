@@ -29,6 +29,7 @@ def main() -> int:
         if not desc: probs.append("missing description")
         else:
             d = desc.strip("'\"")
+            if desc.startswith("'") and re.search(r"(?<!')'(?!')", desc[1:-1]): probs.append("unescaped ' in single-quoted description (write '' in YAML)")
             if len(d) > 1024: probs.append(f"description {len(d)} chars > 1024")
             if not re.match(r"^[A-Z][a-z]+s\b", d): probs.append("description not third person (should open like 'Runs …')")
         if not get("license"): probs.append("missing license")

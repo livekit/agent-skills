@@ -37,6 +37,17 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 
 ## Install
 
+### LiveKit CLI
+
+```bash
+lk skills install
+```
+
+That installs all seven skills for every coding agent it finds on your machine (Claude Code,
+Codex, Cursor, GitHub Copilot, Gemini CLI, and others), and adds the LiveKit Docs MCP server to
+each one's config. `lk skills update` pulls the latest; `lk skills --help` has the rest.
+`lk agent init` offers to do this for new agent projects.
+
 ### Claude Code
 
 Install the LiveKit plugin. It bundles all seven skills and the LiveKit Docs MCP server, and Claude
@@ -50,7 +61,7 @@ Code keeps it up to date in the background.
 Plugin skills are namespaced, so if you invoke one by hand it's `/livekit:building-livekit-agents`
 rather than `/building-livekit-agents`. You rarely need to: Claude picks them up from what you say.
 
-### Other coding agents
+### npx skills
 
 ```bash
 npx skills add livekit/agent-skills

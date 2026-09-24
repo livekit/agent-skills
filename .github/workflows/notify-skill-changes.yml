@@ -1,0 +1,32 @@
+name: Notify skill changes
+
+# Tells livekit/internal-actions that the published skills changed. It forwards
+# the event to livekit/web, which regenerates the agent skills index on
+# docs.livekit.io.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+
+concurrency:
+  group: skill-change-dispatch
+  cancel-in-progress: true
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch to internal actions repo
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_DISPATCH_TOKEN }}
+          TARGET_REPO: ${{ vars.TARGET_REPO }}
+          SOURCE_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          gh api -X POST "repos/${TARGET_REPO}/dispatches" \
+            -f event_type="agent-skills-updated" \
+            -f client_payload[source_repo]="$SOURCE_REPO" \
+            -f client_payload[source_sha]="$SOURCE_SHA" \
+            -f client_payload[source_ref]="$SOURCE_REF"
