@@ -9,6 +9,9 @@ on:
     paths:
       - "skills/**"
 
+# The dispatch authenticates with SYNC_DISPATCH_TOKEN; GITHUB_TOKEN isn't used.
+permissions: {}
+
 concurrency:
   group: skill-change-dispatch
   cancel-in-progress: true
