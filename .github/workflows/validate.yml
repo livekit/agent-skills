@@ -1,0 +1,26 @@
+name: Validate skills
+
+# The structural half of AGENTS.md's "definition of done": frontmatter, third-person
+# descriptions under the length limit, body length, references with a TOC when long,
+# cross-references that resolve, no time-relative phrasing. The trigger and output evals
+# need a logged-in `claude` and spend tokens, so they run locally, not here.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Structural checks on every SKILL.md
+        run: python3 evals/validate.py
+      - name: Eval tooling compiles and the query set parses
+        run: |
+          python3 -m py_compile evals/validate.py evals/trigger/run.py evals/output/grade_scenarios.py
+          python3 -c 'import json; q = json.load(open("evals/trigger/queries.json")); assert all("q" in e and "expect" in e for e in q); print(len(q), "trigger queries")'
