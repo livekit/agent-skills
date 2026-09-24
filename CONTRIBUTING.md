@@ -37,7 +37,6 @@ description: >-
 license: MIT
 metadata:
   author: livekit
-  version: "0.1.0"
 ---
 ```
 

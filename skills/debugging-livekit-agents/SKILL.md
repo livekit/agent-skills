@@ -4,7 +4,6 @@ description: 'Drives a multi-turn conversation with a LiveKit agent running loca
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Debugging a LiveKit agent live

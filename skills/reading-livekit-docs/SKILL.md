@@ -4,7 +4,6 @@ description: 'Looks up current LiveKit facts (API signatures, CLI flags, config 
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Reading LiveKit documentation

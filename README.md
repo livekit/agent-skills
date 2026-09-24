@@ -1,8 +1,9 @@
 # LiveKit Agent Skills
 
-Skills that teach AI coding agents (Claude Code, Cursor, Codex, and anything else that reads the
-[Agent Skills](https://agentskills.io) format) how to build, test, and ship voice AI agents with
-[LiveKit](https://livekit.io).
+Skills that teach AI coding agents (Claude Code, Cursor, Codex, Gemini CLI, and anything else that
+reads the [Agent Skills](https://agentskills.io) format) how to build, test, and ship voice agents
+with [LiveKit](https://livekit.io) and the LiveKit Agents SDK for Python and Node.js. Includes a
+Claude Code plugin that bundles the skills with the LiveKit Docs MCP server.
 
 Without these skills, a coding agent working on a LiveKit project guesses at APIs from stale
 training data, ships prompt changes it never tried, and doesn't know the LiveKit tooling exists.
@@ -36,22 +37,44 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 
 ## Install
 
+### Claude Code
+
+Install the LiveKit plugin. It bundles all seven skills and the LiveKit Docs MCP server.
+
+Pick one: the plugin or `npx skills add`, not both. Claude Code doesn't deduplicate plugin
+skills against project skills, so with both installed every description loads twice and the copies
+compete with each other for routing.
+
+```
+/plugin marketplace add livekit/agent-skills
+/plugin install livekit@livekit
+```
+
+Claude Code doesn't auto-update third-party marketplaces by default. To get skill updates as they
+land, turn on auto-update for the `livekit` marketplace in `/plugin` under Marketplaces, or run
+`/plugin marketplace update livekit` now and then.
+
+Plugin skills are namespaced, so if you invoke one by hand it's `/livekit:building-livekit-agents`
+rather than `/building-livekit-agents`. You rarely need to: Claude picks them up from what you say.
+
+### npx skills
+
 ```bash
 npx skills add livekit/agent-skills
 ```
 
-That installs all seven for whichever coding agents you use. You can also copy the folders you want
-from `skills/` into your agent's skills directory (for Claude Code, `.claude/skills/` in your
-project).
+That installs all seven for whichever coding agents you use.
 
-You'll also want:
+You can also copy the folders you want from `skills/` into your agent's skills directory.
+
+### You'll also want
 
 - **The LiveKit CLI (`lk`).** Four skills drive it: `lk docs`, `lk agent debugger`,
   `lk agent simulate`, and the `lk agent` deploy commands. Install or update it from the [CLI docs](https://docs.livekit.io/intro/basics/cli).
   The skills check for the commands they need and will tell you to update if one is missing.
 - **A LiveKit Cloud project**, with `lk` authenticated to it, for simulations and deployment.
-- **The LiveKit Docs MCP server** (optional). It's the same source `lk docs` uses, with less
-  friction. Setup for each coding agent is at
+- **The LiveKit Docs MCP server** (optional, and already included in the Claude Code plugin). It's
+  the same source `lk docs` uses, with less friction. Setup for each coding agent is at
   [docs.livekit.io/intro/mcp-server](https://docs.livekit.io/intro/mcp-server/).
 
 ## How the skills are built
@@ -69,11 +92,8 @@ the right requests are in [AGENTS.md](AGENTS.md).
 ## Upgrading from the old skills
 
 `livekit-agents` and `livekit-simulations` were split into the seven skills above and removed. If
-your agent still has either installed, delete it and reinstall:
-
-```bash
-npx skills add livekit/agent-skills
-```
+your agent still has either installed, delete it and reinstall with one of the methods under
+[Install](#install).
 
 A stale copy of `livekit-simulations` in particular will steer an agent wrong — it described a CLI
 surface that no longer exists.

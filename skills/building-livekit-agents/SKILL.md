@@ -4,7 +4,6 @@ description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cl
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Building LiveKit agents

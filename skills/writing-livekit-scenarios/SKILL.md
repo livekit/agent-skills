@@ -4,7 +4,6 @@ description: 'Creates and maintains the scenarios a LiveKit agent simulation run
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Writing simulation scenarios

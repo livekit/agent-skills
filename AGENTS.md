@@ -12,6 +12,7 @@ agent-skills/
 ├── README.md                       # for users: what the skills do, how to install
 ├── AGENTS.md                       # for agents maintaining the repo (this file)
 ├── CONTRIBUTING.md                 # for human contributors: process
+├── .claude-plugin/                 # Claude Code marketplace + plugin manifests (see Distribution)
 ├── skills/                         # the published skills; this layout is the install contract
 │   ├── reading-livekit-docs/
 │   ├── building-livekit-agents/
@@ -97,7 +98,6 @@ description: 'Runs LiveKit agent simulations and acts on the results. Use when t
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 ```
 
@@ -106,6 +106,11 @@ instead of LiveKit Cloud's agent hosting, and it can still use LiveKit Cloud fea
 LiveKit Inference. When the user runs the LiveKit server themselves, call it LiveKit OSS, as
 opposed to LiveKit Cloud. Using "self-hosted" for both leads agents to wrongly rule out Cloud
 features for anyone who hosts their own agent.
+
+**No version numbers in frontmatter.** Every install path tracks a skill by its content: the
+plugin by commit, the docs index by SHA-256 digest, `npx skills` by the hash in its lock file.
+A hand-maintained `metadata.version` never got bumped and showed the same number for different
+content, so `validate.py` rejects it.
 
 **Explain why.** Capable models read these skills, and they respond better to a reason than to a
 bare command. "Restart after every edit — a running session holds the old code" works better than
@@ -218,6 +223,36 @@ Skills are installed from this repository — `npx skills add livekit/agent-skil
 LiveKit CLI. Installers take `skills/<name>/SKILL.md` plus that skill's `references/`, so keep that
 layout stable: a renamed directory is a removed skill and a new one, and nothing here can reach a
 user's existing local copy. The README tells users of a removed skill to reinstall.
+
+Removing a skill here also removes it from the well-known index on the docs site at its next
+rebuild, and Claude Code plugin users lose it the next time their marketplace updates.
+
+## Distribution
+
+The same `skills/` directory reaches users through three channels. None of them need a manual
+release step, so a merged change to `skills/**` is a shipped change.
+
+- **Claude Code plugin.** `.claude-plugin/marketplace.json` makes this repo a marketplace named
+  `livekit` with one plugin, also named `livekit`, sourced from the repo root. `plugin.json` bundles
+  the Docs MCP server; the skills are picked up from `skills/` automatically. `plugin.json` has no
+  `version` on purpose: without one, Claude Code treats each commit as a new version, so users get
+  a change as soon as their marketplace updates. Adding a `version` means every skill change also
+  needs a bump, or users stay on the old copy. Third-party marketplaces don't auto-update by
+  default; the README tells users how to turn it on. Check manifest edits with `claude plugin validate .`.
+- **`npx skills add livekit/agent-skills`**, which reads `skills/` from GitHub directly.
+- **The well-known index** at `https://docs.livekit.io/.well-known/agent-skills/index.json` (and
+  the older `/.well-known/skills/` path), with a SHA-256 digest per skill. The docs site generates
+  it from this repo. A push to `skills/**` on `main` runs `notify-skill-changes.yml`, which
+  dispatches `agent-skills-updated` to `livekit/internal-actions`; that forwards it to
+  `livekit/web`, which regenerates the index and opens a PR.
+
+Plugin skills are namespaced (`/livekit:building-livekit-agents`). Skill names still matter for
+the other channels, and for anyone invoking a skill by hand, so the naming rules above apply
+unchanged.
+
+For a listing in a marketplace we don't control, such as Anthropic's `claude-plugins-official`,
+the entry should point at this repo with a GitHub source pinned to a full commit `sha` rather than
+a branch, and be bumped deliberately.
 
 ## Things not to do here
 

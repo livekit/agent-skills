@@ -4,7 +4,6 @@ description: 'Deploys and operates a LiveKit agent in production: shipping a ver
 license: MIT
 metadata:
   author: livekit
-  version: "1.0.0"
 ---
 
 # Operating LiveKit agents
