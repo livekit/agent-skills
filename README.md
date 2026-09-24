@@ -43,9 +43,9 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 lk skills install
 ```
 
-That installs all seven skills for every coding agent it finds on your machine (Claude Code,
-Codex, Cursor, GitHub Copilot, Gemini CLI, and others), and adds the LiveKit Docs MCP server to
-each one's config. `lk skills update` pulls the latest; `lk skills --help` has the rest.
+That installs all seven skills for the coding agents on your machine (Claude Code, Codex, Cursor,
+GitHub Copilot, Gemini CLI, and others), and adds the LiveKit Docs MCP server to each one's
+config. `lk skills update` pulls the latest; `lk skills --help` has the rest.
 `lk agent init` offers to do this for new agent projects.
 
 ### Claude Code
