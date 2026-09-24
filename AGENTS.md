@@ -108,9 +108,9 @@ opposed to LiveKit Cloud. Using "self-hosted" for both leads agents to wrongly r
 features for anyone who hosts their own agent.
 
 **No version numbers in frontmatter.** Every install path tracks a skill by its content: the
-plugin by commit, the docs index by SHA-256 digest, `npx skills` by the hash in its lock file.
-A hand-maintained `metadata.version` never got bumped and showed the same number for different
-content, so `validate.py` rejects it.
+plugin by commit, the docs index by SHA-256 digest, `lk skills` and `npx skills` by the hash in
+their lock file. A hand-maintained `metadata.version` never got bumped and showed the same number
+for different content, so `validate.py` rejects it.
 
 **Explain why.** Capable models read these skills, and they respond better to a reason than to a
 bare command. "Restart after every edit — a running session holds the old code" works better than
@@ -229,7 +229,7 @@ rebuild, and Claude Code plugin users lose it the next time their marketplace up
 
 ## Distribution
 
-The same `skills/` directory reaches users through three channels. None of them need a manual
+The same `skills/` directory reaches users through four channels. None of them need a manual
 release step, so a merged change to `skills/**` is a shipped change.
 
 - **Claude Code plugin.** `.claude-plugin/marketplace.json` makes this repo a marketplace named
@@ -239,6 +239,7 @@ release step, so a merged change to `skills/**` is a shipped change.
   a change as soon as their marketplace updates. Adding a `version` means every skill change also
   needs a bump, or users stay on the old copy. Third-party marketplaces don't auto-update by
   default; the README tells users how to turn it on. Check manifest edits with `claude plugin validate .`.
+- **The LiveKit CLI** (`lk skills`), which installs from this repository.
 - **`npx skills add livekit/agent-skills`**, which reads `skills/` from GitHub directly.
 - **The well-known index** at `https://docs.livekit.io/.well-known/agent-skills/index.json` (and
   the older `/.well-known/skills/` path), with a SHA-256 digest per skill. The docs site generates
