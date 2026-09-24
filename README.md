@@ -11,7 +11,7 @@ turn-level tests, and runs simulations before a release.
 
 ## What you get
 
-Six skills, one per job in the development loop. Each is small and hands off to the others by
+Seven skills, one per job in the development loop. Each is small and hands off to the others by
 name, so a task typically loads two or three of them instead of one large document.
 
 | Stage | Skill | What it does |
@@ -22,6 +22,7 @@ name, so a task typically loads two or three of them instead of one large docume
 | Test | **testing-livekit-agents** | Turn-level tests in the project's own pytest or Vitest suite: assertions on messages, tool calls and handoffs, LLM judging of intent, tool mocking. |
 | Simulate | **writing-livekit-scenarios** | Creates the scenarios a simulation runs (generate a baseline, refine it, cover the hard cases, organize into sets) and wires the agent to seed state from them and grade its final state. |
 | Ship | **running-livekit-simulations** | Runs simulations in text or audio mode, against a local or deployed agent, in CI before a release, and triages the failures. |
+| Operate | **operating-livekit-agents** | Deploys a version to LiveKit Cloud and rolls it back, and keeps a live agent healthy: the worker process model and prewarming, safe async in workers, provider timeouts, graceful shutdown, SDK upgrades, observability, and changing a codebase that's already in production. |
 
 You don't invoke skills by name. Your coding agent picks them up from what you say:
 
@@ -31,6 +32,7 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 - *"write pytest tests for the greeting"* · *"pin that bug as a test"* → testing
 - *"what should I test before we ship?"* · *"my simulations are flaky"* → writing scenarios
 - *"run the scenarios and tell me what failed"* · *"test barge-in in audio mode"* → running
+- *"deploy my agent"* · *"roll back to yesterday's version"* · *"first call after a restart is slow"* → operating
 
 ## Install
 
@@ -38,16 +40,16 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 npx skills add livekit/agent-skills
 ```
 
-That installs all six for whichever coding agents you use. You can also copy the folders you want
+That installs all seven for whichever coding agents you use. You can also copy the folders you want
 from `skills/` into your agent's skills directory (for Claude Code, `.claude/skills/` in your
 project).
 
 You'll also want:
 
-- **The LiveKit CLI (`lk`).** Three skills drive it: `lk docs`, `lk agent debugger`, and
-  `lk agent simulate`. Install or update it from the [CLI docs](https://docs.livekit.io/intro/basics/cli).
+- **The LiveKit CLI (`lk`).** Four skills drive it: `lk docs`, `lk agent debugger`,
+  `lk agent simulate`, and the `lk agent` deploy commands. Install or update it from the [CLI docs](https://docs.livekit.io/intro/basics/cli).
   The skills check for the commands they need and will tell you to update if one is missing.
-- **A LiveKit Cloud project**, with `lk` authenticated to it, for simulations.
+- **A LiveKit Cloud project**, with `lk` authenticated to it, for simulations and deployment.
 - **The LiveKit Docs MCP server** (optional). It's the same source `lk docs` uses, with less
   friction. Setup for each coding agent is at
   [docs.livekit.io/intro/mcp-server](https://docs.livekit.io/intro/mcp-server/).
@@ -66,7 +68,7 @@ the right requests are in [AGENTS.md](AGENTS.md).
 
 ## Upgrading from the old skills
 
-`livekit-agents` and `livekit-simulations` were split into the six skills above and removed. If
+`livekit-agents` and `livekit-simulations` were split into the seven skills above and removed. If
 your agent still has either installed, delete it and reinstall:
 
 ```bash

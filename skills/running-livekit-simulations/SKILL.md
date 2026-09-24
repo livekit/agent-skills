@@ -108,4 +108,5 @@ describing a turn-level bug. A unit test pins it more cheaply and catches it ear
 - Authoring and organizing scenarios: `writing-livekit-scenarios`
 - Interactive debugging of a failure: `debugging-livekit-agents`
 - Cheaper per-commit coverage: `testing-livekit-agents`
+- Deploying the agent the run is grading: `operating-livekit-agents`
 - Flags, versions, changelogs: `reading-livekit-docs`

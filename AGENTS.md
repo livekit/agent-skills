@@ -19,7 +19,8 @@ agent-skills/
 │   ├── testing-livekit-agents/
 │   ├── writing-livekit-scenarios/
 │   │   └── references/             # scenario craft, risk coverage, connecting the agent
-│   └── running-livekit-simulations/
+│   ├── running-livekit-simulations/
+│   └── operating-livekit-agents/
 └── evals/                          # tooling for checking the skills — never under skills/
     ├── validate.py                 # structural checks on every SKILL.md
     ├── trigger/                    # does the right skill fire for a request?
@@ -40,6 +41,7 @@ land on exactly one skill, and that skill's body should cover everything needed 
 | testing-livekit-agents | Turn-level tests in pytest/Vitest | debugging (to find the bug), running (whole conversations) |
 | writing-livekit-scenarios | Authoring scenarios, and the agent-side code that consumes them | running |
 | running-livekit-simulations | Running simulations, CI, triage | writing (bad scenario), testing (repeat failure) |
+| operating-livekit-agents | Deploying to LiveKit Cloud and running in production: worker model, prewarm, shutdown, upgrades, observability | debugging (reproduce), testing (pin), running (verify a deployed agent) |
 
 A bare "test my agent" goes to **debugging**. That's the cheap, local path; running simulations
 spends cloud resources.

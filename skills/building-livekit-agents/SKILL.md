@@ -154,3 +154,4 @@ production, and move on.
 - Turn-level tests: `testing-livekit-agents`
 - Whole-conversation testing: `writing-livekit-scenarios`, `running-livekit-simulations`
 - State, approvals, commits, delivery, closing: `references/state-and-effects.md`
+- Deploying it and keeping it healthy in production: `operating-livekit-agents`

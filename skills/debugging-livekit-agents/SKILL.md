@@ -81,4 +81,5 @@ later change can't reintroduce it unnoticed.
 - Building the agent: `building-livekit-agents`
 - Pinning a found bug as a test: `testing-livekit-agents`
 - Whole-conversation checks: `writing-livekit-scenarios`, `running-livekit-simulations`
+- Production-only failures (worker processes, providers, shutdown): `operating-livekit-agents`
 - CLI flags and API facts: `reading-livekit-docs`

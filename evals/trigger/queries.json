@@ -250,5 +250,46 @@
   "expect": [
    "building-livekit-agents"
   ]
+ },
+ {
+  "q": "deploy the agent in this repo to livekit cloud. first time deploying it so set up whatever config it needs and make sure the openai key gets in as a secret",
+  "expect": [
+   "operating-livekit-agents"
+  ]
+ },
+ {
+  "q": "this morning's deploy is bad, callers are getting silence. roll it back to yesterday's version and tail the logs while you do it",
+  "expect": [
+   "operating-livekit-agents"
+  ]
+ },
+ {
+  "q": "in prod we get RuntimeError: Task got Future attached to a different loop a few times an hour. never happens locally. what is this and where do i look",
+  "expect": [
+   "operating-livekit-agents"
+  ]
+ },
+ {
+  "q": "the first call after we restart the agent takes like 6 seconds before it says anything, then every call after is snappy. fix the cold start",
+  "expect": [
+   "operating-livekit-agents"
+  ]
+ },
+ {
+  "q": "we're pinned to livekit-agents 1.6.6 in prod, move us to the latest 1.8 without breaking anything",
+  "expect": [
+   "operating-livekit-agents",
+   "reading-livekit-docs"
+  ]
+ },
+ {
+  "q": "when k8s rolls the pods during a deploy we drop whatever calls are in progress. make the shutdown not do that",
+  "expect": [
+   "operating-livekit-agents"
+  ]
+ },
+ {
+  "q": "deploy my flask api to fly.io and get the DATABASE_URL in as a secret",
+  "expect": []
  }
 ]
