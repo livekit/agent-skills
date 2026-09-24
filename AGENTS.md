@@ -134,7 +134,7 @@ for one version, it doesn't belong in a skill.
 Run these before opening a PR. The first is always required. The second is required when any
 `description` changed. The third is for new or substantially rewritten skills.
 
-### 1. Structure — `python3 evals/validate.py`
+### 1. Structure — `uv run evals/validate.py`
 
 Checks every `skills/*/SKILL.md` for: frontmatter fields, name matching the directory, description
 length and third person, body length, references that exist and have a TOC when long, no dangling
