@@ -40,7 +40,7 @@ run produced, in two layers:
 The judge derives the agent's capabilities and guardrails from the source you pass, so it works for
 either starter template and for real agents. It's the user's Claude run with `--tools ""`, so it
 can't execute anything, and it costs one short call per graded output. Verdicts vary a little
-between runs. Pass `--judge-runs 2` or `3` for a majority, and read the evidence instead of counting
+between runs. Pass `--judge-runs 3` for a majority (keep it odd; a 1–1 split from two runs counts as a fail), and read the evidence instead of counting
 passes. `--no-judge` runs only the structural layer, `--json` prints the full report, and `--strict`
 exits non-zero on any failure. Requires PyYAML (`pip install pyyaml`) and the `claude` CLI logged in.
 

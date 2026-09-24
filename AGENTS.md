@@ -188,7 +188,7 @@ files in two layers.
   never plays the agent.
 
 These questions need judgment, so they get a judge. An earlier regex version gave false negatives
-on good work and was replaced. Verdicts vary a little between runs, so use `--judge-runs 2` or `3`
+on good work and was replaced. Verdicts vary a little between runs, so use `--judge-runs 3` (an odd count, so there is always a majority)
 and read the evidence instead of counting passes. `evals/output/README.md` has the details and the
 safety rules for output-eval agents, which need write tools.
 

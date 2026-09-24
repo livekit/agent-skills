@@ -14,7 +14,7 @@ Two layers:
               quoted evidence for spot-checking.
 
     python3 evals/output/grade_scenarios.py <outputs-dir> --agent <path/to/src/agent.py>
-    python3 evals/output/grade_scenarios.py <outputs-dir> --agent src/agent.ts --judge-runs 2
+    python3 evals/output/grade_scenarios.py <outputs-dir> --agent src/agent.ts --judge-runs 3
 
 The judge is the user's Claude (whatever `claude -p` is configured with, or --model), run with no
 tools so it can't execute anything. It only sees what's passed in. Verdicts vary a little between
@@ -155,7 +155,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("outputs", help="directory containing the produced scenario file(s)")
     ap.add_argument("--agent", required=True, help="the agent source the scenarios were written for (src/agent.py or src/agent.ts)")
-    ap.add_argument("--judge-runs", type=int, default=1, help="judge calls; majority per assertion")
+    ap.add_argument("--judge-runs", type=int, default=1, help="judge calls; majority per assertion — use an odd number (3), since a tie counts as a fail")
     ap.add_argument("--model", default=None, help="model for the judge (default: your configured claude -p model)")
     ap.add_argument("--timeout", type=int, default=300, help="seconds per judge call; large scenario sets need more")
     ap.add_argument("--no-judge", action="store_true", help="structural checks only")
@@ -163,6 +163,8 @@ def main():
     ap.add_argument("--strict", action="store_true", help="exit 1 if any check fails")
     a = ap.parse_args()
 
+    if a.judge_runs > 1 and a.judge_runs % 2 == 0:
+        print(f"warning: --judge-runs {a.judge_runs} is even; a tie counts as a fail. Use an odd number.", file=sys.stderr)
     d = pathlib.Path(a.outputs); files, aux = load_scenario_files(d)
     s_res, s_ev, n = structural(files, aux)
     j_res, j_ev = ({}, {})
