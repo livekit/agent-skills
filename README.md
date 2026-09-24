@@ -50,8 +50,7 @@ config. `lk skills update` pulls the latest; `lk skills --help` has the rest.
 
 ### Claude Code
 
-Install the LiveKit plugin. It bundles all seven skills and the LiveKit Docs MCP server, and Claude
-Code keeps it up to date in the background.
+Install the LiveKit plugin. It bundles all seven skills and the LiveKit Docs MCP server.
 
 Pick one: the plugin or `lk skills install`, not both. Claude Code doesn't deduplicate plugin
 skills against project skills, so with both installed every description loads twice and the copies
@@ -61,6 +60,10 @@ compete with each other for routing.
 /plugin marketplace add livekit/agent-skills
 /plugin install livekit@livekit
 ```
+
+Claude Code doesn't auto-update third-party marketplaces by default. To get skill updates as they
+land, turn on auto-update for the `livekit` marketplace in `/plugin` under Marketplaces, or run
+`/plugin marketplace update livekit` now and then.
 
 Plugin skills are namespaced, so if you invoke one by hand it's `/livekit:building-livekit-agents`
 rather than `/building-livekit-agents`. You rarely need to: Claude picks them up from what you say.

@@ -225,7 +225,7 @@ layout stable: a renamed directory is a removed skill and a new one, and nothing
 user's existing local copy. The README tells users of a removed skill to reinstall.
 
 Removing a skill here also removes it from the well-known index on the docs site at its next
-rebuild, and Claude Code plugin users lose it on their next background update.
+rebuild, and Claude Code plugin users lose it the next time their marketplace updates.
 
 ## Distribution
 
@@ -235,9 +235,10 @@ release step, so a merged change to `skills/**` is a shipped change.
 - **Claude Code plugin.** `.claude-plugin/marketplace.json` makes this repo a marketplace named
   `livekit` with one plugin, also named `livekit`, sourced from the repo root. `plugin.json` bundles
   the Docs MCP server; the skills are picked up from `skills/` automatically. `plugin.json` has no
-  `version` on purpose: without one, Claude Code treats each commit as a new version and updates
-  users in the background. Adding a `version` means every skill change also needs a bump, or users
-  stay on the old copy. Check manifest edits with `claude plugin validate .`.
+  `version` on purpose: without one, Claude Code treats each commit as a new version, so users get
+  a change as soon as their marketplace updates. Adding a `version` means every skill change also
+  needs a bump, or users stay on the old copy. Third-party marketplaces don't auto-update by
+  default; the README tells users how to turn it on. Check manifest edits with `claude plugin validate .`.
 - **The LiveKit CLI** (`lk skills`), which installs from this repository.
 - **`npx skills add livekit/agent-skills`**, which reads `skills/` from GitHub directly.
 - **The well-known index** at `https://docs.livekit.io/.well-known/agent-skills/index.json` (and
