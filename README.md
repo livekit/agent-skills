@@ -37,11 +37,22 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 
 ## Install
 
+### LiveKit CLI
+
+```bash
+lk skills install
+```
+
+That installs all seven skills for the coding agents on your machine (Claude Code, Codex, Cursor,
+GitHub Copilot, Gemini CLI, and others), and adds the LiveKit Docs MCP server to each one's
+config. `lk skills update` pulls the latest; `lk skills --help` has the rest.
+`lk agent init` offers to do this for new agent projects.
+
 ### Claude Code
 
 Install the LiveKit plugin. It bundles all seven skills and the LiveKit Docs MCP server.
 
-Pick one: the plugin or `npx skills add`, not both. Claude Code doesn't deduplicate plugin
+Pick one: the plugin or `lk skills install`, not both. Claude Code doesn't deduplicate plugin
 skills against project skills, so with both installed every description loads twice and the copies
 compete with each other for routing.
 
