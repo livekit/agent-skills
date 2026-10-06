@@ -80,6 +80,18 @@
   ]
  },
  {
+  "q": "callers say their order number and the agent keeps getting it wrong. can you try saying a few order numbers to it out loud and see what it actually hears",
+  "expect": [
+   "debugging-livekit-agents"
+  ]
+ },
+ {
+  "q": "we switched to a speech-to-speech realtime model and now i can't text chat with it anymore. how do i try a couple of turns locally after each edit",
+  "expect": [
+   "debugging-livekit-agents"
+  ]
+ },
+ {
   "q": "write {test_runner} tests for {agent} covering the greeting and that it refuses to give medical dosages",
   "expect": [
    "testing-livekit-agents"

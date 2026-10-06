@@ -19,7 +19,7 @@ name, so a task typically loads two or three of them instead of one large docume
 |---|---|---|
 | Know | **reading-livekit-docs** | Looks up current LiveKit facts (APIs, CLI flags, changelogs, pricing) through the Docs MCP server or `lk docs` instead of answering from memory. The other skills load it first. |
 | Build | **building-livekit-agents** | Architecture for low-latency voice agents: keeping context small, splitting monoliths into handoffs and tasks, designing for users who listen rather than read. |
-| Try | **debugging-livekit-agents** | Drives a multi-turn conversation with the agent running locally in text mode, via `lk agent debugger`, and reads the tool calls behind each reply. The default way to check a change. |
+| Try | **debugging-livekit-agents** | Drives a multi-turn conversation with the agent running locally, in text or audio mode, via `lk agent debugger`, and reads the tool calls behind each reply. The default way to check a change. |
 | Test | **testing-livekit-agents** | Turn-level tests in the project's own pytest or Vitest suite: assertions on messages, tool calls and handoffs, LLM judging of intent, tool mocking. |
 | Simulate | **writing-livekit-scenarios** | Creates the scenarios a simulation runs (generate a baseline, refine it, cover the hard cases, organize into sets) and wires the agent to seed state from them and grade its final state. |
 | Ship | **running-livekit-simulations** | Runs simulations in text or audio mode, against a local or deployed agent, in CI before a release, and triages the failures. |

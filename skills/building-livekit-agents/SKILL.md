@@ -125,7 +125,7 @@ Prompt changes break agent behavior as easily as code changes do, and trying it 
 doesn't count as verification.
 
 - **While building**, drive conversations with `debugging-livekit-agents`. It runs your agent
-  locally in text mode, lets you send turns, and shows the tool calls behind each reply.
+  locally, lets you send turns as text or speech, and shows the tool calls behind each reply.
 - **Before you call it done**, write tests with `testing-livekit-agents`. At minimum, cover the core
   behavior the user asked for, tool invocation with correct arguments if there are tools, and one
   failure path.
