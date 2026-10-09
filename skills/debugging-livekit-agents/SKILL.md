@@ -1,6 +1,6 @@
 ---
 name: debugging-livekit-agents
-description: 'Drives a multi-turn conversation with a LiveKit agent running locally to see what it does. Use when the user says "test my agent", "try my agent", "does this work", "why did it call that tool", "it says the wrong thing when I ask X", "test this change", or whenever you have edited an agent and need to check how it behaves. Wraps `lk agent debugger`: start the agent in text mode, send turns, read the tool calls, handoffs, errors and logs behind each reply, and restart after an edit. By default it runs without audio or a LiveKit room at one LLM call per turn, so it is the preferred way for a coding agent to live-test during development, and the default when the user says "test" without naming unit tests or simulations. Also use when the agent uses a speech-to-speech model or mishears what users say.'
+description: 'Drives a live multi-turn conversation with a LiveKit agent running locally, using `lk agent debugger`. Use when the user says "test my agent", "try my agent", "does this work", or "why did it call that tool", after editing an agent to check how it behaves, or when an agent on a speech-to-speech model or one that mishears users needs checking. The default for a bare "test"; for regression tests use testing-livekit-agents, for graded runs running-livekit-simulations.'
 license: MIT
 metadata:
   author: livekit
@@ -12,9 +12,8 @@ metadata:
 conversation one turn at a time. It's built for coding agents: you play the user, choose each next
 line based on the last reply, and inspect what the agent did in between.
 
-By default the session is text: speech is off and nothing goes to a LiveKit room, so a turn costs
-only the agent's own LLM and tool calls. That's cheap enough to use constantly while building. When
-the bug lives in the audio path, start the session in audio mode instead (see
+By default the session is text: speech is off and nothing goes to a LiveKit room, so each turn is
+fast. When the bug lives in the audio path, start the session in audio mode instead (see
 [Audio mode](#audio-mode)).
 
 Before the first use, confirm the command exists and read its help:
@@ -74,11 +73,10 @@ each `say` with LiveKit Inference TTS into the agent's microphone input, and the
 audio pipeline.
 
 - **Use it when the symptom is about hearing**, or when the agent uses a speech-to-speech model that
-  can't run in text mode. Stay in text mode for logic, prompt, and tool bugs: it's cheaper and
-  faster, and the transcription noise only gets in the way.
-- **It costs more and needs a project.** The spoken turns run on LiveKit Inference and bill the
-  user's connected LiveKit Cloud project, on top of the agent's own STT and TTS. Text mode needs
-  neither. Say so before switching.
+  can't run in text mode. Stay in text mode for logic, prompt, and tool bugs: it's faster, and
+  the transcription noise only gets in the way.
+- **It needs a LiveKit Cloud project.** The spoken turns run on LiveKit Inference, so `lk` must
+  have project credentials. Text mode doesn't need them.
 - **Compare what was heard with what you sent.** Each turn shows the agent's transcript of your
   line, and the sent text when the words differ. That difference is often the whole bug: the agent
   answered correctly to what it heard.
