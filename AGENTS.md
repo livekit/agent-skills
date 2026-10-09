@@ -107,10 +107,9 @@ LiveKit Inference. When the user runs the LiveKit server themselves, call it Liv
 opposed to LiveKit Cloud. Using "self-hosted" for both leads agents to wrongly rule out Cloud
 features for anyone who hosts their own agent.
 
-**No version numbers in frontmatter.** Every install path tracks a skill by its content: the
-plugin by commit, the docs index by SHA-256 digest, `lk skills` and `npx skills` by the hash in
-their lock file. A hand-maintained `metadata.version` never got bumped and showed the same number
-for different content, so `validate.py` rejects it.
+**No version numbers in frontmatter or `plugin.json`.** Every install path tracks a skill by its
+content, so a merged change ships without a bump. A hand-maintained `metadata.version` never got
+bumped and showed the same number for different content, so `validate.py` rejects it.
 
 **Explain why.** Capable models read these skills, and they respond better to a reason than to a
 bare command. "Restart after every edit — a running session holds the old code" works better than
@@ -229,31 +228,13 @@ rebuild, and Claude Code plugin users lose it the next time their marketplace up
 
 ## Distribution
 
-The same `skills/` directory reaches users through four channels. None of them need a manual
-release step, so a merged change to `skills/**` is a shipped change.
+A merged change to `skills/**` ships to every channel with no release step:
 
-- **Claude Code plugin.** `.claude-plugin/marketplace.json` makes this repo a marketplace named
-  `livekit` with one plugin, also named `livekit`, sourced from the repo root. `plugin.json` bundles
-  the Docs MCP server; the skills are picked up from `skills/` automatically. `plugin.json` has no
-  `version` on purpose: without one, Claude Code treats each commit as a new version, so users get
-  a change as soon as their marketplace updates. Adding a `version` means every skill change also
-  needs a bump, or users stay on the old copy. Third-party marketplaces don't auto-update by
-  default; the README tells users how to turn it on. Check manifest edits with `claude plugin validate .`.
-- **The LiveKit CLI** (`lk skills`), which installs from this repository.
-- **`npx skills add livekit/agent-skills`**, which reads `skills/` from GitHub directly.
-- **The well-known index** at `https://docs.livekit.io/.well-known/agent-skills/index.json` (and
-  the older `/.well-known/skills/` path), with a SHA-256 digest per skill. The docs site generates
-  it from this repo. A push to `skills/**` on `main` runs `notify-skill-changes.yml`, which
-  dispatches `agent-skills-updated` to `livekit/internal-actions`; that forwards it to
-  `livekit/web`, which regenerates the index and opens a PR.
-
-Plugin skills are namespaced (`/livekit:building-livekit-agents`). Skill names still matter for
-the other channels, and for anyone invoking a skill by hand, so the naming rules above apply
-unchanged.
-
-For a listing in a marketplace we don't control, such as Anthropic's `claude-plugins-official`,
-the entry should point at this repo with a GitHub source pinned to a full commit `sha` rather than
-a branch, and be bumped deliberately.
+- **Claude Code plugin:** `.claude-plugin/` makes this repo the `livekit` marketplace and plugin.
+- **LiveKit CLI:** `lk skills install` installs from this repository.
+- **`npx skills`:** `npx skills add livekit/agent-skills` reads `skills/` from GitHub.
+- **Docs site index:** `livekit/web` regenerates `docs.livekit.io/.well-known/agent-skills/` when
+  `notify-skill-changes.yml` reports a change.
 
 ## Things not to do here
 
