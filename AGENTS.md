@@ -219,10 +219,10 @@ Delete the directory. To rename, create the new directory and delete the old one
 stub behind: a stub's description is loaded into every user's context on every request, forever,
 to say "don't use me" — the opposite of what the set is trying to do for context.
 
-Skills are installed from this repository — `npx skills add livekit/agent-skills` today, and the
-LiveKit CLI. Installers take `skills/<name>/SKILL.md` plus that skill's `references/`, so keep that
-layout stable: a renamed directory is a removed skill and a new one, and nothing here can reach a
-user's existing local copy. The README tells users of a removed skill to reinstall.
+Skills are installed from this repository, with the LiveKit CLI (`lk skills`) or
+`npx skills add livekit/agent-skills`. Installers take `skills/<name>/SKILL.md` plus that skill's
+`references/`, so keep that layout stable: a renamed directory is a removed skill and a new one,
+and nothing here can reach a user's existing local copy. The README tells users of a removed skill to reinstall.
 
 Removing a skill here also removes it from the well-known index on the docs site at its next
 rebuild, and Claude Code plugin users lose it the next time their marketplace updates.

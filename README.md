@@ -43,10 +43,10 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 lk skills install
 ```
 
-That installs all seven skills for the coding agents on your machine (Claude Code, Codex, Cursor,
-GitHub Copilot, Gemini CLI, and others), and adds the LiveKit Docs MCP server to each one's
-config. `lk skills update` pulls the latest; `lk skills --help` has the rest.
-`lk agent init` offers to do this for new agent projects.
+That installs all seven skills for the coding agents you pick (Claude Code, Codex, Cursor, GitHub
+Copilot, Gemini CLI, and others; the ones it detects are preselected), and adds the LiveKit Docs MCP
+server to each one that supports it. `lk skills update` pulls the latest; `lk skills --help` has
+the rest. `lk agent init` offers to do this for new agent projects.
 
 ### Claude Code
 
@@ -84,9 +84,9 @@ You can also copy the folders you want from `skills/` into your agent's skills d
   `lk agent simulate`, and the `lk agent` deploy commands. Install or update it from the [CLI docs](https://docs.livekit.io/intro/basics/cli).
   The skills check for the commands they need and will tell you to update if one is missing.
 - **A LiveKit Cloud project**, with `lk` authenticated to it, for simulations and deployment.
-- **The LiveKit Docs MCP server** (optional, and already included in the Claude Code plugin). It's
-  the same source `lk docs` uses, with less friction. Setup for each coding agent is at
-  [docs.livekit.io/intro/mcp-server](https://docs.livekit.io/intro/mcp-server/).
+- **The LiveKit Docs MCP server** (optional, and already set up by `lk skills install` and the
+  Claude Code plugin). It's the same source `lk docs` uses, with less friction. Setup for each
+  coding agent is at [docs.livekit.io/intro/mcp-server](https://docs.livekit.io/intro/mcp-server/).
 
 ## How the skills are built
 
