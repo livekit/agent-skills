@@ -44,8 +44,8 @@ Concurrency is limited per run and per project. The docs have the current limits
 
 **Text is the default**, and it's the right one. The simulated user exchanges text with the agent,
 so the run exercises the LLM, the tools and the conversation logic while the framework turns off
-STT, TTS and VAD. It's faster, cheaper and more deterministic. Use it for iteration and for anything
-automated.
+STT, TTS and VAD. It's faster, cheaper and more deterministic. Use it for iteration and on every
+pull request.
 
 **Audio runs the same scenarios through the full speech pipeline.** The simulated user speaks,
 listens and interrupts like a caller would, and the run scores what only speech exposes:
@@ -60,8 +60,8 @@ listens and interrupts like a caller would, and the run scores what only speech 
   itself. The gap between the two is what the user experiences.
 
 Audio runs execute in real time, call the STT and TTS providers every turn, and are metered at a
-higher rate. Save them for a release candidate or a change that touches speech, turn-taking or
-interruption. Don't put them in a recurring job.
+higher rate, so keep them off the per-pull-request job. Run them nightly, before a release, or for a
+change that touches speech, turn-taking or interruption.
 
 The audio subcommand has options to degrade the simulated caller's audio (noise, a poor microphone,
 packet loss). Use them to test what the agent does with speech it can't hear clearly. It should ask
@@ -69,11 +69,11 @@ for a repeat instead of guessing. Combine them for a worst-case caller.
 
 ## Automating a pre-release run
 
-All you need is a committed scenario file and a scheduled or release-branch job. The CLI prints
-plain output when it isn't attached to a terminal and exits non-zero when any scenario fails, so the
-job fails without extra wiring; the docs have a worked CI example to start from. Keep automated runs
-in text mode. Every scenario in the committed file has to pass or the job fails, so keep aspirational
-scenarios the agent doesn't pass yet in a separate file you run on demand.
+All you need is a committed scenario file and a CI job. The CLI prints plain output when it isn't
+attached to a terminal and exits non-zero when any scenario fails, so the job fails without extra
+wiring; the docs have a worked CI example to start from. Run text on every pull request, and audio
+as a separate scheduled job. Every scenario in the committed file has to pass or the job fails, so
+keep aspirational scenarios the agent doesn't pass yet in a separate file you run on demand.
 
 ## Reading the results
 
