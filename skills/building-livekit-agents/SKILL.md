@@ -22,9 +22,9 @@ LiveKit OSS, models come from each provider's own plugin and API keys.
 
 ## Models: default to LiveKit Inference
 
-Use LiveKit Inference for the agent's STT, LLM, TTS, or realtime model unless you have a specific
-reason not to. Many examples, and much of what you remember, install a provider's plugin instead.
-Don't follow them by default:
+Use LiveKit Inference for each model that the agent uses: STT, LLM, TTS, or a realtime model. Many
+examples, and much of the LiveKit code that you remember, use a provider plugin for each model. Do
+not copy that pattern. Inference is better for these reasons:
 
 - **No extra credentials.** Inference uses the LiveKit Cloud credentials the agent already has. A
   plugin needs its own provider account, plus an API key in every environment the agent runs in.
