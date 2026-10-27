@@ -89,7 +89,7 @@ audio pipeline.
   chat history before concluding the agent never answered.
 
 Audio mode still can't interrupt the agent mid-reply or tell you how the agent sounds. Use
-`lk agent console` or audio simulations for those.
+`lk agent console` to interrupt it, and `lk agent console` or audio simulations to hear it.
 
 ## When to use something else
 
@@ -99,7 +99,8 @@ Audio mode still can't interrupt the agent mid-reply or tell you how the agent s
 | The same failure keeps coming back | A turn-level regression test (`testing-livekit-agents`) |
 | You need whole-conversation outcomes graded at scale | Simulations (`running-livekit-simulations`) |
 | Transcription or endpointing on a turn you're investigating | The debugger in audio mode (above) |
-| Interruptions, or speech behavior graded across many conversations | Audio simulations (`running-livekit-simulations`) |
+| Barge-in: whether the agent stops when the caller cuts in | `lk agent console` |
+| Speech behavior graded across many conversations | Audio simulations (`running-livekit-simulations`) |
 
 The debugger is for finding bugs interactively. Once you've found one, write a test for it so a
 later change can't reintroduce it unnoticed.

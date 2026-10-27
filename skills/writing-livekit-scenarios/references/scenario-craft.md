@@ -103,8 +103,8 @@ exists in speech:
 
 - **Entities that have to survive transcription**: spelled-out names, confirmation codes, account
   numbers, amounts, addresses. Put them in the instructions and require them back correctly.
-- **Turn-taking and interruption**: a caller who interrupts mid-sentence, trails off, pauses to
-  think, or answers before the agent finishes.
+- **Turn-taking**: a caller who trails off or pauses to think. The simulated caller never
+  interrupts the agent, so don't write a scenario that depends on it.
 - **Recovery from bad input**: a caller on a poor connection or in a noisy place, where the agent
   should ask them to repeat instead of guessing.
 

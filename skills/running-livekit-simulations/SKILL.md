@@ -48,20 +48,24 @@ STT, TTS and VAD. It's faster, cheaper and more deterministic. Use it for iterat
 automated.
 
 **Audio runs the same scenarios through the full speech pipeline.** The simulated user speaks,
-listens and interrupts like a caller would, and the run scores what only speech exposes:
+listens, replies once the agent finishes its turn, and now and then says "mm-hmm" or "okay" while
+the agent talks. The run scores what only speech exposes:
 
 - **Turn-taking**: starting to speak before the caller has finished, or leaving a caller who has
   finished waiting.
-- **Interruption handling**: yielding to a barge-in, and telling a brief acknowledgment apart from a
-  new turn.
+- **Acknowledgment handling**: talking through a brief acknowledgment instead of taking it as a new
+  turn.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
   names, numbers, addresses, confirmation codes.
 - **Perceived latency**: what the caller heard, which differs from what the agent reports about
   itself. The gap between the two is what the user experiences.
 
+The simulated user never barges in to take the turn, even when a scenario tells it to, so audio
+runs can't test whether the agent yields to a barge-in. For that, use `lk agent console`.
+
 Audio runs execute in real time, call the STT and TTS providers every turn, and are metered at a
-higher rate. Save them for a release candidate or a change that touches speech, turn-taking or
-interruption. Don't put them in a recurring job.
+higher rate. Save them for a release candidate or a change that touches speech or turn-taking.
+Don't put them in a recurring job.
 
 The audio subcommand has options to degrade the simulated caller's audio (noise, a poor microphone,
 packet loss). Use them to test what the agent does with speech it can't hear clearly. It should ask
