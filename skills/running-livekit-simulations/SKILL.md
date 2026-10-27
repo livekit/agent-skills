@@ -53,7 +53,7 @@ the agent talks. The run scores what only speech exposes:
 
 - **Turn-taking**: starting to speak before the caller has finished, or leaving a caller who has
   finished waiting.
-- **Acknowledgment handling**: talking through a brief acknowledgment instead of taking it as a new
+- **Backchannel handling**: talking through a brief acknowledgment instead of taking it as a new
   turn.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
   names, numbers, addresses, confirmation codes.
