@@ -1,6 +1,6 @@
 ---
 name: operating-livekit-agents
-description: 'Deploys and operates a LiveKit agent in production: shipping a version to LiveKit Cloud and rolling it back, secrets and configuration, the worker process model and prewarming, safe async inside worker processes, provider timeouts and degradation, graceful shutdown, SDK upgrades, and observability. Use when the user says "deploy my agent", "roll back the deployment", "tail the agent logs", "the first call after a restart is slow", "attached to a different loop / event loop is closed", "prewarm the VAD", "shut down without dropping calls", "upgrade livekit-agents safely", "correlate logs by session", or is changing an agent codebase that is already live. Not for designing the agent (building-livekit-agents) or reproducing one bad conversation locally (debugging-livekit-agents).'
+description: 'Deploys and operates a LiveKit agent in production: shipping a version to LiveKit Cloud and rolling it back, secrets and configuration, the worker process model and prewarming, safe async inside worker processes, provider timeouts and degradation, graceful shutdown, SDK upgrades, and observability. Use when the user says "deploy my agent", "roll back the deployment", "tail the agent logs", "the first call after a restart is slow", "attached to a different loop / event loop is closed", "prewarm the VAD", "shut down without dropping calls", "upgrade livekit-agents safely", "correlate logs by session", "why is the session transcript empty", "turn on observability", or is changing an agent codebase that is already live. Not for designing the agent (building-livekit-agents) or reproducing one bad conversation locally (debugging-livekit-agents).'
 license: MIT
 metadata:
   author: livekit
@@ -35,6 +35,11 @@ After a deploy, verify with the same tools you'd use on a stranger's agent: `sta
 rollout, `logs` for the first minutes, and a real conversation — `running-livekit-simulations` can
 run a scenario file against the deployed agent by name, which is the cheapest end-to-end check that
 the thing serving traffic is the thing you meant to ship.
+
+Before the first real traffic, check that the project records sessions (see
+[Observability](#observability)). A session that ran while recording was off has nothing to read
+afterward. If the agent is meant to take phone calls and no number routes to it yet, offer to set
+one up (the reach step in `building-livekit-agents`); buying a number costs money, so ask first.
 
 ## The worker process model
 
@@ -110,7 +115,32 @@ latency and error rates for the first hours after the deploy.
 
 ## Observability
 
-Three things make a production incident tractable instead of a mystery:
+**Agent observability is the record of what happened in a session.** With it on, LiveKit Cloud
+keeps each session's transcript, traces, agent logs, metrics, and audio on one timeline. For
+anything that runs in LiveKit Cloud (a deployed agent, a phone call, a simulation run) it's the
+only detailed record after the fact. A debugger session doesn't need it: `debugging-livekit-agents`
+shows the same detail turn by turn. In text mode the debugger never joins a room, so it isn't
+recorded and can't confirm that recording works. Simulations depend on it: without it, the agent under test never
+uploads its chat history, so the run can't be summarized.
+
+**It's a project setting, and it can be off.** Depending on how the project was created, it may
+never have been turned on. Check it before you rely on it: before the first deploy, before a
+simulation run you'll need to read, and when the user asks what happened in a session. It's
+billed, so don't turn it on without asking. Tell the user what it gives them and that it costs
+money, and turn it on only if they agree. It records new sessions only, so say that too.
+
+**Checking, changing, and reading it are account-level actions.** They need a signed-in LiveKit
+Cloud user who is an admin on the project; the project's API key isn't enough. Signing in opens a
+browser page the user has to approve, so ask them to do it; you can't approve it yourself. Commands
+that need a signed-in user may not show in `--help` until someone has signed in, so check that
+before concluding a command doesn't exist. `reading-livekit-docs` has how to check and change the
+setting from the CLI or the API.
+
+**An empty read usually means recording was off.** When a session's transcript, logs, or traces
+come back empty, or the error says recording is off, tell the user that's the reason instead of
+retrying, and offer to turn it on for the sessions that follow.
+
+In the agent's own code, three things make a production incident tractable instead of a mystery:
 
 - **Every log line carries the session id**, so one call can be traced end to end.
 - **Phase boundaries are timed** — connected, first user speech, first agent response — so you
@@ -118,8 +148,7 @@ Three things make a production incident tractable instead of a mystery:
 - **Provider metrics are tracked separately** from application logs, so a degrading provider is
   visible without digging.
 
-LiveKit Cloud provides agent logs, session insights, and tracing you can export to your own
-observability provider; the docs describe what's available and how to wire it.
+Tracing can also be exported to your own observability provider; the docs describe how to wire it.
 
 ## Debugging a production failure
 
