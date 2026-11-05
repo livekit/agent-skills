@@ -123,11 +123,13 @@ shows the same detail turn by turn. In text mode the debugger never joins a room
 recorded and can't confirm that recording works. Simulations depend on it: without it, the agent under test never
 uploads its chat history, so the run can't be summarized.
 
-**It's a project setting, and it can be off.** Depending on how the project was created, it may
-never have been turned on. Check it before you rely on it: before the first deploy, before a
-simulation run you'll need to read, and when the user asks what happened in a session. It's
-billed, so don't turn it on without asking. Tell the user what it gives them and that it costs
-money, and turn it on only if they agree. It records new sessions only, so say that too.
+**It's a project setting, and it can be off.** It's on by default for projects created in the
+dashboard, but a project created another way may never have had it turned on. Check it before you
+rely on it: before the first deploy, before a simulation run you'll need to read, and when the user
+asks what happened in a session. If it's off, ask the user whether to turn it on so callers'
+conversations are recorded and can be analyzed, and turn it on only if they agree. It records new
+sessions only, so say that too. If it's on but data stops arriving on a Build plan project, the
+project has hit the plan's limit: suggest upgrading the plan rather than toggling the setting.
 
 **Checking, changing, and reading it are account-level actions.** They need a signed-in LiveKit
 Cloud user who is an admin on the project; the project's API key isn't enough. Signing in opens a

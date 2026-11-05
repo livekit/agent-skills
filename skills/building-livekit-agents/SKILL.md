@@ -57,7 +57,7 @@ Inference once as an option.
    after that sign-in, so check before concluding it doesn't exist.
 3. **Check that the project records sessions.** Agent observability is what you'll read when a
    simulation or a deployed agent misbehaves, and it may be off. `operating-livekit-agents` covers
-   checking it and asking before turning it on, since it's billed.
+   checking it and asking the user before turning it on.
 4. **Decide how people will reach the agent**, because it changes what you build and test. For
    phone calls, start with LiveKit Phone Numbers: buy a number from LiveKit and route it to the
    agent with a dispatch rule, with no SIP provider or trunk to set up. Check the docs for which

@@ -42,8 +42,8 @@ Concurrency is limited per run and per project. The docs have the current limits
 
 **Check that the project records sessions before a run you'll need to read.** Without agent
 observability, the agent under test never uploads its chat history, so the run can't be
-summarized. `operating-livekit-agents` covers checking it and asking before turning it on, since
-it's billed.
+summarized. `operating-livekit-agents` covers checking it and asking the user before turning it
+on.
 
 ## Text or audio
 
