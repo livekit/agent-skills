@@ -70,6 +70,26 @@ Inference once as an option.
    real conversation), `testing-livekit-agents` (assert on turns), or both, because it affects how
    you factor the code.
 
+### Run the CLI without its menus
+
+Some `lk` commands, such as scaffolding a project or creating a cloud agent, ask questions in menus
+when they think a person is at the keyboard. You can't answer a menu, and faking a terminal to get
+past one wastes turns. Pass `--yes` instead. It accepts every confirmation, and it turns each
+remaining question into either a default or an error that names the flag to supply. When a command
+fails that way, add the flag and run it again.
+
+```shell
+lk agent init my-agent --yes   # see --help for the language, template, and install flags
+```
+
+Take the values from what the user asked for. When a command needs one the user hasn't given, such
+as which project or which region, ask them instead of guessing: a wrong region or project is
+awkward to undo.
+
+Two steps need the user no matter what: approving a sign-in in the browser, and `lk agent console`,
+which is a live voice session for a person. To talk to the agent yourself, use
+`debugging-livekit-agents`.
+
 ## How voice changes the requirements
 
 A voice agent is more than a chat agent with a speaker attached. These constraints drive most

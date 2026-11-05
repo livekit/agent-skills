@@ -31,6 +31,10 @@ The shape is stable even as the flags move:
 5. **Rollback returns to a previous version.** How instant that is depends on the plan; the docs
    say. Know the rollback command before you need it.
 
+Run these commands with `--yes`, as `building-livekit-agents` explains, so they don't stop at a
+menu. Creating an agent can then ask for a value such as the region; take it from the user rather
+than guessing.
+
 After a deploy, verify with the same tools you'd use on a stranger's agent: `status` for the
 rollout, `logs` for the first minutes, and a real conversation — `running-livekit-simulations` can
 run a scenario file against the deployed agent by name, which is the cheapest end-to-end check that
