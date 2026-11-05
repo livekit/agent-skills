@@ -96,6 +96,10 @@ If you can't say in one sentence what an agent is responsible for, split it.
   description that doesn't say when to use the tool.
 - **Keep tools off the critical path where you can.** Users hear every tool call they wait on as
   latency.
+- **Keep speech formatting out of tool arguments.** Voice output rules such as "spell out numbers"
+  leak into arguments unless the parameter description gives the written format, and the agent
+  saves "one hundred twenty three Main Street" instead of "123 Main Street". Say which rules apply
+  only to speech.
 - **Plan for tool failure.** Decide what the agent says when a backend is down or returns nothing.
   An agent that makes up an answer when a tool fails is very hard to catch later.
 

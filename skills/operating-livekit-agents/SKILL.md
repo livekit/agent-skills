@@ -19,7 +19,10 @@ observability docs.
 The shape is stable even as the flags move:
 
 1. **A project directory is bound to an agent** by a config file the CLI writes (`livekit.toml`).
-   Commands run from that directory find the agent without an id.
+   Commands run from that directory find the agent without an id. Creating the agent also picks
+   its region: the CLI asks, and without a terminal it stops until you name one. Create once and
+   deploy after that. Creating again from a copy without that file registers a second agent with
+   the same name in the project, and nothing warns you.
 2. **The agent ships as a container.** The CLI can generate a Dockerfile for the project, or you
    bring a prebuilt image. Run the container's start command locally (`lk agent start`) before the
    first deploy — it's production mode, with production logging and a shutdown drain, and it is
