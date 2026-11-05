@@ -3,8 +3,8 @@
 
 Two layers:
 
-  structural  Deterministic checks: YAML parses, keys match the CLI's scenario-file struct,
-              required fields present, group name set, output supports a quick/full split.
+  structural  Deterministic checks: YAML parses, keys and value types match the CLI's
+              scenario-file struct, required fields present, group name set, output supports a quick/full split.
               A malformed file shouldn't reach the judge.
   judged      One `claude -p` call that reads the agent's source and the scenario files and
               answers the questions that need judgment: is every constraint in the agent's
@@ -27,6 +27,14 @@ from collections import Counter
 FILE_KEYS = {"name", "scenarios", "id"}
 SCEN_KEYS = {"label", "instructions", "agent_expectations", "tags", "userdata", "id"}
 REQUIRED = ("label", "instructions", "agent_expectations")
+
+def wrong_type(k, v) -> bool:
+    """True where the CLI's yaml.v3 decode would reject the value: tags is map[string]string,
+    userdata is map[string]any, every other field is a string (any scalar decodes into one)."""
+    if v is None: return False
+    if k == "userdata": return not isinstance(v, dict)
+    if k == "tags": return not isinstance(v, dict) or any(isinstance(t, (dict, list)) for t in v.values())
+    return isinstance(v, (dict, list))
 
 JUDGE_ASSERTIONS = {
     "covers_every_constraint":
@@ -65,16 +73,19 @@ def structural(files, aux):
     parsed = [(p, y) for p, y in files if "__parse_error__" not in y]
     res["produces_parseable_scenario_yaml"] = bool(parsed) and len(parsed) == len(files)
     ev["produces_parseable_scenario_yaml"] = f"{len(parsed)} scenario file(s) {[p.name for p,_ in parsed]}; auxiliary (ungraded): {aux or 'none'}; parse errors: {[p.name for p,y in files if '__parse_error__' in y] or 'none'}"
-    scen, bad_keys, missing = [], [], []
+    scen, bad_keys, bad_types, missing = [], [], [], []
     for p, y in parsed:
         bad_keys += [f"{p.name}:{k}" for k in y if k not in FILE_KEYS]
-        for s in y["scenarios"]:
-            if not isinstance(s, dict): continue
+        bad_types += [f"{p.name}:{k}" for k, v in y.items() if k in FILE_KEYS - {"scenarios"} and wrong_type(k, v)]
+        for i, s in enumerate(y["scenarios"]):
+            if not isinstance(s, dict):
+                bad_types.append(f"{p.name}:scenarios[{i}] is not a mapping"); continue
             scen.append(s)
             bad_keys += [f"{p.name}:{k}" for k in s if k not in SCEN_KEYS]
+            bad_types += [f"{p.name}:{s.get('label','?')}:{k}" for k, v in s.items() if k in SCEN_KEYS and wrong_type(k, v)]
             missing += [f"{p.name}:{s.get('label','?')}:{k}" for k in REQUIRED if not s.get(k)]
-    res["schema_matches_cli_struct"] = not bad_keys
-    ev["schema_matches_cli_struct"] = f"unknown keys: {sorted(set(bad_keys)) or 'none'}"
+    res["schema_matches_cli_struct"] = not bad_keys and not bad_types
+    ev["schema_matches_cli_struct"] = f"unknown keys: {sorted(set(bad_keys)) or 'none'}; wrong types: {sorted(set(bad_types)) or 'none'}"
     res["required_fields_present"] = bool(scen) and not missing
     ev["required_fields_present"] = f"{len(scen)} scenarios; missing: {sorted(set(missing)) or 'none'}"
     res["every_file_has_group_name"] = bool(parsed) and all(y.get("name") for _, y in parsed)
