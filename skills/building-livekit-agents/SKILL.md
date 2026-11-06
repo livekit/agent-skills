@@ -1,6 +1,6 @@
 ---
 name: building-livekit-agents
-description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cloud. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI to my app", "implement handoffs", "structure an agent workflow", "my agent is slow / too chatty", "it says it booked but nothing was saved", "make it confirm before committing", "it keeps re-asking things the caller already said", or is writing code against the LiveKit Agents SDK. Covers architecture: designing for latency, keeping context small, splitting a monolithic agent into handoffs and tasks, and designing for voice. Also covers keeping the model in charge of meaning while code owns state, approvals, and effects. For API specifics use reading-livekit-docs. To check behavior use debugging-livekit-agents and testing-livekit-agents.'
+description: 'Builds voice and chat AI agents with LiveKit Agents and LiveKit Cloud. Use when the user asks to "build a voice agent", "create a LiveKit agent", "add voice AI to my app", "build a phone agent", "let people call my agent", "implement handoffs", "structure an agent workflow", "my agent is slow / too chatty", "it says it booked but nothing was saved", "make it confirm before committing", "it keeps re-asking things the caller already said", or is writing code against the LiveKit Agents SDK. Covers architecture: designing for latency, keeping context small, splitting a monolithic agent into handoffs and tasks, and designing for voice. Also covers keeping the model in charge of meaning while code owns state, approvals, and effects. For API specifics use reading-livekit-docs. To check behavior use debugging-livekit-agents and testing-livekit-agents.'
 license: MIT
 metadata:
   author: livekit
@@ -49,13 +49,46 @@ Inference once as an option.
 1. **Load `reading-livekit-docs`** and look up the APIs you're about to use. Don't write LiveKit
    code from memory.
 2. **Confirm the project is connected to a LiveKit Cloud project** (or a LiveKit OSS server):
-   `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, usually in `.env`. The CLI can set these
-   up.
-3. **Decide the workflow shape before writing the first agent class** (see "Structure" below).
+   `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, usually in `.env`. The CLI can link a
+   project and write these. Linking opens a browser page the user has to approve, so ask them to do
+   it; you can't approve it yourself. Account-level work (creating or changing a project, reading
+   session data) needs a second kind of sign-in, as a LiveKit Cloud user, which also takes the
+   user's approval. If a command the docs describe is missing from `--help`, it may only appear
+   after that sign-in, so check before concluding it doesn't exist.
+3. **Check that the project records sessions.** Agent observability is what you'll read when a
+   simulation or a deployed agent misbehaves, and it may be off. `operating-livekit-agents` covers
+   checking it and asking the user before turning it on.
+4. **Decide how people will reach the agent**, because it changes what you build and test. For
+   phone calls, start with LiveKit Phone Numbers: buy a number from LiveKit and route it to the
+   agent with a dispatch rule, with no SIP provider or trunk to set up. Check the docs for which
+   countries and call directions it covers, and use a third-party SIP trunk when it doesn't cover
+   the case or the user already has numbers with a carrier. Buying a number costs money, so ask
+   first. For a web or mobile app, the docs have frontend starters to pair with the agent.
+5. **Decide the workflow shape before writing the first agent class** (see "Structure" below).
    Splitting a monolith into handoffs later is much more work than starting with two agents.
-4. **Plan how you'll verify it.** Decide now whether you'll use `debugging-livekit-agents` (drive a
+6. **Plan how you'll verify it.** Decide now whether you'll use `debugging-livekit-agents` (drive a
    real conversation), `testing-livekit-agents` (assert on turns), or both, because it affects how
    you factor the code.
+
+### Run the CLI without its menus
+
+Some `lk` commands, such as scaffolding a project or creating a cloud agent, ask questions in menus
+when they think a person is at the keyboard. You can't answer a menu, and faking a terminal to get
+past one wastes turns. Pass `--yes` instead. It accepts every confirmation, and it turns each
+remaining question into either a default or an error that names the flag to supply. When a command
+fails that way, add the flag and run it again.
+
+```shell
+lk agent init my-agent --yes   # see --help for the language, template, and install flags
+```
+
+Take the values from what the user asked for. When a command needs one the user hasn't given, such
+as which project or which region, ask them instead of guessing: a wrong region or project is
+awkward to undo.
+
+Two steps need the user no matter what: approving a sign-in in the browser, and `lk agent console`,
+which is a live voice session for a person. To talk to the agent yourself, use
+`debugging-livekit-agents`.
 
 ## How voice changes the requirements
 
