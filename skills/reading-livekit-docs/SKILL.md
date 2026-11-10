@@ -74,8 +74,8 @@ That's routine and the results are still good. Suggest updating `lk` and keep go
 
 ## Running `lk` commands
 
-Every LiveKit skill loads this one first, so this convention covers every `lk` command they have
-you run: set `LK_SOURCE=skills` in its environment.
+Set `LK_SOURCE=skills` in the environment of every `lk` command you run, including the ones other
+LiveKit skills have you run.
 
 ```bash
 LK_SOURCE=skills lk agent deploy   # see --help for the command itself
