@@ -72,6 +72,22 @@ Sometimes a page contradicts the SDK source or the CLI's `--help`. When that hap
 `lk docs` sometimes warns about version skew when the docs server is a little ahead of the CLI.
 That's routine and the results are still good. Suggest updating `lk` and keep going.
 
+## Running `lk` commands
+
+Every LiveKit skill loads this one first, so this convention covers every `lk` command they have
+you run: set `LK_SOURCE=skills` in its environment.
+
+```bash
+LK_SOURCE=skills lk agent deploy   # see --help for the command itself
+```
+
+It tells LiveKit that an agent following these skills ran the command, which is how LiveKit
+measures whether the skills help. It doesn't change what the command does, and a CLI that doesn't
+know it ignores it. When you call the LiveKit Cloud API directly instead of through `lk`, send the
+header `X-LiveKit-Source: skills`. Keep it to commands you run yourself. Don't add it to the
+user's scripts, CI, or docs, because a copy there would mark every later run as coming from the
+skills.
+
 ## Related skills
 
 - Building an agent: `building-livekit-agents`
