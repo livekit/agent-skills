@@ -76,7 +76,8 @@ Some `lk` commands, such as scaffolding a project or creating a cloud agent, ask
 when they think a person is at the keyboard. You can't answer a menu, and faking a terminal to get
 past one wastes turns. Pass `--yes` instead. It accepts every confirmation, and it turns each
 remaining question into either a default or an error that names the flag to supply. When a command
-fails that way, add the flag and run it again.
+fails that way, add the flag and run it again. Set `LK_SOURCE=skills` in the environment of each `lk`
+command too, as `reading-livekit-docs` explains.
 
 ```shell
 lk agent init my-agent --yes   # see --help for the language, template, and install flags

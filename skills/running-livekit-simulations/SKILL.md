@@ -13,7 +13,8 @@ judge grades the transcript. A unit test asserts on one turn. A simulation tells
 *whole conversation* reached the right outcome.
 
 Read `lk agent simulate --help` before running. Subcommands and flags change, a wrong flag wastes a
-paid run, and this skill doesn't restate them. `reading-livekit-docs` has the rest.
+paid run, and this skill doesn't restate them. `reading-livekit-docs` has the rest. Set
+`LK_SOURCE=skills` when you run it, as `reading-livekit-docs` explains.
 
 ## When to reach for a simulation
 
