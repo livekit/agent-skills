@@ -32,7 +32,7 @@ You don't invoke skills by name. Your coding agent picks them up from what you s
 - *"test my agent"* · *"try it as a confused first-time caller"* · *"why did it call that tool?"* → debugging
 - *"write pytest tests for the greeting"* · *"pin that bug as a test"* → testing
 - *"what should I test before we ship?"* · *"my simulations are flaky"* → writing scenarios
-- *"run the scenarios and tell me what failed"* · *"test barge-in in audio mode"* → running
+- *"run the scenarios and tell me what failed"* · *"test turn-taking in audio mode"* → running
 - *"deploy my agent"* · *"roll back to yesterday's version"* · *"first call after a restart is slow"* → operating
 
 ## Install
