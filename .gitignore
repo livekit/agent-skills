@@ -17,3 +17,4 @@ evals/**/results*.json
 evals/**/*.log
 evals/**/workspace/
 evals/**/project/
+dist/
