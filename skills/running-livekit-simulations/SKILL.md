@@ -40,6 +40,11 @@ scenario file, since there's no local source to generate from.
 
 Concurrency is limited per run and per project. The docs have the current limits.
 
+**Check that the project records sessions before a run you'll need to read.** Without agent
+observability, the agent under test never uploads its chat history, so the run can't be
+summarized. `operating-livekit-agents` covers checking it and asking the user before turning it
+on.
+
 ## Text or audio
 
 **Text is the default**, and it's the right one. The simulated user exchanges text with the agent,
@@ -66,6 +71,11 @@ interruption. Don't put them in a recurring job.
 The audio subcommand has options to degrade the simulated caller's audio (noise, a poor microphone,
 packet loss). Use them to test what the agent does with speech it can't hear clearly. It should ask
 for a repeat instead of guessing. Combine them for a worst-case caller.
+
+**For a phone agent, test the real call path.** Where the CLI supports it, an audio run can call
+the agent's phone number instead of joining a room, so the number, its dispatch rule and the agent
+are checked together. Run it once the agent has a number and before telling the user it's ready
+for callers.
 
 ## Automating a pre-release run
 
