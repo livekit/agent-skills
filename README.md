@@ -87,6 +87,16 @@ You can also copy the folders you want from `skills/` into your agent's skills d
   Claude Code plugin). It's the same source `lk docs` uses, with less friction. Setup for each
   coding agent is at [docs.livekit.io/intro/mcp-server](https://docs.livekit.io/intro/mcp-server/).
 
+## Data and privacy
+
+The skills run the LiveKit CLI (`lk`) on your machine with your own LiveKit credentials. When a
+skill reads session data from LiveKit Cloud, such as transcripts, logs, and traces, that data goes
+into your coding agent's context like any other command output. The skills and plugin store
+nothing themselves. The Claude Code plugin also connects to the LiveKit Docs MCP server at
+`https://docs.livekit.io/mcp`, which receives your docs searches. See LiveKit's
+[privacy policy](https://livekit.io/legal/privacy-policy) and
+[terms of service](https://livekit.io/legal/terms-of-service).
+
 ## How the skills are built
 
 The skills are conceptual. They teach how to approach a job (what to check, what goes wrong, which

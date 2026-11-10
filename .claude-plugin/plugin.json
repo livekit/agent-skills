@@ -1,6 +1,8 @@
 {
   "name": "livekit",
-  "description": "Build, test, and ship voice agents with LiveKit. Skills for the LiveKit Agents SDK (Python and Node.js) covering voice AI architecture, live debugging, turn-level tests, simulations, and deployment, plus the LiveKit Docs MCP server for current docs, SDK code search, and changelogs.",
+  "displayName": "LiveKit",
+  "version": "1.0.0",
+  "description": "Build, test, and ship voice agents with LiveKit. Skills for the LiveKit Agents SDK (Python and Node.js) covering voice AI architecture, live debugging, turn-level tests, simulations, deployment, and reading session data from LiveKit Cloud, plus the LiveKit Docs MCP server for current docs, SDK code search, and changelogs.",
   "author": {
     "name": "LiveKit",
     "url": "https://livekit.io"
@@ -8,6 +10,11 @@
   "homepage": "https://docs.livekit.io/intro/coding-agents/",
   "repository": "https://github.com/livekit/agent-skills",
   "license": "MIT",
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://docs.livekit.io/intro/coding-agents/",
+  "supportUrl": "https://github.com/livekit/agent-skills/issues",
+  "privacyPolicyUrl": "https://livekit.io/legal/privacy-policy",
+  "termsOfServiceUrl": "https://livekit.io/legal/terms-of-service",
   "keywords": [
     "livekit",
     "livekit-agents",
