@@ -61,7 +61,9 @@ and listens like a caller would, and the run scores what only speech exposes:
   acknowledgment apart from a new turn. The simulated user doesn't barge in on purpose, so this
   covers incidental overlap only.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
-  names, numbers, addresses, confirmation codes.
+  names, numbers, addresses, confirmation codes. Word error rates exist only for English, French,
+  German and Spanish, and Chinese, Japanese and Korean get character error rates only; other
+  languages and phone (`--to`) runs report none.
 - **Perceived latency**: what the caller heard, which differs from what the agent reports about
   itself. The gap between the two is what the user experiences.
 
