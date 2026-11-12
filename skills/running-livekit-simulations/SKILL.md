@@ -61,7 +61,7 @@ and listens like a caller would, and the run scores what only speech exposes:
   brief acknowledgment it should talk through. The simulated user plays acknowledgments ("mm-hmm")
   during the agent's turns but never interrupts to take the floor, so yield time isn't measured.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
-  names, numbers, addresses, confirmation codes. Word error rates exist only for English, French,
+  names, confirmation codes, phone and account numbers, but not dates, times or prices. Word error rates exist only for English, French,
   German and Spanish, and Chinese, Japanese and Korean get character error rates only; other
   languages and phone (`--to`) runs report none.
 - **Perceived latency**: what the caller heard, which differs from what the agent reports about
