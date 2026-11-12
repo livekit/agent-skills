@@ -143,8 +143,8 @@ took effect. Look up the current API names with `reading-livekit-docs`.
 ## Grow the suite from real failures
 
 The most valuable scenarios describe something that went wrong. Once the agent is live, derive them
-from recorded sessions instead of inventing more. Where the CLI supports it, a subcommand derives a
-scenario from a recorded session (check `lk agent simulate --help`). A derived scenario describes
+from recorded sessions instead of inventing more. In the dashboard, open the session from
+**Sessions**, then **Agent insights**, then **Turn into a test**; the CLI has no subcommand for it. A derived scenario describes
 one call, so widen it to the class of calls it represents and sharpen its expectation into the rule
 you want enforced.
 
