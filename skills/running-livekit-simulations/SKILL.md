@@ -57,9 +57,9 @@ and listens like a caller would, and the run scores what only speech exposes:
 
 - **Turn-taking**: starting to speak before the caller has finished, or leaving a caller who has
   finished waiting.
-- **Interruption handling**: stopping when the caller talks over the agent, and telling a brief
-  acknowledgment apart from a new turn. The simulated user doesn't barge in on purpose, so this
-  covers incidental overlap only.
+- **Interruption handling**: the agent talking over a caller who hasn't finished, and stopping for a
+  brief acknowledgment it should talk through. The simulated user plays acknowledgments ("mm-hmm")
+  during the agent's turns but never interrupts to take the floor, so yield time isn't measured.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
   names, numbers, addresses, confirmation codes. Word error rates exist only for English, French,
   German and Spanish, and Chinese, Japanese and Korean get character error rates only; other
