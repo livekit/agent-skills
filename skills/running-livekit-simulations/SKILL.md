@@ -57,8 +57,9 @@ and listens like a caller would, and the run scores what only speech exposes:
 
 - **Turn-taking**: starting to speak before the caller has finished, or leaving a caller who has
   finished waiting.
-- **Interruption handling**: yielding to a barge-in, and telling a brief acknowledgment apart from a
-  new turn.
+- **Interruption handling**: stopping when the caller talks over the agent, and telling a brief
+  acknowledgment apart from a new turn. The simulated user doesn't barge in on purpose, so this
+  covers incidental overlap only.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
   names, numbers, addresses, confirmation codes.
 - **Perceived latency**: what the caller heard, which differs from what the agent reports about

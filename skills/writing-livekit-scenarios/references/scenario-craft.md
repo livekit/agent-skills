@@ -111,8 +111,9 @@ exists in speech:
 
 - **Entities that have to survive transcription**: spelled-out names, confirmation codes, account
   numbers, amounts, addresses. Put them in the instructions and require them back correctly.
-- **Turn-taking and interruption**: a caller who interrupts mid-sentence, trails off, pauses to
-  think, or answers before the agent finishes.
+- **Turn-taking**: a caller who trails off, pauses to think, or answers before the agent finishes.
+  The simulated user doesn't barge in on purpose, so a scripted mid-sentence interruption won't
+  reliably happen.
 - **Recovery from bad input**: a caller on a poor connection or in a noisy place, where the agent
   should ask them to repeat instead of guessing.
 
