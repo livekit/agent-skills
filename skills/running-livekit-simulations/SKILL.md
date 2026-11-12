@@ -31,6 +31,10 @@ Run from the agent's project directory. The mode is a subcommand:
 lk agent simulate text --scenarios scenarios.yaml    # see --help for the current flags
 ```
 
+Every scenario needs an id. When the file has new scenarios without one, the CLI offers to add
+them, and without a terminal it stops until you pass its confirmation flag. Commit the ids it
+writes so later runs line up.
+
 With no scenario file, the CLI generates scenarios from the agent's source. That **uploads the
 code**, and the CLI asks for confirmation first. Generation belongs to `writing-livekit-scenarios`.
 
@@ -79,11 +83,12 @@ for callers.
 
 ## Automating a pre-release run
 
-All you need is a committed scenario file and a scheduled or release-branch job. The CLI prints
-plain output when it isn't attached to a terminal and exits non-zero when any scenario fails, so the
-job fails without extra wiring; the docs have a worked CI example to start from. Keep automated runs
-in text mode. Every scenario in the committed file has to pass or the job fails, so keep aspirational
-scenarios the agent doesn't pass yet in a separate file you run on demand.
+All you need is a committed scenario file, with an id on every scenario, and a scheduled or
+release-branch job. The CLI prints plain output when it isn't attached to a terminal and exits
+non-zero when any scenario fails, so the job fails without extra wiring; the docs have a worked CI
+example to start from. Keep automated runs in text mode. Every scenario in the committed file has to
+pass or the job fails, so keep aspirational scenarios the agent doesn't pass yet in a separate file
+you run on demand.
 
 ## Reading the results
 
