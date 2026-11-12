@@ -52,8 +52,8 @@ so the run exercises the LLM, the tools and the conversation logic while the fra
 STT, TTS and VAD. It's faster, cheaper and more deterministic. Use it for iteration and for anything
 automated.
 
-**Audio runs the same scenarios through the full speech pipeline.** The simulated user speaks,
-listens and interrupts like a caller would, and the run scores what only speech exposes:
+**Audio runs the same scenarios through the full speech pipeline.** The simulated user speaks
+and listens like a caller would, and the run scores what only speech exposes:
 
 - **Turn-taking**: starting to speak before the caller has finished, or leaving a caller who has
   finished waiting.

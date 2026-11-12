@@ -35,6 +35,12 @@ Two parts of this matter most. **Revealing facts one per turn, only when asked**
 its collection flow instead of getting everything in the opening line. **Steps in order** keep the
 path stable across runs, which is what makes final-state grading meaningful.
 
+The simulator enforces some of this on its own. It never says a name, email, phone, address, date
+of birth or card number before the agent asks, even if the instructions say to, and only a quoted
+opening line is exempt. So a caller who volunteers everything up front needs those details in the
+`OPENING LINE`. It also raises one request at a time, holds a change of mind until the original
+request is confirmed, and never sees the agent's tool calls.
+
 When a scenario grades on final state, repeat the pinned values (dates, contact details, options)
 verbatim in both the instructions and the expected state so the comparison can match.
 

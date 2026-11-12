@@ -103,8 +103,9 @@ cadence, so they go in different files. The second axis is **cadence**: a small 
 merge, and the full set before a release.
 
 Give each file a `name` that describes the set, since it labels the run. Inside a file, use `tags`
-to slice. Tag `feature` so a failure points at the part of the agent that owns it, and add whatever
-else you filter by (channel, difficulty). Put a header comment on the file recording the set's
+to label scenarios: `feature` for the part of the agent a scenario covers, plus whatever else helps a
+reader (channel, difficulty). Runs don't store tags or filter by them, so a subset you run on its
+own needs its own file. Put a header comment on the file recording the set's
 assumptions: pinned dates, required environment variables, and what its expectations depend on.
 
 ## Keep scenarios reproducible
