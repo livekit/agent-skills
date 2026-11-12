@@ -35,6 +35,14 @@ Two parts of this matter most. **Revealing facts one per turn, only when asked**
 its collection flow instead of getting everything in the opening line. **Steps in order** keep the
 path stable across runs, which is what makes final-state grading meaningful.
 
+The simulator prompts some of this on its own, so the simulated user usually behaves this way even
+when the instructions don't say to. It holds back a name, email, phone, address, date of birth or
+card number until the agent asks, even if the instructions say to volunteer it, and that reminder
+applies on every turn, opening line included. A caller who volunteers those details unprompted
+can't be tested reliably; other details, such as dates and guest counts, can go in the
+`OPENING LINE`. It also raises one request at a time, holds a change of mind until the original
+request is confirmed, and doesn't see the agent's tool calls.
+
 When a scenario grades on final state, repeat the pinned values (dates, contact details, options)
 verbatim in both the instructions and the expected state so the comparison can match.
 
@@ -103,8 +111,9 @@ exists in speech:
 
 - **Entities that have to survive transcription**: spelled-out names, confirmation codes, account
   numbers, amounts, addresses. Put them in the instructions and require them back correctly.
-- **Turn-taking and interruption**: a caller who interrupts mid-sentence, trails off, pauses to
-  think, or answers before the agent finishes.
+- **Turn-taking**: a caller who trails off, pauses to think, or answers before the agent finishes.
+  The simulated user doesn't barge in on purpose, so a scripted mid-sentence interruption won't
+  reliably happen.
 - **Recovery from bad input**: a caller on a poor connection or in a noisy place, where the agent
   should ask them to repeat instead of guessing.
 

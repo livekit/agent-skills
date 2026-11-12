@@ -103,8 +103,9 @@ cadence, so they go in different files. The second axis is **cadence**: a small 
 merge, and the full set before a release.
 
 Give each file a `name` that describes the set, since it labels the run. Inside a file, use `tags`
-to slice. Tag `feature` so a failure points at the part of the agent that owns it, and add whatever
-else you filter by (channel, difficulty). Put a header comment on the file recording the set's
+to label scenarios: `feature` for the part of the agent a scenario covers, plus whatever else helps a
+reader (channel, difficulty). Runs don't store tags or filter by them, so a subset you run on its
+own needs its own file. Put a header comment on the file recording the set's
 assumptions: pinned dates, required environment variables, and what its expectations depend on.
 
 ## Keep scenarios reproducible
@@ -142,8 +143,8 @@ took effect. Look up the current API names with `reading-livekit-docs`.
 ## Grow the suite from real failures
 
 The most valuable scenarios describe something that went wrong. Once the agent is live, derive them
-from recorded sessions instead of inventing more. Where the CLI supports it, a subcommand derives a
-scenario from a recorded session (check `lk agent simulate --help`). A derived scenario describes
+from recorded sessions instead of inventing more. In the dashboard, open the session from
+**Sessions**, then **Agent insights**, then **Turn into a test**; the CLI has no subcommand for it. A derived scenario describes
 one call, so widen it to the class of calls it represents and sharpen its expectation into the rule
 you want enforced.
 

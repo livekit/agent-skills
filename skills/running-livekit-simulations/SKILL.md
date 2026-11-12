@@ -52,15 +52,18 @@ so the run exercises the LLM, the tools and the conversation logic while the fra
 STT, TTS and VAD. It's faster, cheaper and more deterministic. Use it for iteration and for anything
 automated.
 
-**Audio runs the same scenarios through the full speech pipeline.** The simulated user speaks,
-listens and interrupts like a caller would, and the run scores what only speech exposes:
+**Audio runs the same scenarios through the full speech pipeline.** The simulated user speaks
+and listens like a caller would, and the run scores what only speech exposes:
 
 - **Turn-taking**: starting to speak before the caller has finished, or leaving a caller who has
   finished waiting.
-- **Interruption handling**: yielding to a barge-in, and telling a brief acknowledgment apart from a
-  new turn.
+- **Interruption handling**: the agent talking over a caller who hasn't finished, and stopping for a
+  brief acknowledgment it should talk through. The simulated user plays acknowledgments ("mm-hmm")
+  during the agent's turns but never interrupts to take the floor, so yield time isn't measured.
 - **Transcription accuracy** in both directions, scored separately for the things that matter:
-  names, numbers, addresses, confirmation codes.
+  names, confirmation codes, phone and account numbers, but not dates, times or prices. Word error rates exist only for English, French,
+  German and Spanish, and Chinese, Japanese and Korean get character error rates only; other
+  languages and phone (`--to`) runs report none.
 - **Perceived latency**: what the caller heard, which differs from what the agent reports about
   itself. The gap between the two is what the user experiences.
 
