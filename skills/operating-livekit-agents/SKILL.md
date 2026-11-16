@@ -33,7 +33,7 @@ The shape is stable even as the flags move:
 
 Run these commands with `--yes`, as `building-livekit-agents` explains, so they don't stop at a
 menu. Creating an agent can then ask for a value such as the region; take it from the user rather
-than guessing.
+than guessing. Set `LK_SOURCE=skills` on them too, as `reading-livekit-docs` explains.
 
 After a deploy, verify with the same tools you'd use on a stranger's agent: `status` for the
 rollout, `logs` for the first minutes, and a real conversation — `running-livekit-simulations` can
