@@ -1,7 +1,7 @@
 {
   "name": "livekit",
   "version": "1.0.0",
-  "description": "Build, test, and ship voice agents with LiveKit. Skills for the LiveKit Agents SDK (Python and Node.js) covering voice AI architecture, live debugging, turn-level tests, simulations, deployment, and reading session data from LiveKit Cloud.",
+  "description": "Build, test, and ship voice agents with LiveKit. Skills for the LiveKit Agents SDK (Python and Node.js) covering voice AI architecture, live debugging, turn-level tests, simulations, and deployment, plus the LiveKit API MCP server for reading session transcripts, logs, and traces and managing your LiveKit Cloud projects.",
   "author": {
     "name": "LiveKit",
     "url": "https://livekit.io"
@@ -28,10 +28,11 @@
     "nodejs"
   ],
   "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "LiveKit",
     "shortDescription": "Build and ship voice agents",
-    "longDescription": "Skills that teach your coding agent to build, test, and ship voice agents with LiveKit and the LiveKit Agents SDK for Python and Node.js. Your coding agent looks up current LiveKit docs before writing code, talks to your agent turn by turn to check a change, writes turn-level tests, runs simulations before a release, deploys to LiveKit Cloud, and reads transcripts, logs, and traces from real sessions to find and fix problems. The skills use the LiveKit CLI (lk).",
+    "longDescription": "Build, test, and debug voice agents on LiveKit Cloud. Connect your LiveKit account to read the transcripts, logs, and traces of real sessions, find out why a call went wrong, check simulation results, and manage your projects, agents, and webhooks. The skills teach your coding agent the LiveKit Agents SDK for Python and Node.js: it looks up current LiveKit docs before writing code, talks to your agent turn by turn to check a change, writes turn-level tests, runs simulations before a release, and deploys to LiveKit Cloud.",
     "developerName": "LiveKit",
     "category": "Developer Tools",
     "capabilities": [],

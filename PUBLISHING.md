@@ -21,9 +21,10 @@ Submit from the LiveKit organization, not a personal account. The first organiza
 
    Select **Validate**. The listing name, description, icon, and links come from `.claude-plugin/plugin.json` and the README. To change them, edit the repo and validate again.
 3. **Data handling:**
-   - Reads personal data: yes. On the user's request, the skills read session data from the user's own LiveKit Cloud project through the LiveKit CLI, such as transcripts and logs. That data can contain personal information about the people who talked to their agent.
+   - Reads personal data: yes. On the user's request, the plugin reads session data from the user's own LiveKit Cloud projects, such as transcripts and logs, through the LiveKit API MCP server or the LiveKit CLI. That data can contain personal information about the people who talked to their agent.
    - Stores personal data: no.
-   - Sends data to services other than its declared connectors: no. The declared connector is the LiveKit Docs MCP server. The CLI talks only to the user's own LiveKit Cloud project.
+   - Sends data to services other than its declared connectors: no. The declared connectors are the LiveKit API MCP server (`https://api.livekit.cloud/mcp`) and the LiveKit Docs MCP server. The CLI talks only to the user's own LiveKit Cloud project.
+   - Authentication: OAuth 2.1. The user signs in to LiveKit and approves the app. Workspace admins can turn MCP off or allow only some apps.
    - Retention: none. The plugin stores nothing.
    - Intended for people under 18: no.
 4. **Compliance:**
@@ -43,10 +44,17 @@ Who can submit:
 - An organization Owner on the OpenAI platform, or a member an Owner grants **Apps Management Write** through organization roles.
 - The organization must finish business verification in organization settings first, so the listing shows LiveKit as the developer.
 
-This is a skills-only plugin. An MCP server can't be added to a skills-only plugin later. Adding the Docs MCP server would mean a new plugin.
+The plugin holds the skills and one MCP server, the LiveKit API at `https://api.livekit.cloud/mcp`. OpenAI allows one MCP server per plugin, so the Docs MCP server is Claude-only; the skills reach current docs through `lk docs`. An MCP server can't be added to a plugin that was first submitted as skills-only, so the first upload must include it.
 
-1. Build the package with `./scripts/build-openai-zip.sh`. It writes `dist/livekit-openai-<version>.zip`.
-2. Open [platform.openai.com/plugins](https://platform.openai.com/plugins), select the LiveKit organization and project, then select **Upload new or existing plugin** and **Upload plugin**. Choose **Skills only**.
+Before you start:
+
+- The MCP server is live in production.
+- Domain verification: OpenAI gives a token in the portal. Serve it as plain text at `https://api.livekit.cloud/.well-known/openai-apps-challenge`.
+- A reviewer account that signs in with no MFA, email or SMS codes, or magic links, on a demo project with sample sessions, a builder agent, and simulation runs.
+- Five positive and three negative test cases, each run against the reviewer account first, and a demo video URL. Drafts are in the plugin submission doc in Notion.
+
+1. Build the package with `./scripts/build-openai-zip.sh`. It writes `dist/livekit-openai-<version>.zip` with the MCP config at `.mcp.json`.
+2. Open [platform.openai.com/plugins](https://platform.openai.com/plugins), select the LiveKit organization and project, then select **Upload new or existing plugin** and **Upload plugin**. Don't choose **Skills only**.
 3. Check the listing the portal shows, which comes from `.codex-plugin/plugin.json`:
    - Name: LiveKit.
    - Short description: "Build and ship voice agents."
@@ -54,7 +62,11 @@ This is a skills-only plugin. An MCP server can't be added to a skills-only plug
    - Icon: `assets/icon.png`.
 
    If the portal offers different category names, pick the closest developer category.
-4. Wait for the skill scans to pass, select **Submit for review**, and answer the policy attestations. OpenAI sends review feedback by email.
-5. After approval, open the approved version and select **Publish plugin**.
+4. Check the MCP server's authentication. It's OAuth with a Client ID Metadata Document (`.codex-plugin/mcp.json`), so the portal needs no client ID or secret.
+5. Under **Review details**, enter the reviewer account's sign-in, the test cases, and the demo video URL. These go in the portal, never in the ZIP.
+6. Wait for the skill and tool scans to pass, select **Submit for review**, and answer the policy attestations. OpenAI sends review feedback by email.
+7. After approval, open the approved version and select **Publish plugin**.
 
-To release an update, raise the version, rebuild the ZIP, and upload it as a new version of the existing plugin. Each version gets its own review, and only one review can run at a time.
+Changes to the MCP server's tools reach users without a new upload: OpenAI scans the server daily. Changing the server's URL needs OpenAI support.
+
+To release a skill or listing update, raise the version, rebuild the ZIP, and upload it as a new version of the existing plugin. Each version gets its own review, and only one review can run at a time.
