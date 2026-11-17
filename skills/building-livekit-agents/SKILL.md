@@ -54,7 +54,11 @@ Inference once as an option.
    it; you can't approve it yourself. Account-level work (creating or changing a project, reading
    session data) needs a second kind of sign-in, as a LiveKit Cloud user, which also takes the
    user's approval. If a command the docs describe is missing from `--help`, it may only appear
-   after that sign-in, so check before concluding it doesn't exist.
+   after that sign-in, so check before concluding it doesn't exist. Where the CLI makes signed-in
+   mode an opt-in on each command, a command run without it falls back to the API key and local
+   config: a project list shows only linked projects, and session reads fail. Before telling the
+   user the sign-in didn't work, check the command's `--help` and `reading-livekit-docs` for how to
+   run it as the signed-in user.
 3. **Check that the project records sessions.** Agent observability is what you'll read when a
    simulation or a deployed agent misbehaves, and it may be off. `operating-livekit-agents` covers
    checking it and asking the user before turning it on.

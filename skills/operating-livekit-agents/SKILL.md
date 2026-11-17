@@ -139,8 +139,10 @@ project has hit the plan's limit: suggest upgrading the plan rather than togglin
 Cloud user who is an admin on the project; the project's API key isn't enough. Signing in opens a
 browser page the user has to approve, so ask them to do it; you can't approve it yourself. Commands
 that need a signed-in user may not show in `--help` until someone has signed in, so check that
-before concluding a command doesn't exist. `reading-livekit-docs` has how to check and change the
-setting from the CLI or the API.
+before concluding a command doesn't exist. Where the CLI makes signed-in mode an opt-in on each
+command, a command run without it uses the API key instead, even right after a sign-in, so check
+how to run it as the signed-in user before reporting a permissions error. `reading-livekit-docs`
+has how to check and change the setting from the CLI or the API.
 
 **An empty read usually means recording was off.** When a session's transcript, logs, or traces
 come back empty, or the error says recording is off, tell the user that's the reason instead of
