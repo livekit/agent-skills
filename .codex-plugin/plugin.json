@@ -86,19 +86,19 @@
           ],
           "negative": [
             {
-              "description": "Unrelated question",
-              "prompt": "What's the weather in San Francisco today?",
-              "expected_behavior": "Calls no LiveKit tool."
+              "description": "Meeting transcript from another product",
+              "prompt": "Summarize what was said in my last Zoom meeting.",
+              "expected_behavior": "Calls no LiveKit tool. LiveKit sessions are the user's own voice agent calls, not Zoom meetings."
             },
             {
-              "description": "General coding request with nothing to do with LiveKit",
-              "prompt": "Write a Python function that reverses a string.",
-              "expected_behavior": "Calls no LiveKit tool and answers directly."
+              "description": "Telephony on another platform",
+              "prompt": "Set up a Twilio webhook that forwards incoming SMS to my server.",
+              "expected_behavior": "Calls no LiveKit tool. LiveKit webhooks and phone numbers don't configure Twilio SMS."
             },
             {
-              "description": "Irreversible action needs confirmation",
-              "prompt": "Delete my demo project.",
-              "expected_behavior": "delete_project returns a confirmation request instead of deleting. The model asks the user to confirm, and nothing is deleted unless they do."
+              "description": "Deployment logs on another platform",
+              "prompt": "Why did my last Vercel deployment fail? Check the build logs.",
+              "expected_behavior": "Calls no LiveKit tool. LiveKit logs and deploys cover LiveKit Cloud agents, not Vercel."
             }
           ]
         }
