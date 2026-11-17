@@ -13,6 +13,8 @@ Who can submit:
 
 Submit from the LiveKit organization, not a personal account. The first organization to submit a repository holds its listing.
 
+The LiveKit API MCP server is its own listing. Submit it first as an **MCP connector** with the URL `https://api.livekit.cloud/mcp`, then submit this plugin and pair the two listings. Both must come from the same organization. The plugin points at the same URL, so people with both see one set of tools.
+
 1. Open [claude.ai/directory/manage](https://claude.ai/directory/manage) and start a plugin submission. Connect a GitHub account that has push access to this repo.
 2. **Source:**
    - Repository: `livekit/agent-skills`
@@ -51,7 +53,8 @@ Before you start:
 - The MCP server is live in production.
 - Domain verification: OpenAI gives a token in the portal. Serve it as plain text at `https://api.livekit.cloud/.well-known/openai-apps-challenge`.
 - A reviewer account that signs in with no MFA, email or SMS codes, or magic links, on a demo project with sample sessions, a builder agent, and simulation runs.
-- Five positive and three negative test cases, each run against the reviewer account first, and a demo video URL. Drafts are in the plugin submission doc in Notion.
+- The five positive and three negative test cases are in `.codex-plugin/plugin.json` under `extensions.com.openai.review`, with the release notes under `publication`. Run each case against the reviewer account first.
+- A demo video that walks through the test cases. Add its URL to the same `review` object as `demo_recording_url` before you build the ZIP.
 
 1. Build the package with `./scripts/build-openai-zip.sh`. It writes `dist/livekit-openai-<version>.zip` with the MCP config at `.mcp.json`.
 2. Open [platform.openai.com/plugins](https://platform.openai.com/plugins), select the LiveKit organization and project, then select **Upload new or existing plugin** and **Upload plugin**. Don't choose **Skills only**.
@@ -63,7 +66,7 @@ Before you start:
 
    If the portal offers different category names, pick the closest developer category.
 4. Check the MCP server's authentication. It's OAuth with a Client ID Metadata Document (`.codex-plugin/mcp.json`), so the portal needs no client ID or secret.
-5. Under **Review details**, enter the reviewer account's sign-in, the test cases, and the demo video URL. These go in the portal, never in the ZIP.
+5. The test cases, demo video URL, and release notes import from the ZIP and are read-only in the portal; to change them, edit the manifest and upload again. Under **Review details**, enter the reviewer account's sign-in. Credentials go in the portal, never in the ZIP.
 6. Wait for the skill and tool scans to pass, select **Submit for review**, and answer the policy attestations. OpenAI sends review feedback by email.
 7. After approval, open the approved version and select **Publish plugin**.
 
