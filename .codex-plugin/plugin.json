@@ -1,7 +1,7 @@
 {
   "name": "livekit",
   "version": "1.0.0",
-  "description": "Build, test, and ship voice agents with LiveKit. Skills for the LiveKit Agents SDK (Python and Node.js) covering voice AI architecture, live debugging, turn-level tests, simulations, and deployment, plus the LiveKit API MCP server for reading session transcripts, logs, and traces and managing your LiveKit Cloud projects.",
+  "description": "Build, test, and run AI voice agents on LiveKit Cloud. Create an agent, give it a phone number, test it with simulated calls, and find out why a call went wrong. Includes skills that teach your coding agent the LiveKit Agents SDK for Python and Node.js.",
   "author": {
     "name": "LiveKit",
     "url": "https://livekit.io"
@@ -32,7 +32,7 @@
   "interface": {
     "displayName": "LiveKit",
     "shortDescription": "Build and ship voice agents",
-    "longDescription": "Build, test, and debug voice agents on LiveKit Cloud. Connect your LiveKit account to read the transcripts, logs, and traces of real sessions, find out why a call went wrong, check simulation results, and manage your projects, agents, and webhooks. The skills teach your coding agent the LiveKit Agents SDK for Python and Node.js: it looks up current LiveKit docs before writing code, talks to your agent turn by turn to check a change, writes turn-level tests, runs simulations before a release, and deploys to LiveKit Cloud.",
+    "longDescription": "LiveKit lets you build AI voice agents that talk to people in realtime, over the phone or in your app. Connect your LiveKit account and ask in plain language: create a voice agent with Agent Builder and deploy it, give it a phone number so people can call it, test it with simulated conversations before real callers do, find out what happened on a call from its transcript, logs, and timing, and manage your projects, team members, and webhooks. The included skills teach your coding agent to build voice agents with the LiveKit Agents SDK for Python and Node.js: it looks up current docs, tests each change, and deploys to LiveKit Cloud. Actions that cost money or can't be undone, like buying a number or deleting a project, always ask you to confirm first.",
     "developerName": "LiveKit",
     "category": "Developer Tools",
     "capabilities": [],
@@ -41,9 +41,9 @@
     "privacyPolicyURL": "https://livekit.io/legal/privacy-policy",
     "termsOfServiceURL": "https://livekit.io/legal/terms-of-service",
     "defaultPrompt": [
-      "Build a LiveKit voice agent that books appointments",
-      "Test my LiveKit agent as a confused first-time caller",
-      "Find what went wrong in my agent's recent sessions"
+      "Build a voice agent that books appointments for my dental clinic",
+      "Why did my agent's last call go wrong?",
+      "Run simulated calls against my agent and show me what failed"
     ],
     "logo": "./assets/icon.png",
     "composerIcon": "./assets/icon.png"
