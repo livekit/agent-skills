@@ -30,7 +30,7 @@ The LiveKit API MCP server is its own listing. Submit it first as an **MCP conne
    - Retention: none. The plugin stores nothing.
    - Intended for people under 18: no.
 4. **Compliance:**
-   - Contact email: a LiveKit team alias, not a personal address.
+   - Contact email: `support@livekit.io`, a team inbox rather than a personal address. Anthropic sends review updates there, so tell whoever triages it to forward them.
    - Read and select the four acknowledgements.
 5. **Review and submit:**
    - How new versions reach the directory: **GitHub push webhook**.
