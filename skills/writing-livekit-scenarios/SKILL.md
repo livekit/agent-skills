@@ -18,10 +18,14 @@ and it's what catches a prompt edit that breaks something without anyone noticin
 Before writing a file, look up the exact schema and CLI flags with `reading-livekit-docs`. Field
 names and commands change, so this skill doesn't restate them. Conceptually, a file is a named group
 of scenarios. Each scenario has the simulated user's instructions, the pass criteria, and optionally
-tags for grouping and per-scenario data the agent can read at runtime. If the CLI offers to add
-stable per-scenario ids to a file, accept and commit them.
+tags for grouping and per-scenario data the agent can read at runtime. Commit the ids the CLI adds
+to the file so runs line up over time.
 
 ## Start from a generated baseline
+
+If the project already has a scenario file, read it first. The starter templates ship one written
+for a general-purpose assistant. Once the agent's purpose changes, those scenarios grade the old
+agent, so rewrite or remove them instead of adding new ones beside them.
 
 Don't start from an empty file. LiveKit's generator reads the agent's source and produces a decent
 first pass much faster than you'd write ten scenarios by hand:
@@ -115,9 +119,8 @@ A scenario should give the same result months from now as it does today.
   availability and expectations always line up. Relative dates rot.
 - **Don't let scenarios hit real backends.** Seed deterministic state from the scenario instead
   (see "Make the agent consume the scenario" below).
-- **Keep ids stable** where the CLI supports them. Labels and instructions change, and the id is
-  what ties a scenario's runs together over time. A scenario rewritten from scratch is a new
-  scenario and gets a new id.
+- **Keep ids stable.** Labels and instructions change, and the id is what ties a scenario's runs
+  together over time. A scenario rewritten from scratch is a new scenario and gets a new id.
 
 ## Make the agent consume the scenario
 

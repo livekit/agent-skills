@@ -80,11 +80,12 @@ for callers.
 
 ## Automating a pre-release run
 
-All you need is a committed scenario file and a scheduled or release-branch job. The CLI prints
-plain output when it isn't attached to a terminal and exits non-zero when any scenario fails, so the
-job fails without extra wiring; the docs have a worked CI example to start from. Keep automated runs
-in text mode. Every scenario in the committed file has to pass or the job fails, so keep aspirational
-scenarios the agent doesn't pass yet in a separate file you run on demand.
+All you need is a committed scenario file, with an id on every scenario, and a scheduled or
+release-branch job. The CLI prints plain output when it isn't attached to a terminal and exits
+non-zero when any scenario fails, so the job fails without extra wiring; the docs have a worked CI
+example to start from. Keep automated runs in text mode. Every scenario in the committed file has to
+pass or the job fails, so keep aspirational scenarios the agent doesn't pass yet in a separate file
+you run on demand.
 
 ## Reading the results
 
