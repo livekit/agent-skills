@@ -54,10 +54,10 @@
         "test_cases": {
           "positive": [
             {
-              "description": "Find failed sessions in the user's LiveKit project",
-              "prompt": "Which sessions in my LiveKit demo project ended with an error this week?",
+              "description": "List recent calls in the user's LiveKit project",
+              "prompt": "List this week's calls in my LiveKit demo project. Which one was the shortest?",
               "tools_triggered": "list_projects, list_project_sessions",
-              "expected_behavior": "Lists the project's recent sessions with start time and status, and calls out the ones that ended with an error."
+              "expected_behavior": "Lists the demo project's sessions from this week with when each started and how long it lasted, and names the shortest call."
             },
             {
               "description": "Summarize a real call from the session transcript",
@@ -79,9 +79,9 @@
             },
             {
               "description": "Create a webhook and send it a test event",
-              "prompt": "Add a webhook to my demo project that posts to https://example.com/livekit, then send it a test event.",
+              "prompt": "Add a webhook to my demo project that posts to https://postman-echo.com/post, then send it a test event.",
               "tools_triggered": "create_webhook, send_test_webhook",
-              "expected_behavior": "Creates the webhook on the demo project and reports that the test event was sent."
+              "expected_behavior": "Creates the webhook on the demo project, sends it a test event, and reports that the receiver answered with HTTP 200."
             }
           ],
           "negative": [
