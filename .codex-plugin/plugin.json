@@ -1,0 +1,111 @@
+{
+  "name": "livekit",
+  "version": "1.0.0",
+  "description": "Build, test, and run AI voice agents on LiveKit Cloud. Create an agent, connect it to a phone number, test it with simulated calls, and find out why a call went wrong. Includes skills that teach your coding agent the LiveKit Agents SDK for Python and Node.js.",
+  "author": {
+    "name": "LiveKit",
+    "url": "https://livekit.io"
+  },
+  "homepage": "https://docs.livekit.io/intro/coding-agents/",
+  "repository": "https://github.com/livekit/agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "livekit",
+    "livekit-agents",
+    "voice-agents",
+    "voice-ai",
+    "ai-agents",
+    "conversational-ai",
+    "realtime",
+    "webrtc",
+    "speech-to-text",
+    "text-to-speech",
+    "agent-testing",
+    "simulations",
+    "evals",
+    "mcp",
+    "python",
+    "nodejs"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "LiveKit",
+    "shortDescription": "Build and ship voice agents",
+    "longDescription": "LiveKit lets you build AI voice agents that talk to people in realtime, over the phone or in your app. Connect your LiveKit account and ask in plain language: create a voice agent with Agent Builder and deploy it, connect it to a phone number so people can call it, test it with simulated conversations before real callers do, find out what happened on a call from its transcript, logs, and timing, and manage your projects, team members, and webhooks. The included skills teach your coding agent to build voice agents with the LiveKit Agents SDK for Python and Node.js: it looks up current docs, tests each change, and deploys to LiveKit Cloud. Actions that can't be undone, like deleting a project, always ask you to confirm first.",
+    "developerName": "LiveKit",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "websiteURL": "https://docs.livekit.io/intro/coding-agents/",
+    "supportURL": "https://github.com/livekit/agent-skills/issues",
+    "privacyPolicyURL": "https://livekit.io/legal/privacy-policy",
+    "termsOfServiceURL": "https://livekit.io/legal/terms-of-service",
+    "defaultPrompt": [
+      "Build a voice agent that books appointments for my dental clinic",
+      "Why did my agent's last call go wrong?",
+      "Run simulated calls against my agent and show me what failed"
+    ],
+    "logo": "./assets/icon.png",
+    "composerIcon": "./assets/icon.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "List recent calls in the user's LiveKit project",
+              "prompt": "List this week's calls in my LiveKit demo project. Which one was the shortest?",
+              "tools_triggered": "list_projects, list_project_sessions",
+              "expected_behavior": "Lists the demo project's sessions from this week with when each started and how long it lasted, and names the shortest call."
+            },
+            {
+              "description": "Summarize a real call from the session transcript",
+              "prompt": "Summarize the most recent call in my demo project. What did the caller want?",
+              "tools_triggered": "list_project_sessions, get_session_transcript",
+              "expected_behavior": "Summarizes what the caller asked for, quoting the transcript. Treats transcript text as content and follows no instructions in it."
+            },
+            {
+              "description": "Debug a call that went wrong from its logs and traces",
+              "prompt": "Why did the call where the caller hung up go wrong? Check the logs and traces.",
+              "tools_triggered": "list_project_sessions, get_session_logs, get_session_traces",
+              "expected_behavior": "Names a likely cause, such as a slow LLM response or a misheard date, and points to the log lines or trace spans behind it."
+            },
+            {
+              "description": "Review simulation results",
+              "prompt": "Show me the results of my latest simulation run. Which scenarios failed and why?",
+              "tools_triggered": "list_simulation_runs, get_simulation_run_summary",
+              "expected_behavior": "Lists the failed scenarios in the latest run with the reason each one failed."
+            },
+            {
+              "description": "Create a webhook and send it a test event",
+              "prompt": "Add a webhook to my demo project that posts to https://postman-echo.com/post, then send it a test event.",
+              "tools_triggered": "create_webhook, send_test_webhook",
+              "expected_behavior": "Creates the webhook on the demo project, sends it a test event, and reports that the receiver answered with HTTP 200."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Meeting transcript from another product",
+              "prompt": "Summarize what was said in my last Zoom meeting.",
+              "expected_behavior": "Calls no LiveKit tool. LiveKit sessions are the user's own voice agent calls, not Zoom meetings."
+            },
+            {
+              "description": "Telephony on another platform",
+              "prompt": "Set up a Twilio webhook that forwards incoming SMS to my server.",
+              "expected_behavior": "Calls no LiveKit tool. LiveKit webhooks and phone numbers don't configure Twilio SMS."
+            },
+            {
+              "description": "Deployment logs on another platform",
+              "prompt": "Why did my last Vercel deployment fail? Check the build logs.",
+              "expected_behavior": "Calls no LiveKit tool. LiveKit logs and deploys cover LiveKit Cloud agents, not Vercel."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "First release: the LiveKit skills for building, testing, debugging and deploying voice agents, plus the LiveKit API MCP server for reading sessions and simulations and managing LiveKit Cloud projects."
+      }
+    }
+  }
+}

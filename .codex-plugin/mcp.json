@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "livekit": {
+      "url": "https://api.livekit.cloud/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "cimd"
+            }
+          }
+        }
+      }
+    }
+  }
+}
