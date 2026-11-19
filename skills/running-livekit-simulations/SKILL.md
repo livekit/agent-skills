@@ -31,10 +31,6 @@ Run from the agent's project directory. The mode is a subcommand:
 lk agent simulate text --scenarios scenarios.yaml    # see --help for the current flags
 ```
 
-Every scenario needs an id. When the file has new scenarios without one, the CLI offers to add
-them, and without a terminal it stops until you pass its confirmation flag. Commit the ids it
-writes so later runs line up.
-
 With no scenario file, the CLI generates scenarios from the agent's source. That **uploads the
 code**, and the CLI asks for confirmation first. Generation belongs to `writing-livekit-scenarios`.
 

@@ -18,9 +18,8 @@ and it's what catches a prompt edit that breaks something without anyone noticin
 Before writing a file, look up the exact schema and CLI flags with `reading-livekit-docs`. Field
 names and commands change, so this skill doesn't restate them. Conceptually, a file is a named group
 of scenarios. Each scenario has the simulated user's instructions, the pass criteria, and optionally
-tags for grouping and per-scenario data the agent can read at runtime. Every scenario needs a stable
-id, and the CLI won't run a file with any missing. It offers to add them, or, without a terminal,
-stops until you pass its confirmation flag. Accept and commit the ids it writes.
+tags for grouping and per-scenario data the agent can read at runtime. Commit the ids the CLI adds
+to the file so runs line up over time.
 
 ## Start from a generated baseline
 
