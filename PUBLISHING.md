@@ -25,7 +25,7 @@ The LiveKit API MCP server is its own listing. Submit it first as an **MCP conne
 3. **Data handling:**
    - Reads personal data: yes. On the user's request, the plugin reads session data from the user's own LiveKit Cloud projects, such as transcripts and logs, through the LiveKit API MCP server or the LiveKit CLI. That data can contain personal information about the people who talked to their agent.
    - Stores personal data: no.
-   - Sends data to services other than its declared connectors: no. The declared connectors are the LiveKit API MCP server (`https://api.livekit.cloud/mcp`) and the LiveKit Docs MCP server. The CLI talks only to the user's own LiveKit Cloud project.
+   - Sends data to services other than its declared connectors: no. The declared connectors are the LiveKit API MCP server (`https://api.livekit.cloud/mcp`) and the LiveKit Docs MCP server. The CLI talks only to the user's own LiveKit Cloud project. If the form has a text box, add: some CLI commands upload the user's agent source code to LiveKit Cloud after the user confirms, to deploy the agent or to generate simulation scenarios from it.
    - Authentication: OAuth 2.1. The user signs in to LiveKit and approves the app. Workspace admins can turn MCP off or allow only some apps.
    - Retention: none. The plugin stores nothing.
    - Intended for people under 18: no.
