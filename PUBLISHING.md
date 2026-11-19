@@ -52,7 +52,7 @@ Before you start:
 
 - The MCP server is live in production.
 - Domain verification: OpenAI gives a token in the portal. Serve it as plain text at `https://api.livekit.cloud/.well-known/openai-apps-challenge`.
-- Reviewer access: OpenAI's review inbox (`mcp-review@theaicompany.org`), invited as admin to a demo project with sample sessions, a builder agent, and simulation runs. Under **Review details**, choose the magic link or email code sign-in. Invites expire after 48 hours, so send a fresh one right before you submit.
+- Reviewer access: a LiveKit-controlled email that forwards to OpenAI's review inbox (`mcp-review@theaicompany.org`), already an admin of a demo project with sample sessions, a builder agent, and simulation runs. Accept the project invite on that email yourself before you submit, so the reviewer signs in to an account that already has access. Under **Review details**, choose the magic link or email code sign-in.
 - The five positive and three negative test cases are in `.codex-plugin/plugin.json` under `extensions.com.openai.review`, with the release notes under `publication`. Run each case against the reviewer account first.
 - Purchases: OpenAI's plugin guidelines (section 5.1) don't let a plugin sell digital services or start a checkout. The plugin sells nothing: the MCP server mirrors the LiveKit API, and anything it does bills the user's existing LiveKit account like any other usage. Keep buying and pricing out of the listing copy, test cases, and demo video. If review flags a tool such as `purchase_phone_number`, hide it from ChatGPT.
 - A demo video that walks through the test cases. Add its URL to the same `review` object as `demo_recording_url` before you build the ZIP.
