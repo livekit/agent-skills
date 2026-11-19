@@ -2,7 +2,7 @@
   "name": "livekit",
   "displayName": "LiveKit",
   "version": "1.0.0",
-  "description": "Build, test, and run AI voice agents on LiveKit Cloud. Create an agent, give it a phone number, test it with simulated calls, and find out why a call went wrong from its transcript, logs, and timing. Includes skills that teach your coding agent the LiveKit Agents SDK for Python and Node.js, the LiveKit API MCP server for your projects, and the LiveKit Docs MCP server for current docs.",
+  "description": "Build, test, and run AI voice agents on LiveKit Cloud. Create an agent, connect it to a phone number, test it with simulated calls, and find out why a call went wrong from its transcript, logs, and timing. Includes skills that teach your coding agent the LiveKit Agents SDK for Python and Node.js, the LiveKit API MCP server for your projects, and the LiveKit Docs MCP server for current docs.",
   "author": {
     "name": "LiveKit",
     "url": "https://livekit.io"

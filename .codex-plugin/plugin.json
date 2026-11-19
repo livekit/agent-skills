@@ -1,7 +1,7 @@
 {
   "name": "livekit",
   "version": "1.0.0",
-  "description": "Build, test, and run AI voice agents on LiveKit Cloud. Create an agent, give it a phone number, test it with simulated calls, and find out why a call went wrong. Includes skills that teach your coding agent the LiveKit Agents SDK for Python and Node.js.",
+  "description": "Build, test, and run AI voice agents on LiveKit Cloud. Create an agent, connect it to a phone number, test it with simulated calls, and find out why a call went wrong. Includes skills that teach your coding agent the LiveKit Agents SDK for Python and Node.js.",
   "author": {
     "name": "LiveKit",
     "url": "https://livekit.io"
@@ -32,7 +32,7 @@
   "interface": {
     "displayName": "LiveKit",
     "shortDescription": "Build and ship voice agents",
-    "longDescription": "LiveKit lets you build AI voice agents that talk to people in realtime, over the phone or in your app. Connect your LiveKit account and ask in plain language: create a voice agent with Agent Builder and deploy it, give it a phone number so people can call it, test it with simulated conversations before real callers do, find out what happened on a call from its transcript, logs, and timing, and manage your projects, team members, and webhooks. The included skills teach your coding agent to build voice agents with the LiveKit Agents SDK for Python and Node.js: it looks up current docs, tests each change, and deploys to LiveKit Cloud. Actions that cost money or can't be undone, like buying a number or deleting a project, always ask you to confirm first.",
+    "longDescription": "LiveKit lets you build AI voice agents that talk to people in realtime, over the phone or in your app. Connect your LiveKit account and ask in plain language: create a voice agent with Agent Builder and deploy it, connect it to a phone number so people can call it, test it with simulated conversations before real callers do, find out what happened on a call from its transcript, logs, and timing, and manage your projects, team members, and webhooks. The included skills teach your coding agent to build voice agents with the LiveKit Agents SDK for Python and Node.js: it looks up current docs, tests each change, and deploys to LiveKit Cloud. Actions that can't be undone, like deleting a project, always ask you to confirm first.",
     "developerName": "LiveKit",
     "category": "Developer Tools",
     "capabilities": [],
