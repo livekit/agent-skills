@@ -51,6 +51,7 @@
   "extensions": {
     "com.openai": {
       "review": {
+        "demo_recording_url": "https://youtu.be/S9hqQsaxg_k",
         "test_cases": {
           "positive": [
             {
