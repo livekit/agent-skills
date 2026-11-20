@@ -77,6 +77,11 @@ failures worth retrying from persistent ones that need a fallback or escalation.
 meaningful spoken response, never to silence. Log provider response times, because rising latency
 is usually the first sign of an outage.
 
+The SDK has both kinds of fallback built in: the `fallback` parameter on `inference.STT` and
+`inference.TTS` switches models server-side in LiveKit Inference, and `FallbackAdapter` (in `stt`,
+`llm` and `tts`) switches between plugin instances in the agent process. Configure one before
+writing your own retry logic; `reading-livekit-docs` has the fallback strategies page.
+
 Adding a provider to an existing agent: check whether the SDK already has a plugin before writing
 one; follow how the codebase already initializes, configures, and handles errors for its other
 providers; run its config through the same pipeline; and test under realistic latency, not just
