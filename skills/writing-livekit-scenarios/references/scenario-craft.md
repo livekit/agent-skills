@@ -107,6 +107,17 @@ exists in speech:
   think, or answers before the agent finishes.
 - **Recovery from bad input**: a caller on a poor connection or in a noisy place, where the agent
   should ask them to repeat instead of guessing.
+- **Keypad input**: an agent that asks the caller to press or enter something, such as a menu
+  choice or a card number. The simulated user presses real keys, so this is where the agent's
+  keypad handling gets tested.
+
+The simulated user cuts in only where the instructions tell it to, so write the interruption next
+to the line it interrupts: "ask for Wednesday at 7pm, then interrupt as soon as they start answering
+and change it to Thursday". It writes the cut-in together with that line, because once the agent is
+talking there's no time left to write it. Key presses work the same way: say what to
+press and what prompt it answers ("when asked for your card, enter it on the keypad, then the pound
+key"). Grade both on what the call ends with, such as the one Thursday booking or the card that was
+charged, rather than on the interruption or the press itself. Text runs skip both.
 
 Put these in a set of their own. Audio runs are slow and expensive, so you want to choose when to
 run them instead of pushing the whole file through the audio pipeline.
