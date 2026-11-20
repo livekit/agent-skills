@@ -5,6 +5,7 @@
 - Rules that hold for both shapes
 - Varying the cast across a suite
 - Identity details in instructions
+- Keypad input
 - Scenarios written for audio
 
 The simulated user is an LLM that reads `instructions` and improvises a conversation. How you write
@@ -96,6 +97,14 @@ seeded state and with the expected end state.
 It's fine, and often the point, for a caller to *lack* a credential: no order number, no PIN, can't
 verify. Don't invent a specific wrong value unless the scenario is about a mismatch.
 
+## Keypad input
+
+When an agent asks the caller to press or enter something — such as a menu choice or a card
+number — the simulated user can press real keys (`0–9`, `*`, and `#`) in both text and audio modes,
+and the agent receives them as DTMF. Say what to press and what prompt it answers ("when asked for
+your card, enter it on the keypad, then the pound key"), and grade on what the call ends with, such
+as the card that was charged, rather than on the press itself.
+
 ## Scenarios written for audio
 
 Most scenarios should run in text. Write a scenario *for* audio when what you're testing only
@@ -107,17 +116,12 @@ exists in speech:
   think, or answers before the agent finishes.
 - **Recovery from bad input**: a caller on a poor connection or in a noisy place, where the agent
   should ask them to repeat instead of guessing.
-- **Keypad input**: an agent that asks the caller to press or enter something, such as a menu
-  choice or a card number. The simulated user presses real keys, so this is where the agent's
-  keypad handling gets tested.
 
 The simulated user cuts in only where the instructions tell it to, so write the interruption next
 to the line it interrupts: "ask for Wednesday at 7pm, then interrupt as soon as they start answering
 and change it to Thursday". It writes the cut-in together with that line, because once the agent is
-talking there's no time left to write it. Key presses work the same way: say what to
-press and what prompt it answers ("when asked for your card, enter it on the keypad, then the pound
-key"). Grade both on what the call ends with, such as the one Thursday booking or the card that was
-charged, rather than on the interruption or the press itself. Text runs skip both.
+talking there's no time left to write it. Grade on what the call ends with, such as the one Thursday
+booking, rather than on the interruption itself. Text runs skip interruptions.
 
 Put these in a set of their own. Audio runs are slow and expensive, so you want to choose when to
 run them instead of pushing the whole file through the audio pipeline.
