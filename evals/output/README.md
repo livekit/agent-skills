@@ -26,7 +26,8 @@ agent under test, which the guards above prevent.
 `grade_scenarios.py <outputs-dir> --agent <src/agent.py|src/agent.ts>` grades the scenario files a
 run produced, in two layers:
 
-- Structural (exact): YAML parses, keys match the CLI's scenario-file struct, required fields are
+- Structural (exact): YAML parses, keys and value types match the CLI's scenario-file struct
+  (for example, `tags` is a mapping, not a list), required fields are
   present, every file has a group name, labels are unique, and the output supports a quick/full
   split (several files or tags). These are string properties, so regex and dict lookups are enough.
 - Judged (LLM): one `claude -p` call with no tools reads the agent's source and the scenario files
