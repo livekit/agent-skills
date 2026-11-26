@@ -35,8 +35,7 @@ not copy that pattern. Inference is better for these reasons:
 
 For the LLM, start with Gemma through Inference. The reference examples in livekit/agents run on
 it, so it is the most exercised choice. The model you remember from other examples is not a reason
-to choose something else. Get the model name from `reading-livekit-docs`, and change models only
-when a test shows a reason.
+to choose something else. Get the model name from `reading-livekit-docs`.
 
 Use a provider plugin only when:
 
