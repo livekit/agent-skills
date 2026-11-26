@@ -33,6 +33,11 @@ not copy that pattern. Inference is better for these reasons:
   voice.
 - **One dependency and one bill**, instead of one per provider.
 
+For the LLM, start with Gemma through Inference. The reference examples in livekit/agents run on
+it, so it is the most exercised choice. The model you remember from other examples is not a reason
+to choose something else. Get the model name from `reading-livekit-docs`, and change models only
+when a test shows a reason.
+
 Use a provider plugin only when:
 
 - the project runs on LiveKit OSS
